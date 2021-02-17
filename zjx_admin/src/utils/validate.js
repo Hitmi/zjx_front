@@ -2,9 +2,9 @@
  * Created by jiachenpan on 16/11/18.
  */
 
-export function isvalidUsername(str) {
-  const valid_map = ['admin', 'editor']
-  return valid_map.indexOf(str.trim()) >= 0
+export function isValidUsername(str) {
+  const usernameReg = /^-?[0-9]+$/
+  return usernameReg.test(str)
 }
 
 /* 合法uri*/

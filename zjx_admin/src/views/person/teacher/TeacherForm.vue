@@ -9,14 +9,20 @@
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
           :on-error="handleAvatarError"
-          class="avatar-uploader"
-          action="http://localhost:8120/admin/oss/file/upload?module=avatar">
+          :action="BASE_API + '/admin/oss/file/upload?module=avatar'"
+          class="avatar-uploader">
           <img v-if="teacher.avatar" :src="teacher.avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon"/>
         </el-upload>
       </el-form-item>
       <el-form-item label="教师姓名">
         <el-input v-model="teacher.name"/>
+      </el-form-item>
+      <el-form-item label="账号">
+        <el-input v-model="teacher.username"/>
+      </el-form-item>
+      <el-form-item label="密码">
+        <el-input v-model="teacher.password" type="password"/>
       </el-form-item>
       <!--性别-->
       <el-form-item label="性别">
@@ -76,7 +82,9 @@ export default {
         departmentId: '',
         avatar: 'https://oss.aliyuncs.com/aliyun_id_photo_bucket/default_handsome.jpg',
         intro: '',
-        level: ''
+        level: '',
+        username: '',
+        password: ''
       },
       saveBtnDisabled: false, // 默认按钮可用
       BASE_API: process.env.BASE_API,

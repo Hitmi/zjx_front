@@ -2,45 +2,62 @@
   <div class="app-container">
     <!-- 输入表单 -->
     <el-form label-width="120px">
+      <el-form-item label="学生头像">
+        <el-upload
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload"
+          :on-error="handleAvatarError"
+          :action="BASE_API + '/admin/oss/file/upload?module=avatar'"
+          class="avatar-uploader">
+          <img v-if="student.avatar" :src="student.avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"/>
+        </el-upload>
+      </el-form-item>
       <!--学生姓名-->
       <el-form-item label="学生姓名">
         <el-input v-model="student.name"/>
       </el-form-item>
+      <!--账号-->
+      <el-form-item label="账号">
+        <el-input v-model="student.username"/>
+      </el-form-item>
+      <!--密码-->
+      <el-form-item label="密码">
+        <el-input v-model="student.password" type="password"/>
+      </el-form-item>
       <!--性别 1：男   2：女-->
-      <el-form-item label="性别 1：男   2：女">
-        <el-input v-model="student.sex"/>
+      <el-form-item label="性别">
+        <el-select v-model="student.sex">
+          <el-option :value="1" label="男"/>
+          <el-option :value="2" label="女"/>
+        </el-select>
       </el-form-item>
       <!--出生年月日-->
       <el-form-item label="出生年月日">
-        <el-input v-model="student.birth"/>
+        <el-date-picker v-model="student.birth" value-format="yyyy-MM-dd"/>
       </el-form-item>
       <!--毕业日期-->
       <el-form-item label="毕业日期">
-        <el-input v-model="student.graduateDate"/>
+        <el-date-picker v-model="student.graduateDate" value-format="yyyy-MM-dd"/>
       </el-form-item>
       <!--班级-->
       <el-form-item label="班级">
         <el-input v-model="student.clazz"/>
       </el-form-item>
       <!--部门id-->
-      <el-form-item label="部门id">
-        <el-input v-model="student.departmentId"/>
+      <el-form-item label="所属部门">
+        <el-select v-model="student.departmentId">
+          <el-option
+            v-for="item in departmentList"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"/>
+        </el-select>
       </el-form-item>
       <!--手机号-->
       <el-form-item label="手机号">
         <el-input v-model="student.mobile"/>
-      </el-form-item>
-      <!--微信openid-->
-      <el-form-item label="微信openid">
-        <el-input v-model="student.wxId"/>
-      </el-form-item>
-      <!--头像地址-->
-      <el-form-item label="头像地址">
-        <el-input v-model="student.avatar"/>
-      </el-form-item>
-      <!--个性签名-->
-      <el-form-item label="个性签名">
-        <el-input v-model="student.sign"/>
       </el-form-item>
       <el-form-item>
         <el-button :disabled="saveBtnDisabled" type="primary" @click="saveOrUpdate()">保存</el-button>
@@ -52,6 +69,7 @@
 
 <script>
 import studentApi from '@/api/person/student'
+import departmentApi from '@/api/person/department'
 
 export default {
   name: 'StudentFrom',
@@ -60,6 +78,8 @@ export default {
       // 数据
       student: {
         name: '',
+        username: '',
+        password: '',
         sex: '',
         birth: '',
         graduateDate: '',
@@ -67,19 +87,28 @@ export default {
         departmentId: '',
         mobile: '',
         wxId: '',
-        avatar: '',
+        avatar: 'https://oss.aliyuncs.com/aliyun_id_photo_bucket/default_handsome.jpg',
         sign: ''
       },
-      saveBtnDisabled: false // 按钮是否可用，默认可用
+      BASE_API: process.env.BASE_API,
+      saveBtnDisabled: false, // 按钮是否可用，默认可用
+      departmentList: [] // 部门列表
     }
   },
 
   created() {
+    this.getDepartment()
     if (this.$route.params.id) {
       this.getDataById(this.$route.params.id)
     }
   },
   methods: {
+    // 获取部门信息
+    getDepartment() {
+      departmentApi.list().then(response => {
+        this.departmentList = response.data.list
+      })
+    },
     // 取消按钮，回退路由
     cancel() {
       this.$router.back(-1)
@@ -115,7 +144,7 @@ export default {
           message: response.message,
           type: 'success'
         })
-        this.$router.push({ path: '/student/list' })
+        this.$router.push({ path: '/student/index' })
       })
     },
     // 根据id查询数据
@@ -123,6 +152,31 @@ export default {
       studentApi.getById(id).then(response => {
         this.student = response.data.item
       })
+    },
+    // 上传成功回调
+    handleAvatarSuccess(res, file) {
+      // console.log(res)
+      this.teacher.avatar = res.data.url
+      // 强制重新渲染
+      this.$forceUpdate()
+    },
+    // 上传校验
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isLt10M = file.size / 1024 / 1024 < 10
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!')
+      }
+      if (!isLt10M) {
+        this.$message.error('上传头像图片大小不能超过 10MB!')
+      }
+      return isJPG && isLt10M
+    },
+    // 文件上传错误处理
+    handleAvatarError() {
+      console.log('error')
+      this.$message.error('上传失败（http失败）')
     }
   }
 }

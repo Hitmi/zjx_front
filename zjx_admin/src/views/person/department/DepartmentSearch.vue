@@ -15,7 +15,7 @@
           <label style="line-height:2rem;width: 120px;">父部门：</label>
         </el-col>
         <el-col :span="11">
-          <el-select v-model="searchData.departmentId" placeholder="部门">
+          <el-select v-model="searchData.parentId" placeholder="父部门">
             <el-option
               v-for="item in departmentList"
               :key="item.id"
@@ -29,7 +29,7 @@
           <label style="line-height:2rem;width: 120px;">是否为某学科专业</label>
         </el-col>
         <el-col :span="11">
-          <el-select v-model="searchData.departmentId" placeholder="是否为某学科专业">
+          <el-select v-model="searchData.major" placeholder="是否为某学科专业">
             <el-option :value="0" label="否"/>
             <el-option :value="1" label="是"/>
           </el-select>

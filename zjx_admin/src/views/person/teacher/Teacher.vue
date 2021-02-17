@@ -16,7 +16,7 @@
       </a>
       <el-upload
         :limit="1"
-        :file-list="file_list"
+        :file-list="fileList"
         :on-error="uploadError"
         :on-success="uploadSuccess"
         :action="BASE_API + '/admin/person/teacher/upload'"
@@ -121,7 +121,7 @@ export default {
       }, // 查询表单
       multipleSelection: [], // 批量删除选中的记录列表
       departmentList: [], // 部门列表
-      file_list: [],
+      fileList: [],
       dialogTableVisible: false,
       BASE_API: process.env.BASE_API,
       // 讲师对象
@@ -153,13 +153,13 @@ export default {
       })
     },
     // 导入excel失败后调用
-    uploadError(response) {
-      console.log(response)
+    uploadError(err) {
+      console.log(err)
     },
     // 导入excel成功后调用
-    uploadSuccess(err) {
-      console.log(err)
+    uploadSuccess() {
       this.fileList = []
+      this.getData()
     },
     // 调用api模块，加载讲师列表
     getData(data) {
@@ -197,7 +197,7 @@ export default {
     // 删除记录
     removeById(id) {
       // 询问是否删除
-      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -229,7 +229,7 @@ export default {
         return
       }
 
-      this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+      this.$confirm('此操作将永久批量删除数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

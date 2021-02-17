@@ -2,31 +2,35 @@
   <!--弹出窗口，用于显示详细信息-->
   <div style="text-align: center;font-size: 16px">
     <el-row>
-      部门名：{{ department.name }}
+      章节名字：{{ chapter.title }}
     </el-row>
     <el-row>
-      父部门id：{{ department.parentId }}
+      课程id：{{ chapter.courseId }}
     </el-row>
     <el-row>
-      是否为某学科专业 0/1{{ department.major }}
+      章节id：{{ chapter.parentId }}
+    </el-row>
+    <el-row>
+      排序,数字越大越重要：{{ chapter.sort }}
     </el-row>
   </div>
 </template>
 
 <script>
-import departmentApi from '@/api/person/department'
+import chapterApi from '@/api/edu/chapter'
 
 export default {
-  name: 'DepartmentDetail',
+  name: 'ChapterDetail',
   props: {// 讲师对象
-    department: {
+    chapter: {
       type: Object,
       default: function() {
         return {
           id: '',
-          name: '',
+          title: '',
+          courseId: '',
           parentId: '',
-          major: ''
+          sort: ''
         }
       }
     }
@@ -41,8 +45,8 @@ export default {
   methods: {
     // 根据id查询数据
     getDataById(id) {
-      departmentApi.getById(id).then(response => {
-        this.department = response.data.item
+      chapterApi.getById(id).then(response => {
+        this.chapter = response.data.item
       })
     }
   }

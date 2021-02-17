@@ -4,14 +4,14 @@
     <div style="margin-bottom: 10px">
 
       <el-button type="danger" size="mini" @click="batchRemove">批量删除</el-button>
-      <router-link :to="'/student/create'">
+      <router-link :to="'/chapter/create'">
         <el-button type="primary" size="mini" icon="el-icon-circle-plus-outline">添加</el-button>
       </router-link>
       <el-button type="primary" size="mini" icon="el-icon-search" @click="searchVisible = true">数据过滤</el-button>
-      <a :href="BASE_API + '/admin/person/student/export'">
+      <a :href="BASE_API + '/admin/edu/chapter/export'">
         <el-button size="mini" type="primary" icon="el-icon-download">下载数据</el-button>
       </a>
-      <a href="/static/excelTemplate/StudentList模板.xlsx">
+      <a href="/static/excelTemplate/ChapterList模板.xlsx">
         <el-button size="mini" type="primary" icon="el-icon-document-copy">下载模板</el-button>
       </a>
       <el-upload
@@ -19,7 +19,7 @@
         :file-list="fileList"
         :on-error="uploadError"
         :on-success="uploadSuccess"
-        :action="BASE_API + '/admin/person/student/upload'"
+        :action="BASE_API + '/admin/edu/chapter/upload'"
         class="upload-demo"
         style="display:inline;">
         <el-button size="mini" type="primary" icon="el-icon-upload2">导入数据</el-button>
@@ -34,7 +34,7 @@
       <template v-slot="title">
         <h2 style="color: #409EFF"><i class="el-icon-search" style="margin-bottom: 30px"/>数据过滤</h2>
       </template>
-      <student-search @click-get-data="filterData"/>
+      <chapter-search @click-get-data="filterData"/>
     </el-drawer>
 
     <!-- 表格 -->
@@ -48,22 +48,15 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="name" label="姓名" width="150" align="center"/>
-      <el-table-column prop="sex" label="性别" width="100" align="center">
-        <template slot-scope="scope">
-          <el-tag v-if="scope.row.sex === 1">男</el-tag>
-          <el-tag v-if="scope.row.sex === 2">女</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="birth" label="出生年月日" width="200" align="center"/>
-      <el-table-column prop="graduateDate" label="毕业日期" width="200" align="center"/>
-      <el-table-column prop="clazz" label="班级" width="150" align="center"/>
-      <el-table-column prop="mobile" label="手机号" width="150" align="center"/>
+      <el-table-column prop="title" label="章节名字" width="100" align="center"/>
+      <el-table-column prop="courseId" label="课程id" width="100" align="center"/>
+      <el-table-column prop="parentId" label="章节id" width="100" align="center"/>
+      <el-table-column prop="sort" label="排序,数字越大越重要" width="100" align="center"/>
 
       <el-table-column label="操作" width="250" fixed="right" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="info" @click="showDialog(scope.row.id)">查看</el-button>
-          <router-link :to="'/student/edit/'+scope.row.id">
+          <router-link :to="'/chapter/edit/'+scope.row.id">
             <el-button type="primary" size="mini" icon="el-icon-edit">修改</el-button>
           </router-link>
           <el-button
@@ -88,20 +81,20 @@
 
     <!--弹出窗口，用于显示详细信息-->
     <el-dialog :visible.sync="dialogTableVisible" title="详细信息" width="400px" center>
-      <student-detail :student="student"/>
+      <chapter-detail :chapter="chapter"/>
     </el-dialog>
 
   </div>
 </template>
 
 <script>
-import studentApi from '@/api/person/student'
-import StudentSearch from '@/views/person/student/StudentSearch'
-import StudentDetail from '@/views/person/student/StudentDetail'
+import chapterApi from '@/api/edu/chapter'
+import ChapterSearch from '@/views/edu/chapter/ChapterSearch'
+import ChapterDetail from '@/views/edu/chapter/ChapterDetail'
 
 export default {
 
-  components: { StudentDetail, StudentSearch },
+  components: { ChapterDetail, ChapterSearch },
 
   data() {
     return {
@@ -110,16 +103,10 @@ export default {
       page: 1, // 页码
       limit: 10, // 每页记录数
       searchObj: {
-        name: '',
-        sex: '',
-        birth: '',
-        graduateDate: '',
-        clazz: '',
-        departmentId: '',
-        mobile: '',
-        wxId: '',
-        avatar: '',
-        sign: ''
+        title: '',
+        courseId: '',
+        parentId: '',
+        sort: ''
       }, // 查询表单
       multipleSelection: [], // 批量删除选中的记录列表
       fileList: [],
@@ -127,18 +114,12 @@ export default {
       searchVisible: false,
       BASE_API: process.env.BASE_API,
       // 讲师对象
-      student: {
+      chapter: {
         id: '',
-        name: '',
-        sex: '',
-        birth: '',
-        graduateDate: '',
-        clazz: '',
-        departmentId: '',
-        mobile: '',
-        wxId: '',
-        avatar: '',
-        sign: ''
+        title: '',
+        courseId: '',
+        parentId: '',
+        sort: ''
       }
     }
   },
@@ -150,31 +131,29 @@ export default {
     // 显示详细信息弹窗
     showDialog(id) {
       this.dialogTableVisible = true
-      studentApi.getById(id).then(response => {
-        this.student = response.data.item
+      chapterApi.getById(id).then(response => {
+        this.chapter = response.data.item
       })
     },
     // 导入excel失败后调用
-    uploadError() {
-      this.fileList = []
+    uploadError(err) {
+      console.log('uploadError', err)
     },
     // 导入excel成功后调用
-    uploadSuccess() {
+    uploadSuccess(response) {
+      console.log('uploadSuccess', response)
       this.fileList = []
       this.getData()
     },
     // 调用api模块，加载  列表数据
     getData() {
-      console.log('getData>>>', this.searchObj)
-
-      studentApi.pageList(this.page, this.limit, this.searchObj).then(response => {
+      chapterApi.pageList(this.page, this.limit, this.searchObj).then(response => {
         this.list = response.data.list
         this.total = response.data.total
       })
     },
     filterData(data) {
-      console.log('filterData>>>', data)
-      studentApi.pageList(this.page, this.limit, data).then(response => {
+      chapterApi.pageList(this.page, this.limit, data).then(response => {
         this.list = response.data.list
         this.total = response.data.total
       })
@@ -206,7 +185,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        return studentApi.removeById(id)
+        return chapterApi.removeById(id)
       }).then(response => {
         // 刷新页面
         this.getData()
@@ -245,7 +224,7 @@ export default {
           idList.push(item.id)
         })
         // 调用api
-        return studentApi.batchRemove(idList)
+        return chapterApi.batchRemove(idList)
       }).then((response) => {
         this.getData()
         this.$message.success(response.message)

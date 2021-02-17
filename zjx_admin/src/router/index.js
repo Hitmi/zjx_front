@@ -118,17 +118,101 @@ export const constantRouterMap = [
         component: () => import('@/views/person/department/DepartmentForm'),
         meta: { title: '编辑部门' },
         hidden: true
-      },
-      {
-        path: '/department/detail/:id',
-        name: 'DepartmentDetail',
-        component: () => import('@/views/person/department/DepartmentDetail'),
-        meta: { title: '部门详情' },
-        hidden: true
       }
     ]
   },
 
+  // 教学管理
+  {
+    path: '/edu',
+    component: Layout,
+    redirect: '/course/index',
+    name: 'Edu',
+    meta: { title: '教学管理' },
+    children: [
+      {
+        path: '/course/index',
+        name: 'Course',
+        component: () => import('@/views/edu/course/Course'),
+        meta: { title: '课程管理' }
+      },
+      {
+        path: '/course/create',
+        name: 'CourseCreate',
+        component: () => import('@/views/edu/course/CourseForm'),
+        meta: { title: '添加课程' },
+        hidden: true
+      },
+      {
+        path: '/course/edit/:id',
+        name: 'CourseEdit',
+        component: () => import('@/views/edu/course/CourseForm'),
+        meta: { title: '编辑课程' },
+        hidden: true
+      },
+      {
+        path: '/course/detail/:id',
+        name: 'CourseDetail',
+        component: () => import('@/views/edu/course/CourseDetail'),
+        meta: { title: '课程详情' },
+        hidden: true
+      },
+      {
+        path: '/chapter/index',
+        name: 'Chapter',
+        component: () => import('@/views/edu/chapter/Chapter'),
+        meta: { title: '章节管理' }
+      },
+      {
+        path: '/chapter/create',
+        name: 'ChapterCreate',
+        component: () => import('@/views/edu/chapter/ChapterForm'),
+        meta: { title: '添加章节' },
+        hidden: true
+      },
+      {
+        path: '/chapter/edit/:id',
+        name: 'ChapterEdit',
+        component: () => import('@/views/edu/chapter/ChapterForm'),
+        meta: { title: '编辑章节' },
+        hidden: true
+      },
+      {
+        path: '/chapter/detail/:id',
+        name: 'ChapterDetail',
+        component: () => import('@/views/edu/chapter/ChapterDetail'),
+        meta: { title: '章节详情' },
+        hidden: true
+      },
+      {
+        path: '/video/index',
+        name: 'Video',
+        component: () => import('@/views/edu/video/Video'),
+        meta: { title: '视频管理' }
+      },
+      {
+        path: '/video/create',
+        name: 'VideoCreate',
+        component: () => import('@/views/edu/video/VideoForm'),
+        meta: { title: '添加视频' },
+        hidden: true
+      },
+      {
+        path: '/video/edit/:id',
+        name: 'VideoEdit',
+        component: () => import('@/views/edu/video/VideoForm'),
+        meta: { title: '编辑视频' },
+        hidden: true
+      },
+      {
+        path: '/video/detail/:id',
+        name: 'VideoDetail',
+        component: () => import('@/views/edu/video/VideoDetail'),
+        meta: { title: '视频详情' },
+        hidden: true
+      }
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 

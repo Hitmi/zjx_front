@@ -7,7 +7,15 @@
         style="width: 100px; height: 100px"/>
     </el-row>
     <el-row>
-      姓名：{{ teacher.name }}
+      <label>姓名：{{ teacher.name }}</label>
+    </el-row>
+    <el-row>
+      <label>性别：</label>
+      <label v-if="teacher.sex === 1">男</label>
+      <label v-if="teacher.sex === 2">女</label>
+    </el-row>
+    <el-row>
+      <label>出生年月日：{{ student.birth }}</label>
     </el-row>
   </div>
 </template>

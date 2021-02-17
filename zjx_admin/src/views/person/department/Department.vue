@@ -16,7 +16,7 @@
       </a>
       <el-upload
         :limit="1"
-        :file-list="file_list"
+        :file-list="fileList"
         :on-error="uploadError"
         :on-success="uploadSuccess"
         :action="BASE_API + '/admin/person/department/upload'"
@@ -34,7 +34,7 @@
       <template v-slot="title">
         <h2 style="color: #409EFF"><i class="el-icon-search" style="margin-bottom: 30px"/>数据过滤</h2>
       </template>
-      <department-search @click-get-data="getData"/>
+      <department-search @click-get-data="filterData"/>
     </el-drawer>
 
     <!-- 表格 -->
@@ -48,8 +48,8 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="name" label="部门名" width="100" align="center"/>
-      <el-table-column prop="parentId" label="父部门" width="100" align="center">
+      <el-table-column prop="name" label="部门名" width="150" align="center"/>
+      <el-table-column prop="parentId" label="父部门" width="150" align="center">
         <template slot-scope="scope">
           {{ departmentMap.get(scope.row.parentId) }}
         </template>
@@ -60,10 +60,8 @@
           <label v-if="scope.row.major === true">是</label>
         </template>
       </el-table-column>
-
-      <el-table-column label="操作" width="250" fixed="right" align="center">
+      <el-table-column label="操作" width="250" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="info" @click="showDialog(scope.row.id)">查看</el-button>
           <router-link :to="'/department/edit/'+scope.row.id">
             <el-button type="primary" size="mini" icon="el-icon-edit">修改</el-button>
           </router-link>
@@ -86,23 +84,16 @@
       layout="sizes, prev, pager, next, jumper, ->, total"
       @current-change="changeCurrentPage"
       @size-change="changePageSize"/>
-
-    <!--弹出窗口，用于显示详细信息-->
-    <el-dialog :visible.sync="dialogTableVisible" title="详细信息" width="400px" center>
-      <department-detail :department="department"/>
-    </el-dialog>
-
   </div>
 </template>
 
 <script>
 import departmentApi from '@/api/person/department'
 import DepartmentSearch from '@/views/person/department/DepartmentSearch'
-import DepartmentDetail from '@/views/person/department/DepartmentDetail'
 
 export default {
 
-  components: { DepartmentDetail, DepartmentSearch },
+  components: { DepartmentSearch },
 
   data() {
     return {
@@ -112,10 +103,11 @@ export default {
       limit: 10, // 每页记录数
       searchObj: {
         name: '',
+        parentId: '',
         major: ''
       }, // 查询表单
       multipleSelection: [], // 批量删除选中的记录列表
-      file_list: [],
+      fileList: [],
       dialogTableVisible: false,
       searchVisible: false,
       BASE_API: process.env.BASE_API,
@@ -132,28 +124,15 @@ export default {
   created() {
     this.getData()
   },
-  mounted() {
-    this.convertObj2Map()
-  },
   methods: {
-    // 转换部门对象为map
-    convertObj2Map() {
-    },
-    // 显示详细信息弹窗
-    showDialog(id) {
-      this.dialogTableVisible = true
-      departmentApi.getById(id).then(response => {
-        this.department = response.data.item
-      })
-    },
     // 导入excel失败后调用
-    uploadError(response) {
-      console.log('uploadError>>>', response)
+    uploadError() {
+      this.fileList = []
     },
     // 导入excel成功后调用
-    uploadSuccess(err) {
-      console.log('uploadSuccess>>>', err)
+    uploadSuccess() {
       this.fileList = []
+      this.getData()
     },
     // 调用api模块，加载  列表数据
     getData() {
@@ -161,7 +140,13 @@ export default {
         this.list = response.data.list
         this.total = response.data.total
         this.departmentMap = new Map(this.list.map((value, key) => [value.id, value.name]))
-        console.log('convertObj2Map>>>', this.departmentMap)
+      })
+    },
+    // 数据过滤查询
+    filterData(data) {
+      departmentApi.pageList(this.page, this.limit, data).then(response => {
+        this.list = response.data.list
+        this.total = response.data.total
       })
     },
     // 改编页码
@@ -186,7 +171,7 @@ export default {
     // 删除记录
     removeById(id) {
       // 询问是否删除
-      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -218,7 +203,7 @@ export default {
         return
       }
 
-      this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+      this.$confirm('此操作将永久批量删除数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

@@ -4,14 +4,14 @@
     <div style="margin-bottom: 10px">
 
       <el-button type="danger" size="mini" @click="batchRemove">批量删除</el-button>
-      <router-link :to="'/student/create'">
+      <router-link :to="'/course/create'">
         <el-button type="primary" size="mini" icon="el-icon-circle-plus-outline">添加</el-button>
       </router-link>
       <el-button type="primary" size="mini" icon="el-icon-search" @click="searchVisible = true">数据过滤</el-button>
-      <a :href="BASE_API + '/admin/person/student/export'">
+      <a :href="BASE_API + '/admin/edu/course/export'">
         <el-button size="mini" type="primary" icon="el-icon-download">下载数据</el-button>
       </a>
-      <a href="/static/excelTemplate/StudentList模板.xlsx">
+      <a href="/static/excelTemplate/CourseList模板.xlsx">
         <el-button size="mini" type="primary" icon="el-icon-document-copy">下载模板</el-button>
       </a>
       <el-upload
@@ -19,7 +19,7 @@
         :file-list="fileList"
         :on-error="uploadError"
         :on-success="uploadSuccess"
-        :action="BASE_API + '/admin/person/student/upload'"
+        :action="BASE_API + '/admin/edu/course/upload'"
         class="upload-demo"
         style="display:inline;">
         <el-button size="mini" type="primary" icon="el-icon-upload2">导入数据</el-button>
@@ -34,7 +34,7 @@
       <template v-slot="title">
         <h2 style="color: #409EFF"><i class="el-icon-search" style="margin-bottom: 30px"/>数据过滤</h2>
       </template>
-      <student-search @click-get-data="filterData"/>
+      <course-search @click-get-data="filterData"/>
     </el-drawer>
 
     <!-- 表格 -->
@@ -48,22 +48,20 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="name" label="姓名" width="150" align="center"/>
-      <el-table-column prop="sex" label="性别" width="100" align="center">
-        <template slot-scope="scope">
-          <el-tag v-if="scope.row.sex === 1">男</el-tag>
-          <el-tag v-if="scope.row.sex === 2">女</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="birth" label="出生年月日" width="200" align="center"/>
-      <el-table-column prop="graduateDate" label="毕业日期" width="200" align="center"/>
-      <el-table-column prop="clazz" label="班级" width="150" align="center"/>
-      <el-table-column prop="mobile" label="手机号" width="150" align="center"/>
+      <el-table-column prop="teacherId" label="课程主讲老师id" width="100" align="center"/>
+      <el-table-column prop="departmentId" label="课程所属部门id" width="100" align="center"/>
+      <el-table-column prop="title" label="课程名" width="100" align="center"/>
+      <el-table-column prop="lessonNum" label="课程总课时" width="100" align="center"/>
+      <el-table-column prop="credit" label="课程学分" width="100" align="center"/>
+      <el-table-column prop="descriptionId" label="课程简介id" width="100" align="center"/>
+      <el-table-column prop="cover" label="课程封面" width="100" align="center"/>
+      <el-table-column prop="status" label="课程状态 1：启用 2：禁用" width="100" align="center"/>
+      <el-table-column prop="version" label="乐观锁" width="100" align="center"/>
 
       <el-table-column label="操作" width="250" fixed="right" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="info" @click="showDialog(scope.row.id)">查看</el-button>
-          <router-link :to="'/student/edit/'+scope.row.id">
+          <router-link :to="'/course/edit/'+scope.row.id">
             <el-button type="primary" size="mini" icon="el-icon-edit">修改</el-button>
           </router-link>
           <el-button
@@ -88,20 +86,20 @@
 
     <!--弹出窗口，用于显示详细信息-->
     <el-dialog :visible.sync="dialogTableVisible" title="详细信息" width="400px" center>
-      <student-detail :student="student"/>
+      <course-detail :course="course"/>
     </el-dialog>
 
   </div>
 </template>
 
 <script>
-import studentApi from '@/api/person/student'
-import StudentSearch from '@/views/person/student/StudentSearch'
-import StudentDetail from '@/views/person/student/StudentDetail'
+import courseApi from '@/api/edu/course'
+import CourseSearch from '@/views/edu/course/CourseSearch'
+import CourseDetail from '@/views/edu/course/CourseDetail'
 
 export default {
 
-  components: { StudentDetail, StudentSearch },
+  components: { CourseDetail, CourseSearch },
 
   data() {
     return {
@@ -110,16 +108,15 @@ export default {
       page: 1, // 页码
       limit: 10, // 每页记录数
       searchObj: {
-        name: '',
-        sex: '',
-        birth: '',
-        graduateDate: '',
-        clazz: '',
+        teacherId: '',
         departmentId: '',
-        mobile: '',
-        wxId: '',
-        avatar: '',
-        sign: ''
+        title: '',
+        lessonNum: '',
+        credit: '',
+        descriptionId: '',
+        cover: '',
+        status: '',
+        version: ''
       }, // 查询表单
       multipleSelection: [], // 批量删除选中的记录列表
       fileList: [],
@@ -127,18 +124,17 @@ export default {
       searchVisible: false,
       BASE_API: process.env.BASE_API,
       // 讲师对象
-      student: {
+      course: {
         id: '',
-        name: '',
-        sex: '',
-        birth: '',
-        graduateDate: '',
-        clazz: '',
+        teacherId: '',
         departmentId: '',
-        mobile: '',
-        wxId: '',
-        avatar: '',
-        sign: ''
+        title: '',
+        lessonNum: '',
+        credit: '',
+        descriptionId: '',
+        cover: '',
+        status: '',
+        version: ''
       }
     }
   },
@@ -150,31 +146,29 @@ export default {
     // 显示详细信息弹窗
     showDialog(id) {
       this.dialogTableVisible = true
-      studentApi.getById(id).then(response => {
-        this.student = response.data.item
+      courseApi.getById(id).then(response => {
+        this.course = response.data.item
       })
     },
     // 导入excel失败后调用
-    uploadError() {
-      this.fileList = []
+    uploadError(err) {
+      console.log('uploadError', err)
     },
     // 导入excel成功后调用
-    uploadSuccess() {
+    uploadSuccess(response) {
+      console.log('uploadSuccess', response)
       this.fileList = []
       this.getData()
     },
     // 调用api模块，加载  列表数据
     getData() {
-      console.log('getData>>>', this.searchObj)
-
-      studentApi.pageList(this.page, this.limit, this.searchObj).then(response => {
+      courseApi.pageList(this.page, this.limit, this.searchObj).then(response => {
         this.list = response.data.list
         this.total = response.data.total
       })
     },
     filterData(data) {
-      console.log('filterData>>>', data)
-      studentApi.pageList(this.page, this.limit, data).then(response => {
+      courseApi.pageList(this.page, this.limit, data).then(response => {
         this.list = response.data.list
         this.total = response.data.total
       })
@@ -206,7 +200,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        return studentApi.removeById(id)
+        return courseApi.removeById(id)
       }).then(response => {
         // 刷新页面
         this.getData()
@@ -245,7 +239,7 @@ export default {
           idList.push(item.id)
         })
         // 调用api
-        return studentApi.batchRemove(idList)
+        return courseApi.batchRemove(idList)
       }).then((response) => {
         this.getData()
         this.$message.success(response.message)
