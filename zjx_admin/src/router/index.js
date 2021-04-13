@@ -10,17 +10,17 @@ Vue.use(Router)
 import Layout from '../views/layout/Layout'
 
 /**
-* hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
-* alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
-*                                if not set alwaysShow, only more than one route under the children
-*                                it will becomes nested mode, otherwise not show the root menu
-* redirect: noredirect           if `redirect:noredirect` will no redirect in the breadcrumb
-* name:'router-name'             the name is used by <keep-alive> (must set!!!)
-* meta : {
+ * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
+ * alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
+ *                                if not set alwaysShow, only more than one route under the children
+ *                                it will becomes nested mode, otherwise not show the root menu
+ * redirect: noredirect           if `redirect:noredirect` will no redirect in the breadcrumb
+ * name:'router-name'             the name is used by <keep-alive> (must set!!!)
+ * meta : {
     title: 'title'               the name show in submenu and breadcrumb (recommend set)
     icon: 'svg-name'             the icon show in the sidebar,
   }
-**/
+ **/
 // 所有权限通用路由表
 // 如首页和登录页和一些不用权限的公用页面
 export const constantRouterMap = [
@@ -121,7 +121,6 @@ export const constantRouterMap = [
       }
     ]
   },
-
   // 教学管理
   {
     path: '/edu',
@@ -158,58 +157,33 @@ export const constantRouterMap = [
         hidden: true
       },
       {
-        path: '/chapter/index',
-        name: 'Chapter',
-        component: () => import('@/views/edu/chapter/Chapter'),
-        meta: { title: '章节管理' }
-      },
-      {
-        path: '/chapter/create',
-        name: 'ChapterCreate',
-        component: () => import('@/views/edu/chapter/ChapterForm'),
-        meta: { title: '添加章节' },
-        hidden: true
-      },
-      {
         path: '/chapter/edit/:id',
         name: 'ChapterEdit',
-        component: () => import('@/views/edu/chapter/ChapterForm'),
+        component: () => import('@/views/edu/course/CourseForm'),
         meta: { title: '编辑章节' },
         hidden: true
+      }
+    ]
+  },
+  // 选课中心
+  {
+    path: '/trade',
+    component: Layout,
+    redirect: '/takeCourse/index',
+    name: 'Trade',
+    meta: { title: '选课中心' },
+    children: [
+      {
+        path: '/takeCourse/index',
+        name: 'TakeCourse',
+        component: () => import('@/views/trade/course/Course'),
+        meta: { title: '选课中心' }
       },
       {
-        path: '/chapter/detail/:id',
-        name: 'ChapterDetail',
-        component: () => import('@/views/edu/chapter/ChapterDetail'),
-        meta: { title: '章节详情' },
-        hidden: true
-      },
-      {
-        path: '/video/index',
-        name: 'Video',
-        component: () => import('@/views/edu/video/Video'),
-        meta: { title: '视频管理' }
-      },
-      {
-        path: '/video/create',
-        name: 'VideoCreate',
-        component: () => import('@/views/edu/video/VideoForm'),
-        meta: { title: '添加视频' },
-        hidden: true
-      },
-      {
-        path: '/video/edit/:id',
-        name: 'VideoEdit',
-        component: () => import('@/views/edu/video/VideoForm'),
-        meta: { title: '编辑视频' },
-        hidden: true
-      },
-      {
-        path: '/video/detail/:id',
-        name: 'VideoDetail',
-        component: () => import('@/views/edu/video/VideoDetail'),
-        meta: { title: '视频详情' },
-        hidden: true
+        path: '/order/index',
+        name: 'Order',
+        component: () => import('@/views/trade/order/Order'),
+        meta: { title: '订单列表' }
       }
     ]
   },
