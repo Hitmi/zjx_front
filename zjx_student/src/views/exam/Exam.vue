@@ -11,13 +11,19 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="cover" label="封面" width="400" align="center">
+      <el-table-column prop="name" label="姓名" width="150" align="center"/>
+      <el-table-column prop="sex" label="性别" width="100" align="center">
         <template slot-scope="scope">
-          <el-image :src="scope.row.cover"/>
+          <el-tag v-if="scope.row.sex === 1">男</el-tag>
+          <el-tag v-if="scope.row.sex === 2">女</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="title" label="课程名" width="200" align="center"/>
-      <el-table-column label="操作" width="200" fixed="right" align="center">
+      <el-table-column prop="birth" label="出生年月日" width="200" align="center"/>
+      <el-table-column prop="graduateDate" label="毕业日期" width="200" align="center"/>
+      <el-table-column prop="clazz" label="班级" width="150" align="center"/>
+      <el-table-column prop="mobile" label="手机号" width="150" align="center"/>
+
+      <el-table-column label="操作" width="250" fixed="right" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="info" @click="showDialog(scope.row.id)">查看</el-button>
         </template>
@@ -38,13 +44,10 @@
 </template>
 
 <script>
-import studentCourseApi from '@/api/edu/studentcourse'
-import CourseSearch from '@/views/edu/course/CourseSearch'
-import CourseDetail from '@/views/edu/course/CourseDetail'
+import infoApi from '@/api/person/department'
 
 export default {
-
-  components: { CourseDetail, CourseSearch },
+  name: 'Exam',
 
   data() {
     return {
@@ -52,7 +55,7 @@ export default {
       total: 0, // 总记录数
       page: 1, // 页码
       limit: 10, // 每页记录数
-      dialogTableVisible: false
+      BASE_API: process.env.BASE_API
     }
   },
   created() {
@@ -63,13 +66,22 @@ export default {
     // 显示详细信息弹窗
     showDialog(id) {
       this.dialogTableVisible = true
-      studentCourseApi.getById(id).then(response => {
-        this.course = response.data.item
+      infoApi.getById(id).then(response => {
+        this.student = response.data.item
       })
     },
     // 调用api模块，加载  列表数据
     getData() {
-      studentCourseApi.pageList(this.page, this.limit).then(response => {
+      console.log('getData>>>', this.searchObj)
+
+      infoApi.pageList(this.page, this.limit, this.searchObj).then(response => {
+        this.list = response.data.list
+        this.total = response.data.total
+      })
+    },
+    filterData(data) {
+      console.log('filterData>>>', data)
+      infoApi.pageList(this.page, this.limit, data).then(response => {
         this.list = response.data.list
         this.total = response.data.total
       })
@@ -84,6 +96,12 @@ export default {
     changePageSize(size) {
       console.log('changePageSize:' + size)
       this.limit = size
+      this.getData()
+    },
+
+    // 重置表单
+    resetData() {
+      this.searchObj = {}
       this.getData()
     }
   }

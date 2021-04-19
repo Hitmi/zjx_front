@@ -35,12 +35,12 @@
 </template>
 
 <script>
-import studentApi from '@/api/person/student'
+import infoApi from '@/api/person/department'
 
 export default {
-  name: 'StudentDetail',
-  props: {// 讲师对象
-    student: {
+  name: 'InfoDetail',
+  props: {// 资料信息
+    info: {
       type: Object,
       default: function() {
         return {
@@ -69,8 +69,8 @@ export default {
   methods: {
     // 根据id查询数据
     getDataById(id) {
-      studentApi.getById(id).then(response => {
-        this.student = response.data.item
+      infoApi.getById(id).then(response => {
+        this.info = response.data.item
       })
     }
   }

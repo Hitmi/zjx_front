@@ -42,14 +42,14 @@ export const constantRouterMap = [
   {
     path: '/person',
     component: Layout,
-    redirect: '/student/index',
+    redirect: '/info/index',
     name: 'Person',
     meta: { title: '信息公开' },
     children: [
       {
-        path: '/student/index',
+        path: '/info/index',
         name: 'Student',
-        component: () => import('@/views/person/student/Student'),
+        component: () => import('@/views/person/info/Info'),
         meta: { title: '信息列表' }
       }
     ]
@@ -89,7 +89,7 @@ export const constantRouterMap = [
       {
         path: '/exam/index',
         name: 'ExamIndex',
-        component: () => import('@/views/person/student/Student'),
+        component: () => import('@/views/exam/Exam'),
         meta: { title: '考试列表' }
       }
     ]
@@ -100,27 +100,28 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/trade/index',
     name: 'Trade',
-    meta: { title: '选课中心' },
+    meta: { title: '选课' },
     children: [
       {
         path: '/trade/index',
         name: 'TradeIndex',
-        component: () => import('@/views/person/student/Student'),
-        meta: { title: '课程列表' }
+        component: () => import('@/views/trade/course/Course'),
+        meta: { title: '选课中心' }
       }
     ]
   },
   // 个人资料设置
   {
-    path: '/info',
+    path: '/setting',
     component: Layout,
-    name: 'Info',
-    meta: { title: '个人设置' },
+    name: 'Setting',
+    redirect: '/setting/index',
+    meta: { title: '设置' },
     children: [
       {
-        path: '/info/index',
-        name: 'Info',
-        component: () => import('@/views/info/Info'),
+        path: '/setting/index',
+        name: 'Setting',
+        component: () => import('@/views/setting/Setting'),
         meta: { title: '个人设置' }
       }
     ]

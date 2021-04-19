@@ -1,23 +1,29 @@
 <template>
   <div class="app-container">
-    <!-- 表格 -->
-    <el-table :data="list" border stripe @selection-change="handleSelectionChange">
-      <el-table-column type="selection"/>
-      <el-table-column
-        label="#"
-        width="50">
-        <template slot-scope="scope">
-          {{ (page - 1) * limit + scope.$index + 1 }}
-        </template>
-      </el-table-column>
+    <!--工具按钮-->
+    <div style="margin-bottom: 10px">
+      <a :href="BASE_API + '/admin/person/info/export'">
+        <el-button size="mini" type="primary" icon="el-icon-download">下载数据</el-button>
+      </a>
+    </div>
 
-      <el-table-column prop="cover" label="封面" width="400" align="center">
+    <!-- 表格 -->
+    <el-table :data="list" border stripe>
+      <el-table-column prop="avatar" label="头像" width="150" align="center">
         <template slot-scope="scope">
-          <el-image :src="scope.row.cover"/>
+          <el-tag v-if="scope.row.sex === 1">男</el-tag>
+          <el-image :src="scope.row.avatar" />
         </template>
       </el-table-column>
-      <el-table-column prop="title" label="课程名" width="200" align="center"/>
-      <el-table-column label="操作" width="200" fixed="right" align="center">
+      <el-table-column prop="name" label="姓名" width="150" align="center"/>
+      <el-table-column prop="sex" label="性别" width="100" align="center">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.sex === 1">男</el-tag>
+          <el-tag v-if="scope.row.sex === 0">女</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="intro" label="个人介绍" width="750" align="center"/>
+      <el-table-column label="操作" width="150" fixed="right" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="info" @click="showDialog(scope.row.id)">查看</el-button>
         </template>
@@ -34,17 +40,22 @@
       layout="sizes, prev, pager, next, jumper, ->, total"
       @current-change="changeCurrentPage"
       @size-change="changePageSize"/>
+
+    <!--弹出窗口，用于显示详细信息-->
+    <el-dialog :visible.sync="dialogTableVisible" title="详细信息" width="400px" center>
+      <info-detail :student="student"/>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
-import studentCourseApi from '@/api/edu/studentcourse'
-import CourseSearch from '@/views/edu/course/CourseSearch'
-import CourseDetail from '@/views/edu/course/CourseDetail'
+import departmentApi from '@/api/person/department'
+import InfoDetail from '@/views/person/info/InfoDetail'
 
 export default {
 
-  components: { CourseDetail, CourseSearch },
+  components: { InfoDetail },
 
   data() {
     return {
@@ -52,7 +63,8 @@ export default {
       total: 0, // 总记录数
       page: 1, // 页码
       limit: 10, // 每页记录数
-      dialogTableVisible: false
+      dialogTableVisible: false,
+      BASE_API: process.env.BASE_API
     }
   },
   created() {
@@ -63,13 +75,15 @@ export default {
     // 显示详细信息弹窗
     showDialog(id) {
       this.dialogTableVisible = true
-      studentCourseApi.getById(id).then(response => {
-        this.course = response.data.item
+      departmentApi.getById(id).then(response => {
+        this.student = response.data.item
       })
     },
     // 调用api模块，加载  列表数据
     getData() {
-      studentCourseApi.pageList(this.page, this.limit).then(response => {
+      console.log('getData>>>', this.searchObj)
+
+      departmentApi.getDatumList(this.page, this.limit).then(response => {
         this.list = response.data.list
         this.total = response.data.total
       })
