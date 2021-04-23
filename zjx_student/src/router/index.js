@@ -70,10 +70,17 @@ export const constantRouterMap = [
         meta: { title: '课程列表' }
       },
       {
-        path: '/course/detail/:id',
-        name: 'CourseDetail',
-        component: () => import('@/views/edu/course/CourseDetail'),
-        meta: { title: '课程详情' },
+        path: '/chapter/view/:id',
+        name: 'ChapterEdit',
+        component: () => import('@/views/edu/chapter/Chapter'),
+        meta: { title: '课程章节' },
+        hidden: true
+      },
+      {
+        path: '/video/view/:id',
+        name: 'VideoView',
+        component: () => import('@/views/edu/video/Video'),
+        meta: { title: '观看课程' },
         hidden: true
       }
     ]

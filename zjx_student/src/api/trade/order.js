@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 /**
- * Chapter-
+ * chapter-
  */
 export default{
 
@@ -14,8 +14,17 @@ export default{
   pageList(page, limit, searchObj) {
     return request({
       url: `/api/trade/order/listPage/${page}/${limit}`,
-      method: 'get',
-      params: searchObj
+      method: 'get'
+    })
+  },
+  /**
+   * 移除选课信息(订单)
+   * @param id 订单id
+   */
+  remove(id) {
+    return request({
+      url: `/api/trade/order/remove/${id}`,
+      method: 'delete'
     })
   }
 

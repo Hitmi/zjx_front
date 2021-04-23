@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 /**
- * Chapter-
+ * chapter-
  */
 export default{
 
