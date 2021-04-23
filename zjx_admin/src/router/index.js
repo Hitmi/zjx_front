@@ -1,13 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+/* Layout */
+import Layout from '../views/layout/Layout'
 
 // in development-env not use lazy-loading, because lazy-loading too many pages will cause webpack hot update too slow. so only in production use lazy-loading;
 // detail: https://panjiachen.github.io/vue-element-admin-site/#/lazy-loading
 
 Vue.use(Router)
-
-/* Layout */
-import Layout from '../views/layout/Layout'
 
 /**
  * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
@@ -183,7 +182,50 @@ export const constantRouterMap = [
         path: '/order/index',
         name: 'Order',
         component: () => import('@/views/trade/order/Order'),
-        meta: { title: '订单列表' }
+        meta: { title: '已选课程' }
+      }
+    ]
+  },
+  // 考试管理
+  {
+    path: '/exam',
+    component: Layout,
+    redirect: '/paper/index',
+    name: 'Paper',
+    meta: { title: '试卷管理' },
+    children: [
+      {
+        path: '/paper/index',
+        name: 'PaperIndex',
+        component: () => import('@/views/exam/paper/Paper'),
+        meta: { title: '试卷列表' }
+      },
+      {
+        path: '/paper/create',
+        name: 'PaperCreate',
+        component: () => import('@/views/exam/paper/PaperForm'),
+        meta: { title: '添加试卷' },
+        hidden: true
+      },
+      {
+        path: '/paper/edit/:id',
+        name: 'PaperEdit',
+        component: () => import('@/views/exam/paper/PaperForm'),
+        meta: { title: '编辑试卷' },
+        hidden: true
+      },
+      {
+        path: '/paper/detail/:id',
+        name: 'PaperDetail',
+        component: () => import('@/views/exam/paper/PaperDetail'),
+        meta: { title: '教师试卷' },
+        hidden: true
+      },
+      {
+        path: '/grade/index',
+        name: 'Grade',
+        component: () => import('@/views/exam/grade/Grade'),
+        meta: { title: '成绩管理' }
       }
     ]
   },
