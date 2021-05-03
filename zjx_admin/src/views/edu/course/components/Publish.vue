@@ -22,8 +22,6 @@
 
 <script>
 import courseApi from '@/api/edu/course'
-import departmentApi from '@/api/person/department'
-import teacherApi from '@/api/person/teacher'
 
 export default {
 
@@ -57,25 +55,10 @@ export default {
         this.coursePublish.title = response.data.item.title
         this.coursePublish.lessonNum = response.data.item.lessonNum
         this.coursePublish.credit = response.data.item.credit
-        this.getTeacherName(this.course.teacherId)
-        this.getDepartmentName(this.course.departmentId)
+        this.coursePublish.teacherName = response.data.item.teacher
+        this.coursePublish.departmentTitle = response.data.item.department
       })
     },
-
-    // 获取教师信息
-    getTeacherName(id) {
-      teacherApi.getById(id).then(response => {
-        console.log('getTeacherName>>>', response.data)
-        this.coursePublish.teacherName = response.data.item.name
-      })
-    },
-    // 获取部门信息
-    getDepartmentName(id) {
-      departmentApi.getById(id).then(response => {
-        this.coursePublish.departmentTitle = response.data.item.name
-      })
-    },
-
     // 上一步
     prev() {
       this.$parent.active = 1
