@@ -4,6 +4,14 @@
     <el-form>
       <el-form-item>
         <el-col :span="3">
+          <label style="line-height:2rem;width: 120px;">工号：</label>
+        </el-col>
+        <el-col :span="11">
+          <el-input v-model="searchData.username" placeholder="工号" size="medium"/>
+        </el-col>
+      </el-form-item>
+      <el-form-item>
+        <el-col :span="3">
           <label style="line-height:2rem;width: 120px;">姓名：</label>
         </el-col>
         <el-col :span="11">
@@ -22,21 +30,6 @@
             <el-option value="3" label="讲师"/>
             <el-option value="4" label="工程师"/>
             <el-option value="5" label="高级工程师"/>
-          </el-select>
-        </el-col>
-      </el-form-item>
-
-      <el-form-item>
-        <el-col :span="3">
-          <label style="line-height:2rem;width: 120px;">部门：</label>
-        </el-col>
-        <el-col :span="11">
-          <el-select v-model="searchData.departmentId" placeholder="部门">
-            <el-option
-              v-for="item in departmentList"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"/>
           </el-select>
         </el-col>
       </el-form-item>

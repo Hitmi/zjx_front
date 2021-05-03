@@ -15,12 +15,13 @@
           <i v-else class="el-icon-plus avatar-uploader-icon"/>
         </el-upload>
       </el-form-item>
+      <el-form-item label="教师工号">
+        <el-input v-model="teacher.username"/>
+      </el-form-item>
       <el-form-item label="教师姓名">
         <el-input v-model="teacher.name"/>
       </el-form-item>
-      <el-form-item label="账号">
-        <el-input v-model="teacher.username"/>
-      </el-form-item>
+
       <el-form-item label="密码">
         <el-input v-model="teacher.password" type="password"/>
       </el-form-item>
@@ -28,7 +29,7 @@
       <el-form-item label="性别">
         <el-select v-model="teacher.sex">
           <el-option :value="1" label="男"/>
-          <el-option :value="2" label="女"/>
+          <el-option :value="0" label="女"/>
         </el-select>
       </el-form-item>
       <!--出生年月日-->

@@ -38,26 +38,19 @@ export const constantRouterMap = [
       component: () => import('@/views/dashboard/index')
     }]
   },
-  // 学生信息
+  // 信息公开：学生和教师信息
   {
     path: '/person',
     component: Layout,
-    redirect: '/student/index',
+    redirect: '/info/index',
     name: 'Person',
-    meta: { title: '人员管理' },
+    meta: { title: '信息公开' },
     children: [
       {
-        path: '/student/index',
-        name: 'Student',
-        component: () => import('@/views/person/student/Student'),
-        meta: { title: '学生管理' }
-      },
-      {
-        path: '/student/detail/:id',
-        name: 'StudentDetail',
-        component: () => import('@/views/person/student/StudentDetail'),
-        meta: { title: '学生详情' },
-        hidden: true
+        path: '/info/index',
+        name: 'Info',
+        component: () => import('@/views/person/info/Info'),
+        meta: { title: '信息公开' }
       }
     ]
   },
@@ -106,33 +99,17 @@ export const constantRouterMap = [
       }
     ]
   },
-  // 考试管理
-  {
-    path: '/exam',
-    component: Layout,
-    redirect: '/exam/index',
-    name: 'Exam',
-    meta: { title: '考试管理' },
-    children: [
-      {
-        path: '/exam/index',
-        name: 'ExamIndex',
-        component: () => import('@/views/person/student/Student'),
-        meta: { title: '考试管理' }
-      }
-    ]
-  },
   // 个人资料设置
   {
-    path: '/info',
+    path: '/setting',
     component: Layout,
-    name: 'Info',
-    meta: { title: '个人设置' },
+    name: 'Setting',
+    meta: { title: '个人中心' },
     children: [
       {
-        path: '/info/index',
-        name: 'Info',
-        component: () => import('@/views/info/Info'),
+        path: '/setting/index',
+        name: 'SettingIndex',
+        component: () => import('@/views/setting/Setting'),
         meta: { title: '个人设置' }
       }
     ]

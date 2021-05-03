@@ -5,7 +5,7 @@
       学生姓名：{{ student.name }}
     </el-row>
     <el-row>
-      性别 1：男   2：女：{{ student.sex }}
+      性别 1：男 0：女：{{ student.sex }}
     </el-row>
     <el-row>
       出生年月日：{{ student.birth }}
@@ -63,7 +63,7 @@ export default {
     return {
     }
   },
-  created() {
+  mounted() {
     this.getDataById(this.$route.params.id)
   },
   methods: {
@@ -71,7 +71,11 @@ export default {
     getDataById(id) {
       studentApi.getById(id).then(response => {
         this.student = response.data.item
-      })
+      }).catch(
+        error => {
+          console.log(error)
+        }
+      )
     }
   }
 }

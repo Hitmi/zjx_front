@@ -15,8 +15,12 @@
       <label v-if="teacher.sex === 2">女</label>
     </el-row>
     <el-row>
-      <label>出生年月日：{{ student.birth }}</label>
+      <label>出生年月日：{{ teacher.birth }}</label>
     </el-row>
+    <el-row>
+      <label>{{ teacher }}</label>
+    </el-row>
+
   </div>
 </template>
 
@@ -32,6 +36,7 @@ export default {
       default: function() {
         return {
           id: '',
+          username: '',
           name: '',
           sex: 1,
           birth: '',
@@ -45,11 +50,12 @@ export default {
   },
   data() {
     return {
-      departmentList: [] // 部门列表
+      departmentList: [], // 部门列表
+      departmentName: ''
     }
   },
   created() {
-    this.getDataById(this.$route.params.id)
+    // this.getDepartmentById(this.teacher.departmentId)
   },
   methods: {
     // 获取部门信息
@@ -62,6 +68,12 @@ export default {
     getDataById(id) {
       teacherApi.getById(id).then(response => {
         this.teacher = response.data.item
+      })
+    },
+    // 根据部门id查询部门信息
+    getDepartmentById(id) {
+      departmentApi.getById(id).then(response => {
+        this.departmentName = response.data.item
       })
     }
   }

@@ -31,9 +31,9 @@ export default {
       id: 'J_prismPlayer',
       width: '40%',
       // 支持播放地址播放,此播放优先级最高
-      // source: 'http://zaijiaxue.codeyi.cn/sv/2c47bac7-178efb29fb3/2c47bac7-178efb29fb3.mp4'
-      vid: this.vid,
-      playauth: this.playauth,
+      source: 'http://zaijiaxue.codeyi.cn/sv/13cffdc6-178f9f6a30e/13cffdc6-178f9f6a30e.mp4',
+      // vid: this.vid,
+      // playauth: this.playauth,
       // 当播放私有加密流时需要设置
       encryptType: 1
     }, function(player) {

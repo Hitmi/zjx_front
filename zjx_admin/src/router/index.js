@@ -186,49 +186,6 @@ export const constantRouterMap = [
       }
     ]
   },
-  // 考试管理
-  {
-    path: '/exam',
-    component: Layout,
-    redirect: '/paper/index',
-    name: 'Paper',
-    meta: { title: '试卷管理' },
-    children: [
-      {
-        path: '/paper/index',
-        name: 'PaperIndex',
-        component: () => import('@/views/exam/paper/Paper'),
-        meta: { title: '试卷列表' }
-      },
-      {
-        path: '/paper/create',
-        name: 'PaperCreate',
-        component: () => import('@/views/exam/paper/PaperForm'),
-        meta: { title: '添加试卷' },
-        hidden: true
-      },
-      {
-        path: '/paper/edit/:id',
-        name: 'PaperEdit',
-        component: () => import('@/views/exam/paper/PaperForm'),
-        meta: { title: '编辑试卷' },
-        hidden: true
-      },
-      {
-        path: '/paper/detail/:id',
-        name: 'PaperDetail',
-        component: () => import('@/views/exam/paper/PaperDetail'),
-        meta: { title: '教师试卷' },
-        hidden: true
-      },
-      {
-        path: '/grade/index',
-        name: 'Grade',
-        component: () => import('@/views/exam/grade/Grade'),
-        meta: { title: '成绩管理' }
-      }
-    ]
-  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 

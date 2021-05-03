@@ -48,13 +48,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="name" label="部门名" width="150" align="center"/>
-      <el-table-column prop="parentId" label="父部门" width="150" align="center">
+      <el-table-column prop="name" label="部门名" width="300" align="center"/>
+      <el-table-column prop="parentId" label="父部门" width="300" align="center">
         <template slot-scope="scope">
           {{ departmentMap.get(scope.row.parentId) }}
         </template>
       </el-table-column>
-      <el-table-column prop="major" label="是否为某学科专业" width="100" align="center">
+      <el-table-column prop="major" label="是否为某学科专业" width="300" align="center">
         <template slot-scope="scope">
           <label v-if="scope.row.major === false">不是</label>
           <label v-if="scope.row.major === true">是</label>

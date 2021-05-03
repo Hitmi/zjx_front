@@ -53,7 +53,12 @@
       <el-table-column prop="title" label="课程名" width="100" align="center"/>
       <el-table-column prop="lessonNum" label="课程总课时" width="100" align="center"/>
       <el-table-column prop="credit" label="课程学分" width="100" align="center"/>
-      <el-table-column prop="status" label="课程状态 1：启用 2：禁用" width="100" align="center"/>
+      <el-table-column prop="status" label="课程状态" width="100" align="center">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.status === 1">启用</el-tag>
+          <el-tag v-if="scope.row.status === 2">禁用</el-tag>
+        </template>
+      </el-table-column>
 
       <el-table-column label="操作" width="400" fixed="right" align="center">
         <template slot-scope="scope">

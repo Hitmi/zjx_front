@@ -4,6 +4,14 @@
     <el-form>
       <el-form-item>
         <el-col :span="7">
+          <label style="line-height:2rem;width: 120px;">学生学号：</label>
+        </el-col>
+        <el-col :span="11">
+          <el-input v-model="searchData.username" placeholder="学生学号" size="medium"/>
+        </el-col>
+      </el-form-item>
+      <el-form-item>
+        <el-col :span="7">
           <label style="line-height:2rem;width: 120px;">学生姓名：</label>
         </el-col>
         <el-col :span="11">
@@ -12,29 +20,13 @@
       </el-form-item>
       <el-form-item>
         <el-col :span="7">
-          <label style="line-height:2rem;width: 120px;">性别</label>
+          <label style="line-height:2rem;width: 120px;">性别：</label>
         </el-col>
         <el-col :span="11">
           <el-select v-model="searchData.sex" placeholder="性别">
             <el-option :value="1" label="男"/>
             <el-option :value="2" label="女"/>
           </el-select>
-        </el-col>
-      </el-form-item>
-      <el-form-item>
-        <el-col :span="7">
-          <label style="line-height:2rem;width: 120px;">毕业日期：</label>
-        </el-col>
-        <el-col :span="11">
-          <el-input v-model="searchData.graduateDate" placeholder="毕业日期" size="medium"/>
-        </el-col>
-      </el-form-item>
-      <el-form-item>
-        <el-col :span="7">
-          <label style="line-height:2rem;width: 120px;">班级：</label>
-        </el-col>
-        <el-col :span="11">
-          <el-input v-model="searchData.clazz" placeholder="班级" size="medium"/>
         </el-col>
       </el-form-item>
       <el-form-item>

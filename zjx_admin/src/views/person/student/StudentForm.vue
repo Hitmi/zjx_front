@@ -19,7 +19,7 @@
         <el-input v-model="student.name"/>
       </el-form-item>
       <!--账号-->
-      <el-form-item label="账号">
+      <el-form-item label="学生学号">
         <el-input v-model="student.username"/>
       </el-form-item>
       <!--密码-->
@@ -30,7 +30,7 @@
       <el-form-item label="性别">
         <el-select v-model="student.sex">
           <el-option :value="1" label="男"/>
-          <el-option :value="2" label="女"/>
+          <el-option :value="0" label="女"/>
         </el-select>
       </el-form-item>
       <!--出生年月日-->
@@ -40,10 +40,6 @@
       <!--毕业日期-->
       <el-form-item label="毕业日期">
         <el-date-picker v-model="student.graduateDate" value-format="yyyy-MM-dd"/>
-      </el-form-item>
-      <!--班级-->
-      <el-form-item label="班级">
-        <el-input v-model="student.clazz"/>
       </el-form-item>
       <!--部门id-->
       <el-form-item label="所属部门">
@@ -57,7 +53,11 @@
       </el-form-item>
       <!--手机号-->
       <el-form-item label="手机号">
-        <el-input v-model="student.mobile"/>
+        <el-input v-model="student.mobile" placeholder="请输入内容"/>
+      </el-form-item>
+      <!--个性签名-->
+      <el-form-item label="个性签名">
+        <el-input v-model="student.sign" :rows="10" type="textarea"/>
       </el-form-item>
       <el-form-item>
         <el-button :disabled="saveBtnDisabled" type="primary" @click="saveOrUpdate()">保存</el-button>

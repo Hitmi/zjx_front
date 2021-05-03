@@ -47,30 +47,33 @@
           {{ (page - 1) * limit + scope.$index + 1 }}
         </template>
       </el-table-column>
+      <el-table-column prop="username" label="学号" width="200" align="center"/>
 
-      <el-table-column prop="name" label="姓名" width="150" align="center"/>
+      <el-table-column prop="name" label="姓名" width="100" align="center"/>
       <el-table-column prop="sex" label="性别" width="100" align="center">
         <template slot-scope="scope">
+          <el-tag v-if="scope.row.sex === 0">女</el-tag>
           <el-tag v-if="scope.row.sex === 1">男</el-tag>
-          <el-tag v-if="scope.row.sex === 2">女</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="birth" label="出生年月日" width="200" align="center"/>
       <el-table-column prop="graduateDate" label="毕业日期" width="200" align="center"/>
-      <el-table-column prop="clazz" label="班级" width="150" align="center"/>
-      <el-table-column prop="mobile" label="手机号" width="150" align="center"/>
-
-      <el-table-column label="操作" width="250" fixed="right" align="center">
+      <el-table-column prop="sex" label="账号状态" width="150" align="center">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.disabled === 0">启用</el-tag>
+          <el-tag v-if="scope.row.disabled === 1">禁用</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="350" fixed="right" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="info" @click="showDialog(scope.row.id)">查看</el-button>
-          <router-link :to="'/student/edit/'+scope.row.id">
-            <el-button type="primary" size="mini" icon="el-icon-edit">修改</el-button>
-          </router-link>
           <el-button
             size="mini"
             type="danger"
             @click="removeById(scope.row.id)">删除
           </el-button>
+          <el-button size="mini" type="danger" @click="changeState(scope.row.id)">启/禁用</el-button>
+          <el-button size="mini" type="danger" @click="resetPassword(scope.row.id)">重置密码</el-button>
+
         </template>
       </el-table-column>
     </el-table>
@@ -147,6 +150,26 @@ export default {
   },
 
   methods: {
+    // 更改学生状态
+    changeState(id) {
+      studentApi.changeState(id).then(response => {
+        this.$message({
+          message: response.message,
+          type: 'success'
+        })
+      })
+      this.getData()
+    },
+    // 重置学生密码
+    resetPassword(id) {
+      studentApi.resetPassword(id).then(response => {
+        this.$message({
+          message: response.message,
+          type: 'success'
+        })
+      })
+      this.getData()
+    },
     // 显示详细信息弹窗
     showDialog(id) {
       this.dialogTableVisible = true

@@ -66,17 +66,26 @@ export default{
   },
 
   /**
-   * 更新指定id的数据
+   * 重置指定id的学生账号密码
    * @param teacher 更新后的数据
    */
-  updateById(student) {
+  resetPassword(id) {
     return request({
-      url: `/admin/person/student/update`,
-      method: 'put',
-      data: student
+      url: `/admin/person/student/resetPassword/${id}`,
+      method: 'put'
     })
   },
 
+  /**
+   * 禁用指定id的学生账号
+   * @param teacher 更新后的数据
+   */
+  changeState(id) {
+    return request({
+      url: `/admin/person/student/changeState/${id}`,
+      method: 'put'
+    })
+  },
   /**
    * 批量删除
    * @param idList 要删除的数据的id数组

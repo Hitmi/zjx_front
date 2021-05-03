@@ -48,7 +48,7 @@ export const constantRouterMap = [
     children: [
       {
         path: '/info/index',
-        name: 'Student',
+        name: 'Info',
         component: () => import('@/views/person/info/Info'),
         meta: { title: '信息列表' }
       }
@@ -82,22 +82,6 @@ export const constantRouterMap = [
         component: () => import('@/views/edu/video/Video'),
         meta: { title: '观看课程' },
         hidden: true
-      }
-    ]
-  },
-  // 考试中心
-  {
-    path: '/exam',
-    component: Layout,
-    redirect: '/exam/index',
-    name: 'Exam',
-    meta: { title: '考试中心' },
-    children: [
-      {
-        path: '/exam/index',
-        name: 'ExamIndex',
-        component: () => import('@/views/exam/Exam'),
-        meta: { title: '考试列表' }
       }
     ]
   },

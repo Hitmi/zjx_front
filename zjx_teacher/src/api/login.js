@@ -1,26 +1,23 @@
 import request from '@/utils/request'
 
 export default {
-  login(username, password) {
+  login(loginForm) {
     return request({
-      url: '/admin/person/user/login',
+      url: '/admin/person/login/login',
       method: 'post',
-      data: {
-        username,
-        password
-      }
+      data: loginForm
     })
   },
   getInfo(token) {
     return request({
-      url: '/admin/person/user/info',
+      url: '/admin/person/login/info',
       method: 'get',
       params: { token }
     })
   },
   logout() {
     return request({
-      url: '/admin/person/user/logout',
+      url: '/admin/person/login/logout',
       method: 'post'
     })
   }
