@@ -39,8 +39,6 @@
       <el-table-column label="操作" width="500" fixed="right" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="info" @click="showDialog(scope.row.id)">查看</el-button>
-          <el-button size="mini" type="info" @click="changeStatus(scope.row.id)">启/禁用</el-button>
-
           <router-link :to="'/course/edit/'+scope.row.id">
             <el-button type="primary" size="mini" icon="el-icon-edit">修改课程信息</el-button>
           </router-link>
@@ -118,12 +116,6 @@ export default {
   },
 
   methods: {
-    // 改变状态
-    changeStatus(id) {
-      courseApi.changeStatus(id).then(response => {
-        // this.$message()
-      })
-    },
     // 显示详细信息弹窗
     showDialog(id) {
       this.dialogTableVisible = true

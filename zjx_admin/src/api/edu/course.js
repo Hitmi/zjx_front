@@ -66,6 +66,17 @@ export default{
   },
 
   /**
+   * 根据id单个查询用于更新数据的接口
+   * @param id 课程id
+   */
+  getUpdate(id) {
+    return request({
+      url: `/admin/edu/course/getUpdate/${id}`,
+      method: 'get'
+    })
+  },
+
+  /**
    * 更新指定id的数据
    * @param teacher 更新后的数据
    */

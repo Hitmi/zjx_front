@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import courseApi from '@/api/edu/course'
 
 export default {
   name: 'CourseDetail',
@@ -26,21 +25,6 @@ export default {
           status: ''
         }
       }
-    }
-  },
-  data() {
-    return {
-    }
-  },
-  created() {
-    this.getDataById(this.$route.params.id)
-  },
-  methods: {
-    // 根据id查询数据
-    getDataById(id) {
-      courseApi.getById(id).then(response => {
-        this.course = response.data.item
-      })
     }
   }
 }
