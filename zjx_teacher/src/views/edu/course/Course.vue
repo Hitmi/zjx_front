@@ -8,34 +8,7 @@
         <el-button type="primary" size="mini" icon="el-icon-circle-plus-outline">添加</el-button>
       </router-link>
       <el-button type="primary" size="mini" icon="el-icon-search" @click="searchVisible = true">数据过滤</el-button>
-      <a :href="BASE_API + '/admin/edu/course/export'">
-        <el-button size="mini" type="primary" icon="el-icon-download">下载数据</el-button>
-      </a>
-      <a href="/static/excelTemplate/CourseList模板.xlsx">
-        <el-button size="mini" type="primary" icon="el-icon-document-copy">下载模板</el-button>
-      </a>
-      <el-upload
-        :limit="1"
-        :file-list="fileList"
-        :on-error="uploadError"
-        :on-success="uploadSuccess"
-        :action="BASE_API + '/admin/edu/course/upload'"
-        class="upload-demo"
-        style="display:inline;">
-        <el-button size="mini" type="primary" icon="el-icon-upload2">导入数据</el-button>
-      </el-upload>
     </div>
-
-    <!--查询表单-->
-    <el-drawer
-      :visible.sync="searchVisible"
-      direction="rtl"
-      size="30%">
-      <template v-slot="title">
-        <h2 style="color: #409EFF"><i class="el-icon-search" style="margin-bottom: 30px"/>数据过滤</h2>
-      </template>
-      <course-search @click-get-data="filterData"/>
-    </el-drawer>
 
     <!-- 表格 -->
     <el-table :data="list" border stripe @selection-change="handleSelectionChange">
@@ -48,14 +21,22 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="teacherId" label="课程主讲老师id" width="100" align="center"/>
-      <el-table-column prop="departmentId" label="课程所属部门id" width="100" align="center"/>
-      <el-table-column prop="title" label="课程名" width="100" align="center"/>
-      <el-table-column prop="lessonNum" label="课程总课时" width="100" align="center"/>
-      <el-table-column prop="credit" label="课程学分" width="100" align="center"/>
-      <el-table-column prop="status" label="课程状态 1：启用 2：禁用" width="100" align="center"/>
+      <el-table-column prop="cover" label="封面" width="100" align="center">
+        <template slot-scope="scope">
+          <el-image :src="scope.row.cover"/>
+        </template>
+      </el-table-column>
+      <el-table-column prop="title" label="课程名" width="200" align="center"/>
+      <el-table-column prop="teacher" label="主讲老师" width="100" align="center"/>
+      <el-table-column prop="department" label="课程所属部门" width="100" align="center"/>
+      <el-table-column prop="status" label="课程状态" width="100" align="center">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.status === 0">启用</el-tag>
+          <el-tag v-if="scope.row.status === 1">禁用</el-tag>
+        </template>
+      </el-table-column>
 
-      <el-table-column label="操作" width="400" fixed="right" align="center">
+      <el-table-column label="操作" width="500" fixed="right" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="info" @click="showDialog(scope.row.id)">查看</el-button>
           <router-link :to="'/course/edit/'+scope.row.id">
@@ -94,12 +75,11 @@
 
 <script>
 import courseApi from '@/api/edu/course'
-import CourseSearch from '@/views/edu/course/CourseSearch'
 import CourseDetail from '@/views/edu/course/CourseDetail'
 
 export default {
 
-  components: { CourseDetail, CourseSearch },
+  components: { CourseDetail },
 
   data() {
     return {
@@ -108,15 +88,8 @@ export default {
       page: 1, // 页码
       limit: 10, // 每页记录数
       searchObj: {
-        teacherId: '',
-        departmentId: '',
         title: '',
-        lessonNum: '',
-        credit: '',
-        descriptionId: '',
-        cover: '',
-        status: '',
-        version: ''
+        status: ''
       }, // 查询表单
       multipleSelection: [], // 批量删除选中的记录列表
       fileList: [],
@@ -126,15 +99,14 @@ export default {
       // 讲师对象
       course: {
         id: '',
-        teacherId: '',
-        departmentId: '',
+        teacher: '',
+        department: '',
         title: '',
         lessonNum: '',
         credit: '',
-        descriptionId: '',
+        description: '',
         cover: '',
-        status: '',
-        version: ''
+        status: ''
       }
     }
   },
@@ -162,7 +134,7 @@ export default {
     },
     // 调用api模块，加载  列表数据
     getData() {
-      courseApi.pageList(this.page, this.limit, this.searchObj).then(response => {
+      courseApi.pageListByTeacher(this.page, this.limit).then(response => {
         this.list = response.data.list
         this.total = response.data.total
       })

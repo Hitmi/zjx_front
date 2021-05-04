@@ -39,8 +39,8 @@ export default {
       courseId: null,
       // 数据
       course: {
-        teacherId: '',
-        departmentId: '',
+        teacher: '',
+        department: '',
         title: '',
         lessonNum: '',
         credit: '',
@@ -107,9 +107,9 @@ export default {
     },
     // 根据id查询数据
     getDataById(id) {
-      courseApi.getById(id).then(response => {
-        this.course = response.data.item
-      })
+      // courseApi.getById(id).then(response => {
+      //   this.course = response.data.item
+      // })
     }
   }
 }

@@ -96,11 +96,6 @@ export default {
   },
 
   created() {
-    // // courseId来源于路由
-    // if (this.$route.name === 'CourseInfoEdit') {
-    //   this.$parent.courseId = this.$route.params.id
-    // }
-
     // courseId来源于父组件
     if (this.$parent.courseId) { // 回显
       this.fetchCourseInfoById(this.$parent.courseId)
@@ -144,9 +139,8 @@ export default {
     },
     // 根据id获取课程基本信息
     fetchCourseInfoById(id) {
-      courseApi.getById(id).then(response => {
+      courseApi.getUpdate(id).then(response => {
         this.courseInfo = response.data.item
-
         this.getNameById()
       })
     },

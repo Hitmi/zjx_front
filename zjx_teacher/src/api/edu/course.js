@@ -18,20 +18,6 @@ export default{
   },
 
   /**
-   * 查询分页列表
-   * @param page 页号
-   * @param limit 单页数据量
-   * @param searchObj 查询过滤条件
-   */
-  pageList(page, limit, searchObj) {
-    return request({
-      url: `/admin/edu/course/listPage/${page}/${limit}`,
-      method: 'get',
-      params: searchObj
-    })
-  },
-
-  /**
    * 通过id删除单个数据
    * @param id 要删除的数据的id
    */
@@ -106,6 +92,17 @@ export default{
     return request({
       url: `/admin/edu/course/publishCourseById/${id}`,
       method: 'put'
+    })
+  },
+  /**
+   * 获取特定老师的所有课程
+   * @param page 当前页码
+   * @param limit 页面限制数据量
+   */
+  pageListByTeacher(page, limit) {
+    return request({
+      url: `/admin/edu/course/listPageByTeacher/${page}/${limit}`,
+      method: 'get'
     })
   }
 }
