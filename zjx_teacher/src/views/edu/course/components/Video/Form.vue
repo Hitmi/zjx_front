@@ -87,9 +87,6 @@ export default {
 
     // 保存和更新
     saveOrUpdate() {
-      if (this.uploadBtnDisabled) {
-        this.$message.info('视频正在上传中，请稍后')
-      }
       if (!this.video.id) {
         this.save()
       } else {

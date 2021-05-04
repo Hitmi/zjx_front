@@ -7,7 +7,7 @@
       <div class="main">
         <h2 class="red">{{ coursePublish.title }}</h2>
         <p class="gray"><span>共{{ coursePublish.lessonNum }}课时</span></p>
-        <p><span>所属分类：{{ coursePublish.departmentTitle }}</span></p>
+        <p><span>所属部门：{{ coursePublish.departmentTitle }}</span></p>
         <p>课程讲师：{{ coursePublish.teacherName }}</p>
         <h3 >学分：{{ coursePublish.credit }}</h3>
       </div>

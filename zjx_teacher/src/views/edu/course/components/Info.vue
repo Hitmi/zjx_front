@@ -7,17 +7,6 @@
       <el-form-item label="课程名">
         <el-input v-model="courseInfo.title" placeholder=" 示例：机器学习项目课：从基础到搭建项目视频课程。专业名称注意大小写"/>
       </el-form-item>
-
-      <!-- 课程讲师 -->
-      <el-form-item label="课程主讲老师">
-        <el-autocomplete
-          v-model="teacherName"
-          :fetch-suggestions="querySearchForTeacher"
-          placeholder="请输入内容"
-          value-key="name"
-          @select="handleTeacherSelect"/>
-      </el-form-item>
-
       <!-- 课程所属部门 -->
       <el-form-item label="课程所属部门">
         <el-autocomplete
@@ -99,9 +88,10 @@ export default {
     // courseId来源于父组件
     if (this.$parent.courseId) { // 回显
       this.fetchCourseInfoById(this.$parent.courseId)
+    } else {
+      this.getTeacherId()
     }
     this.initDepartmentList()
-    this.initTeacherList()
   },
 
   methods: {
@@ -144,14 +134,11 @@ export default {
         this.getNameById()
       })
     },
-
-    // 获取讲师列表
-    initTeacherList() {
-      teacherApi.list().then(response => {
-        this.teacherList = response.data.list
+    getTeacherId() {
+      teacherApi.getUserInfo().then(response => {
+        this.courseInfo.teacherId = response.data.item.id
       })
     },
-
     // 获取课程分类列表
     initDepartmentList() {
       departmentApi.list().then(response => {
