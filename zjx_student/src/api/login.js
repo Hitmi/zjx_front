@@ -3,7 +3,7 @@ import request from '@/utils/request'
 export default {
   login(username, password) {
     return request({
-      url: '/admin/person/user/login',
+      url: '/api/person/login/login',
       method: 'post',
       data: {
         username,
@@ -13,14 +13,14 @@ export default {
   },
   getInfo(token) {
     return request({
-      url: '/admin/person/user/info',
+      url: '/api/person/login/info',
       method: 'get',
       params: { token }
     })
   },
   logout() {
     return request({
-      url: '/admin/person/user/logout',
+      url: '/api/person/login/logout',
       method: 'post'
     })
   }
