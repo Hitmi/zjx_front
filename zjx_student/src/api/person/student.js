@@ -32,29 +32,6 @@ export default{
   },
 
   /**
-   * 通过id删除单个数据
-   * @param id 要删除的数据的id
-   */
-  removeById(id) {
-    return request({
-      url: `/admin/person/student/remove/${id}`,
-      method: 'delete'
-    })
-  },
-
-  /**
-   * 保存数据
-   * @param teacher 数据内容
-   */
-  save(student) {
-    return request({
-      url: `/admin/person/student/save`,
-      method: 'post',
-      data: student
-    })
-  },
-
-  /**
    * 根据id获取单个数据
    * @param id 数据id
    */
@@ -74,28 +51,6 @@ export default{
       url: `/admin/person/student/update`,
       method: 'put',
       data: student
-    })
-  },
-
-  /**
-   * 批量删除
-   * @param idList 要删除的数据的id数组
-   */
-  batchRemove(idList) {
-    return request({
-      url: `/admin/person/student/batchRemove`,
-      method: 'delete',
-      data: idList
-    })
-  },
-
-  /**
-   * 导出全部数据
-   */
-  export() {
-    return request({
-      url: `/admin/person/student/export`,
-      method: 'get'
     })
   }
 }

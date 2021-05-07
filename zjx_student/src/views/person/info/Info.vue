@@ -25,7 +25,7 @@
       <el-table-column prop="intro" label="个人介绍" width="750" align="center"/>
       <el-table-column label="操作" width="150" fixed="right" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="info" @click="showDialog(scope.row.id)">查看</el-button>
+          <el-button size="mini" type="info" @click="showDialog(scope.row)">查看</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -43,13 +43,16 @@
 
     <!--弹出窗口，用于显示详细信息-->
     <el-dialog :visible.sync="dialogTableVisible" title="详细信息" width="400px" center>
-      <info-detail :student="student"/>
+      <info-detail :info="info"/>
     </el-dialog>
 
   </div>
 </template>
 
 <script>
+import studentApi from '@/api/person/student'
+import teacherApi from '@/api/person/teacher'
+
 import departmentApi from '@/api/person/department'
 import InfoDetail from '@/views/person/info/InfoDetail'
 
@@ -63,6 +66,7 @@ export default {
       total: 0, // 总记录数
       page: 1, // 页码
       limit: 10, // 每页记录数
+      info: {},
       dialogTableVisible: false,
       BASE_API: process.env.BASE_API
     }
@@ -72,12 +76,21 @@ export default {
   },
 
   methods: {
-    // 显示详细信息弹窗
-    showDialog(id) {
+    // 显示详细信息弹窗,根据username长度决定查老师还是学生,
+    showDialog(row) {
+      console.log(row.username)
+      if (row.username.length === 6) {
+        // 教师
+        teacherApi.getById(row.id).then(response => {
+          // ...
+        })
+      } else if (row.username.length === 12) {
+        // 学生
+        studentApi.getById(row.id).then(response => {
+          // ...
+        })
+      }
       this.dialogTableVisible = true
-      departmentApi.getById(id).then(response => {
-        this.student = response.data.item
-      })
     },
     // 调用api模块，加载  列表数据
     getData() {
