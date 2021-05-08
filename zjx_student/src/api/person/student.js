@@ -52,6 +52,24 @@ export default{
       method: 'put',
       data: student
     })
+  },
+
+  getDetail() {
+    return request({
+      url: `/api/person/student/getDetail`,
+      method: 'get'
+    })
+  },
+
+  updatePassword(oldPassword, newPassword) {
+    return request({
+      url: `/api/person/student/updatePassword`,
+      method: 'put',
+      data: {
+        oldPassword,
+        newPassword
+      }
+    })
   }
 }
 
