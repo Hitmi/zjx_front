@@ -4,19 +4,13 @@
       <!--用户主要内容-->
       <div class="user-img">
         <img
-          :src="form.imgsrc"
+          :src="changemessage.imgsrc"
           alt=""
           width="100%"
           style="border-radius: 14px"
         /><!--用户头像-->
       </div>
-            <div class="user-username">
-        学号: {{form.username}}
-      </div>
-      <div class="user-ID">
-        ID: {{ form.id
-        }}<!--用户ID-->
-      </div>
+      <div class="user-username">学号: {{ form.username }}</div>
       <div class="user-content">
         <!--用户资料-->
         <form class="user-form"><!--用户资料表单--></form>
@@ -33,90 +27,127 @@
           <!--姓名与性别-->
           <tr class="user-tr">
             <td class="user-attribute">手机号:</td>
-            <td class="user-value">{{ form.mobile }}</td>
+            <td class="user-value">{{ changemessage.mobile }}</td>
             <td class="user-attribute">所属班级:</td>
             <td class="user-value">{{ form.department }}</td>
           </tr>
           <!--手机号与所属部门-->
           <tr class="user-tr">
             <td class="user-attribute">出生日期:</td>
-            <td class="user-value">{{ form.birth }}</td>
+            <td class="user-value">{{ changemessage.birth }}</td>
             <td class="user-attribute">毕业日期:</td>
             <td class="user-value">{{ form.graduateDate }}</td>
           </tr>
           <!--出生年月和毕业时间-->
           <tr class="user-tr">
             <td class="user-attribute">个人简介:</td>
-            <td class="user-value" colspan="3">{{ form.sign }}</td>
+            <td class="user-value" colspan="3">{{ changemessage.sign }}</td>
           </tr>
           <!--个人简介-->
         </table>
       </div>
       <div class="user-change">
-        <el-button type="text" @click="centerDialogVisible1 = true" class="btn01"
+        <el-button
+          type="text"
+          @click="centerDialogVisible1 = true"
+          class="btn01"
           >修改密码</el-button
         >
 
-        <el-dialog 
+        <el-dialog
           title="修改密码"
           :visible.sync="centerDialogVisible1"
           width="50%"
           center
         >
-        <!--修改密码-->
-          <div>
-
-          </div>
+          <!--修改密码-->
+          <div></div>
           <span slot="footer" class="dialog-footer">
             <el-button @click="centerDialogVisible1 = false">取 消</el-button>
-            <el-button type="primary" @click="onSubmit1"
-              >确 定</el-button
-            >
+            <el-button type="primary" @click="onSubmit1">确 定</el-button>
           </span>
         </el-dialog>
 
         <!--改密码-->
-        <el-button type="text" @click="centerDialogVisible2 = true" class="btn02"
+        <el-button
+          type="text"
+          @click="centerDialogVisible2 = true"
+          class="btn02"
           >修改资料</el-button
         >
 
-        <el-dialog 
+        <el-dialog
           title="个人资料"
           :visible.sync="centerDialogVisible2"
           width="50%"
           center
         >
-          <div >
+          <div>
             <el-form ref="form" :model="form" label-width="80px">
-              <el-form-item label="姓名">
-                <el-input v-model="form.name"></el-input>
+              <el-form-item label="姓名 *">
+                <el-input
+                  v-model="form.name"
+                  readonly="readonly"
+                  id="unable"
+                ></el-input>
               </el-form-item>
-              <el-form-item label="性别">
-                <el-input v-model="form.sex"></el-input>
+              <el-form-item label="性别 *">
+                <el-input
+                  v-if="form.sex == 0"
+                  v-model="this.male"
+                  readonly="readonly"
+                  id="unable"
+                ></el-input>
+                <el-input
+                  v-else-if="form.sex == 1"
+                  v-model="this.famale"
+                  readonly="readonly"
+                  id="unable"
+                ></el-input>
               </el-form-item>
               <el-form-item label="手机号">
-                <el-input v-model="form.mobile"></el-input>
+                <el-input v-model="changemessage.mobile"></el-input>
               </el-form-item>
-              <el-form-item label="所属班级">
-                <el-input v-model="form.department"></el-input>
+              <el-form-item label="所属班级 *">
+                <el-input
+                  v-model="form.department"
+                  readonly="readonly"
+                  id="unable"
+                ></el-input>
               </el-form-item>
               <el-form-item label="出生日期">
-                <el-input v-model="form.birth"></el-input>
+                <el-input v-model="changemessage.birth"></el-input>
               </el-form-item>
-              <el-form-item label="毕业日期">
-                <el-input v-model="form.graduateDate"></el-input>
+              <el-form-item label="毕业日期 *">
+                <el-input
+                  v-model="form.graduateDate"
+                  readonly="readonly"
+                  id="unable"
+                ></el-input>
               </el-form-item>
               <el-form-item label="个人简介">
-                <el-input type="textarea" v-model="form.sign"></el-input>
+                <el-input
+                  type="textarea"
+                  v-model="changemessage.sign"
+                ></el-input>
               </el-form-item>
+              <span>上传新头像</span><el-upload
+                class="avatar-uploader"
+                :action="BASE_API + '/admin/oss/file/upload?module=avatar'"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload"
+              >
+                <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+              <!--用户照片-->
             </el-form>
             <!--这里放个人资料的input-->
           </div>
           <span slot="footer" class="dialog-footer">
             <el-button @click="centerDialogVisible2 = false">取 消</el-button>
-            <el-button type="primary" @click="onSubmit2"
-              >修改</el-button
-            >
+            <el-button type="primary" @click="onSubmit2">修改</el-button>
           </span>
           <!--这里提交修改-->
         </el-dialog>
@@ -137,23 +168,30 @@ export default {
     return {
       centerDialogVisible1: false,
       centerDialogVisible2: false,
+      male: "男",
+      famle: "女",
       form: {
-        imgsrc: "", //头像
         name: "", //名字
-        id: "", //id
         sex: "", //性别
         sign: "", //个人简介
-        birth: "", //生日
         departmentId: "", //部门ID
         department: "", //部门名称
         graduateDate: "", //毕业时间
-        mobile: "", //手机号
         username: "", //用户名
       },
-      ruleform:{
-        oldPassword:"",    //原密码
-        newPassword:"",    //新密码
-      }
+      changemessage: {
+        imgsrc: "", //头像
+        birth: "", //生日
+        id: "", //id
+        mobile: "", //手机号
+        sign: "", //个人简介
+      },
+      ruleform: {
+        oldPassword: "", //原密码
+        newPassword: "", //新密码
+      },
+      imageUrl: '',
+      BASE_API: process.env.BASE_API,
     };
   },
   methods: {
@@ -166,14 +204,14 @@ export default {
         .getDetail()
         .then((res) => {
           console.log(res);
-          this.form.imgsrc = res.data.item.avatar;
+          this.changemessage.imgsrc = res.data.item.avatar;
           this.form.graduateDate = res.data.item.graduateDate;
-          this.form.birth = res.data.item.birth;
-          this.form.mobile = res.data.item.mobile;
+          this.changemessage.birth = res.data.item.birth;
+          this.changemessage.mobile = res.data.item.mobile;
           this.form.name = res.data.item.name;
-          this.form.id = res.data.item.id;
+          this.changemessage.id = res.data.item.id;
           this.form.sex = res.data.item.sex;
-          this.form.sign = res.data.item.sign;
+          this.changemessage.sign = res.data.item.sign;
           this.form.departmentId = res.data.item.departmentId;
           this.form.username = res.data.item.username;
           this.ruleform.oldPassword = res.data.item.password;
@@ -192,13 +230,37 @@ export default {
           console.log(err);
         });
     },
-    onSubmit1(){
-      this.centerDialogVisible1=false;     //关闭修改密码的弹框
+    onSubmit1() {
+      this.centerDialogVisible1 = false; //关闭修改密码的弹框
     },
-    onSubmit2(){
-      this.centerDialogVisible2 = false;  //关闭修改资料的弹框
-      studentApi.updateById(this.form);
-    }
+    onSubmit2() {
+      this.centerDialogVisible2 = false; //关闭修改资料的弹框
+      return studentApi.updateInfo(this.changemessage).then((res)=>{
+        console.log(res);
+      });
+    },
+    maleorfamale(sex) {
+      if (sex == 0) {
+        return this.male;
+      } else {
+        return this.famle;
+      }
+    },
+     handleAvatarSuccess(res, file) {                   //头像
+        this.imageUrl = URL.createObjectURL(file.raw);
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M;
+      },
   },
   created() {
     this.getalldata();
@@ -302,4 +364,30 @@ button:hover {
   margin-left: 30%;
   transform: translate(-50%);
 }
+/**用户头像 */
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+/**用户头像 */
 </style>

@@ -70,6 +70,14 @@ export default{
         newPassword
       }
     })
+  },
+
+  updateInfo(newInfo) {
+    return request({
+      url: `/api/person/student/updateInfo`,
+      method: 'put',
+      data: newInfo
+    })
   }
 }
 
