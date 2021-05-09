@@ -10,7 +10,7 @@ export default{
    */
   getById(id) {
     return request({
-      url: `/admin/edu/course/get/${id}`,
+      url: `/api/edu/course/get/${id}`,
       method: 'get'
     })
   },

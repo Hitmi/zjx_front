@@ -17,16 +17,5 @@ export default{
       method: 'get'
     })
   },
-
-  /**
-   * 根据id获取单个数据
-   * @param id 数据id
-   */
-  getById(id) {
-    return request({
-      url: `/api/edu/studentCourse/get/${id}`,
-      method: 'get'
-    })
-  }
 }
 
