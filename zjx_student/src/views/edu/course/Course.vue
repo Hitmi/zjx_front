@@ -1,10 +1,10 @@
 <template>
-  <div class="app-container">
+  <div class="app-container containerNew">
     <!-- 课程列表 开始 -->
     <section class="container">
       <header class="comm-title">
         <h2 class="fl tac">
-          <span class="c-333">全部课程</span>
+          <span class="c-333 ml45">全部课程</span>
         </h2>
       </header>
       <section class="c-sort-box">
@@ -17,22 +17,25 @@
           <!-- /无数据提示 结束-->
 
           <!-- 数据列表 开始-->
-          <article v-if="list.length>0" class="comm-course-list">
+          <article v-if="list.length>0" class="comm-course-list coursesBox">
             <ul id="bna" class="of">
-              <li v-for="item in list" :key="item.id">
+              <li v-for="item in list" :key="item.id" class="coursesli">
                 <div class="cc-l-wrap">
                   <section class="course-img">
                     <img :src="item.cover" :alt="item.title" class="img-responsive">
+                    <h3 class="hLh30 txtOf mt10">
+                    <a :href="'/course/'+item.id" :title="item.title" class="course-title fsize18 c-333">{{ item.title }}</a>
+                    <span class="teacherName">——{{item.teacherName}}</span>
+                  </h3>
                     <div class="cc-mask">
                       <router-link :to="'/chapter/view/'+item.id">
-                        <el-button type="primary" size="mini">开始学习</el-button>
+                        <el-button type="primary" size="medium">开始学习</el-button>
                       </router-link>
-                      <el-button type="primary" size="mini" @click="showDialog">详情</el-button>
+
+                      <el-button type="info" size="medium" @click="showDialog" class="fr">详情</el-button>
                     </div>
                   </section>
-                  <h3 class="hLh30 txtOf mt10">
-                    <a :href="'/course/'+item.id" :title="item.title" class="course-title fsize18 c-333">{{ item.title }}</a>
-                  </h3>
+                  
                 </div>
               </li>
             </ul>
@@ -48,7 +51,7 @@
       :current-page="page"
       :total="total"
       :page-size="limit"
-      :page-sizes="[5, 10, 20]"
+      :page-sizes="[6,12,18]"
       style="padding: 30px 0; text-align: center"
       layout="sizes, prev, pager, next, jumper, ->, total"
       @current-change="changeCurrentPage"
@@ -66,7 +69,7 @@ export default {
       list: [], // 列表
       total: 0, // 总记录数
       page: 1, // 页码
-      limit: 10, // 每页记录数
+      limit: 6, // 每页记录数
       dialogTableVisible: false
     }
   },
@@ -77,16 +80,26 @@ export default {
   methods: {
     // 显示详细信息弹窗
     showDialog(id) {
-      this.dialogTableVisible = true
+      this.dialogTableVisible = true;
       courseApi.getById(id).then(response => {
+        console.log("详情api返回结果：",response);
         this.course = response.data.item
       })
     },
     // 调用api模块，加载  列表数据
     getData() {
       studentCourseApi.pageList(this.page, this.limit).then(response => {
-        this.list = response.data.list
-        this.total = response.data.total
+        console.log("获取课程",response);
+        //  var obj={};  
+        //  obj=JSON.parse(JSON.stringify(response.data.list[0]));
+        this.list=response.data.list;
+        //  for (let i=0;i<=5;i++)
+        //  {
+        //    obj.teacherName="王立新";
+        //    this.list[i]=obj;
+        //  }
+        //  console.log(this.list);
+        this.total = response.data.total;
       })
     },
     // 改编页码
@@ -106,7 +119,30 @@ export default {
 </script>
 
 <style>
+.fr{
+  float: right;
+}
 .img-responsive {
   width: 300px;
+}
+.coursesli{
+  list-style: none;
+  background-color: #fff;
+  width: 300px;
+  display: inline-block;
+  margin: 50px;
+}
+.coursesBox{
+  border-top: 1px solid #f5f5f5;
+  background-color: rgb(245,245,245,0.8);
+}
+.containerNew{
+  padding: 0;
+}
+.ml45{
+  margin-left: 45px;
+}
+.teacherName{
+  margin-left: 10px;
 }
 </style>
