@@ -3,10 +3,11 @@
     <!-- 步骤导航 -->
     <h2 style="text-align: center;">课程名</h2>
     <!-- 章节列表 -->
-    <ul class="chapterList">
+    <div class="Box">
+    <ul class="chapterList clearfix">
       <li v-for="chapter in chapterList" :key="chapter.id">
         <p>{{ chapter.title }}</p>
-        <ul class="chapterList videoList">
+        <ul class="chapterList videoList clearfix">
           <li v-for="video in chapter.children" :key="video.id">
             <p>{{ video.title }}
               <el-tag v-if="!video.videoSourceId" size="mini" type="danger">
@@ -22,6 +23,7 @@
         </ul>
       </li>
     </ul>
+    </div>
   </div>
 </template>
 
@@ -55,17 +57,30 @@ export default {
 </script>
 
 <style>
+.Box{
+  border:  1px solid #DDD;
+  width: 800px;
+  margin: 0 auto;
+}
 .chapterList{
     position: relative;
     list-style: none;
-    margin: 0;
+    width: 700px;
+    margin: 0 auto;
     padding: 0;
+    /* border:  1px solid #DDD; */
 }
+.clearfix:after{/*伪元素是行内元素 正常浏览器清除浮动方法*/
+        content: "";
+        display: block;
+        height: 0;
+        clear:both;
+        visibility: hidden;
+    }
 .chapterList li{
   position: relative;
 }
 .chapterList p{
-  float: left;
   font-size: 20px;
   margin: 10px 0;
   padding: 10px;
@@ -78,9 +93,8 @@ export default {
     float: right;
     font-size: 14px;
 }
-
 .videoList{
-  padding-left: 50px;
+  width: 600px;
 }
 .videoList p{
   float: left;
