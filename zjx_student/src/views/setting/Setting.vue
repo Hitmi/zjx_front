@@ -1,15 +1,305 @@
 <template>
   <div class="app-container">
-    个人资料
+    <div class="user-container">
+      <!--用户主要内容-->
+      <div class="user-img">
+        <img
+          :src="form.imgsrc"
+          alt=""
+          width="100%"
+          style="border-radius: 14px"
+        /><!--用户头像-->
+      </div>
+            <div class="user-username">
+        学号: {{form.username}}
+      </div>
+      <div class="user-ID">
+        ID: {{ form.id
+        }}<!--用户ID-->
+      </div>
+      <div class="user-content">
+        <!--用户资料-->
+        <form class="user-form"><!--用户资料表单--></form>
+        <table class="user-table">
+          <tr class="user-tr">
+            <td class="user-attribute">姓名:</td>
+            <td class="user-value">{{ form.name }}</td>
+            <td class="user-attribute">性别:</td>
+            <td class="user-value">
+              <span v-if="form.sex == 0">男</span
+              ><span v-if="form.sex == 1">女</span>
+            </td>
+          </tr>
+          <!--姓名与性别-->
+          <tr class="user-tr">
+            <td class="user-attribute">手机号:</td>
+            <td class="user-value">{{ form.mobile }}</td>
+            <td class="user-attribute">所属班级:</td>
+            <td class="user-value">{{ form.department }}</td>
+          </tr>
+          <!--手机号与所属部门-->
+          <tr class="user-tr">
+            <td class="user-attribute">出生日期:</td>
+            <td class="user-value">{{ form.birth }}</td>
+            <td class="user-attribute">毕业日期:</td>
+            <td class="user-value">{{ form.graduateDate }}</td>
+          </tr>
+          <!--出生年月和毕业时间-->
+          <tr class="user-tr">
+            <td class="user-attribute">个人简介:</td>
+            <td class="user-value" colspan="3">{{ form.sign }}</td>
+          </tr>
+          <!--个人简介-->
+        </table>
+      </div>
+      <div class="user-change">
+        <el-button type="text" @click="centerDialogVisible1 = true" class="btn01"
+          >修改密码</el-button
+        >
+
+        <el-dialog 
+          title="修改密码"
+          :visible.sync="centerDialogVisible1"
+          width="50%"
+          center
+        >
+        <!--修改密码-->
+          <div>
+
+          </div>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="centerDialogVisible1 = false">取 消</el-button>
+            <el-button type="primary" @click="onSubmit1"
+              >确 定</el-button
+            >
+          </span>
+        </el-dialog>
+
+        <!--改密码-->
+        <el-button type="text" @click="centerDialogVisible2 = true" class="btn02"
+          >修改资料</el-button
+        >
+
+        <el-dialog 
+          title="个人资料"
+          :visible.sync="centerDialogVisible2"
+          width="50%"
+          center
+        >
+          <div >
+            <el-form ref="form" :model="form" label-width="80px">
+              <el-form-item label="姓名">
+                <el-input v-model="form.name"></el-input>
+              </el-form-item>
+              <el-form-item label="性别">
+                <el-input v-model="form.sex"></el-input>
+              </el-form-item>
+              <el-form-item label="手机号">
+                <el-input v-model="form.mobile"></el-input>
+              </el-form-item>
+              <el-form-item label="所属班级">
+                <el-input v-model="form.department"></el-input>
+              </el-form-item>
+              <el-form-item label="出生日期">
+                <el-input v-model="form.birth"></el-input>
+              </el-form-item>
+              <el-form-item label="毕业日期">
+                <el-input v-model="form.graduateDate"></el-input>
+              </el-form-item>
+              <el-form-item label="个人简介">
+                <el-input type="textarea" v-model="form.sign"></el-input>
+              </el-form-item>
+            </el-form>
+            <!--这里放个人资料的input-->
+          </div>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="centerDialogVisible2 = false">取 消</el-button>
+            <el-button type="primary" @click="onSubmit2"
+              >修改</el-button
+            >
+          </span>
+          <!--这里提交修改-->
+        </el-dialog>
+        <!--改资料-->
+      </div>
+      <!--用户修改密码，修改资料-->
+    </div>
   </div>
 </template>
 
 <script>
+import studentApi from "@/api/person/student";
+import departmentApi from "@/api/person/department";
+import InfoDetail from "@/views/person/info/InfoDetail";
 export default {
-  name: 'Setting'
-}
+  name: "Setting",
+  data() {
+    return {
+      centerDialogVisible1: false,
+      centerDialogVisible2: false,
+      form: {
+        imgsrc: "", //头像
+        name: "", //名字
+        id: "", //id
+        sex: "", //性别
+        sign: "", //个人简介
+        birth: "", //生日
+        departmentId: "", //部门ID
+        department: "", //部门名称
+        graduateDate: "", //毕业时间
+        mobile: "", //手机号
+        username: "", //用户名
+      },
+      ruleform:{
+        oldPassword:"",    //原密码
+        newPassword:"",    //新密码
+      }
+    };
+  },
+  methods: {
+    async getalldata() {
+      await this.getData(); //异步调用
+      await this.getdepartment();
+    },
+    getData() {
+      return studentApi
+        .getDetail()
+        .then((res) => {
+          console.log(res);
+          this.form.imgsrc = res.data.item.avatar;
+          this.form.graduateDate = res.data.item.graduateDate;
+          this.form.birth = res.data.item.birth;
+          this.form.mobile = res.data.item.mobile;
+          this.form.name = res.data.item.name;
+          this.form.id = res.data.item.id;
+          this.form.sex = res.data.item.sex;
+          this.form.sign = res.data.item.sign;
+          this.form.departmentId = res.data.item.departmentId;
+          this.form.username = res.data.item.username;
+          this.ruleform.oldPassword = res.data.item.password;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getdepartment() {
+      return departmentApi
+        .getById(this.form.departmentId)
+        .then((res) => {
+          this.form.department = res.data.item.name;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    onSubmit1(){
+      this.centerDialogVisible1=false;     //关闭修改密码的弹框
+    },
+    onSubmit2(){
+      this.centerDialogVisible2 = false;  //关闭修改资料的弹框
+      studentApi.updateById(this.form);
+    }
+  },
+  created() {
+    this.getalldata();
+  },
+};
 </script>
 
 <style scoped>
-
+.user-container {
+  width: 100%;
+  height: auto;
+  padding: 50px 20px;
+}
+.user-img {
+  width: 100px;
+  height: 100px;
+  border: 1px solid rgb(224, 224, 224);
+  border-radius: 14px;
+  margin-left: 50%;
+  transform: translate(-50%);
+  margin-bottom: 20px;
+}
+.user-ID {
+  font-size: 20px;
+  margin-left: 50%;
+  transform: translate(-50%);
+  text-align: center;
+  margin-bottom: 20px;
+}
+.user-username {
+  font-size: 20px;
+  margin-left: 50%;
+  transform: translate(-50%);
+  text-align: center;
+  margin-bottom: 20px;
+}
+form {
+  margin: 0;
+  padding: 0;
+}
+td {
+  height: 50px;
+  border-bottom: 1px solid rgb(224, 224, 224);
+  border-right: 1px solid rgb(224, 224, 224);
+}
+.user-table {
+  width: 100%;
+  border-top: 1px solid rgb(224, 224, 224);
+  border-left: 1px solid rgb(224, 224, 224);
+  border-collapse: collapse;
+  border-radius: 4px;
+  border-right: none;
+  border-bottom: none;
+  margin-bottom: 34px;
+}
+.user-attribute {
+  background: rgb(243, 243, 243);
+  width: 20%;
+  color: rgb(68, 68, 68);
+  font-size: 20px;
+  text-align: right;
+  padding-right: 22px;
+}
+.user-value {
+  text-align: center;
+  font-size: 15px;
+  width: 30%;
+  color: rgb(62, 62, 62);
+}
+.user-change {
+  width: 100%;
+  margin-top: 50px;
+  padding: 20px;
+  overflow: hidden;
+}
+button {
+  color: white;
+  font-size: 20px;
+  background-color: rgba(64, 158, 255);
+  width: 100px;
+  height: 50px;
+  border-radius: 10px;
+  border: 0.1px solid #f5f5f579;
+  outline: none;
+}
+button:hover {
+  border-color: rgb(151, 168, 190);
+}
+.btn01 {
+  background-color: red;
+  float: left;
+  margin-left: 30%;
+  transform: translate(-50%);
+}
+.btn01:hover {
+  color: red;
+  background-color: white;
+}
+.btn02 {
+  float: left;
+  margin-left: 30%;
+  transform: translate(-50%);
+}
 </style>
