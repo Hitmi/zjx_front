@@ -5,7 +5,18 @@
     <script type="application/javascript" defer charset="utf-8" src="https://player.alicdn.com/aliplayer/presentation/js/aliplayercomponents.min.js"/>
 
     <!-- 播放器 -->
-    <div id="J_prismPlayer" class="prism-player"/>
+    <div id="J_prismPlayer" class="prism-player" style="height:500px"/>
+    <div class="chapterBox">
+      <p class="videoSelectP">视频选集</p>
+      <div v-for="chapter in this.chapterList" :key="chapter.id">
+        <p class="ChapterTitle">{{chapter.title}}</p>
+        <div v-for="video in chapter.children" :key="video.id" class="VideoSelectBox">
+           <span class="videoPspan">p{{video.index}}</span>
+           <span class="videoTitle">{{video.title}}</span>
+           <span class="videoDuration">{{video.duration}}</span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -18,7 +29,9 @@ export default {
       vid: '',
       playauth: '',
       CourseId:'',
-      chapterList:[]
+      chapterList:[],
+      videoNum:0,
+      isPlayingVideoNum:0
     }
   },
   created() {
@@ -29,7 +42,8 @@ export default {
     /* eslint-disable no-undef */
     new Aliplayer({
       id: 'J_prismPlayer',
-      width: '40%',
+      width: '60%',
+      height:'100%',
       // 支持播放地址播放,此播放优先级最高
       source: 'http://zaijiaxue.codeyi.cn/sv/13cffdc6-178f9f6a30e/13cffdc6-178f9f6a30e.mp4',
       // vid: this.vid,
@@ -42,18 +56,19 @@ export default {
   },
   methods: {
     getData(){
-      // this.getVideoData();
+       this.getVideoData();
        this.getChapterData();
     },
     getVideoData() {
       // 得到视频id
       this.vid = this.$route.params.videoId;
+      console.log("vid",this.vid);
       // 根据视频id获取播放凭证
-     return courseApi.getPlayAuth(this.vid).then(response => {
-        this.playauth = response.data.playAuth
-        console.log('vid>>>', this.vid)
-        console.log('playauth>>>', this.playauth)
-      });
+    //  return courseApi.getPlayAuth(this.vid).then(response => {
+    //     this.playauth = response.data.playAuth
+    //     console.log('vid>>>', this.vid)
+    //     console.log('playauth>>>', this.playauth)
+    //   });
     },
    // 根据课程id获取章节列表
     getChapterData:function(){
@@ -62,7 +77,16 @@ export default {
       console.log(this.CourseId);
       return  chapterApi.getByCourseId(this.CourseId).then(response => {
         this.chapterList = response.data.list;
-         console.log('章节列表：', response.data.list)
+         //videoNum的计算
+         for (let i=0;i<this.chapterList.length;i++)
+         {
+            //  this.videoNum+=this.chapterList[i].children.length;
+             for (let j=0;j<this.chapterList[i].children.length;j++){
+                this.chapterList[i].children[j].index=++this.videoNum;
+             }
+         }
+         console.log("num：",this.videoNum);
+          console.log('章节列表：', response.data.list);
       });
      }
   }
@@ -72,9 +96,46 @@ export default {
 @import url("https://g.alicdn.com/de/prismplayer/2.8.2/skins/default/aliplayer-min.css");
 .prism-player{
   position: absolute;
-  left: 0;
+  left: 85px;
+  top: 70px;
   margin: auto;
   /* background-color: rebeccapurple; */
   border-radius: 10px;
+}
+.chapterBox{
+  position: absolute;
+  right: 30px;
+  top: 70px;
+  width: 300px;
+  height: 500px;
+  background-color: rgb(244,244,244);
+  padding: 0 20px;
+  overflow-y:auto;
+}
+.videoSelectP{
+  font-weight: 500;
+  font-size: 18px;
+  text-align: center;
+}
+.ChapterTitle{
+  font-weight: 500;
+  font-size: 17px;
+}
+.VideoSelectBox{
+  margin: 10px 10px;
+  /* background-color: #fff;
+  color: #03a0d6; */
+  line-height: 30px;
+}
+.VideoSelectBox:hover{
+   background-color: #fff;
+  color: #03a0d6; 
+}
+.videoDuration{
+  float: right;
+  color: #757575;
+}
+.videoTitle{
+  margin-left: 0px;
 }
 </style>
