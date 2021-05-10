@@ -1,9 +1,5 @@
 <template>
   <div>
-    <script type="application/javascript" defer charset="utf-8" src="https://g.alicdn.com/de/prismplayer/2.8.2/aliplayer-min.js"/>
-    <!-- 阿里云视频播放器组件 -->
-    <script type="application/javascript" defer charset="utf-8" src="https://player.alicdn.com/aliplayer/presentation/js/aliplayercomponents.min.js"/>
-
     <!-- 播放器 -->
     <div id="J_prismPlayer" class="prism-player" style="height:500px"/>
     <div class="chapterBox">
@@ -19,7 +15,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import courseApi from '@/api/edu/course'
 import chapterApi from '@/api/edu/chapter'
@@ -62,13 +57,7 @@ export default {
     getVideoData() {
       // 得到视频id
       this.vid = this.$route.params.videoId;
-      console.log("vid",this.vid);
-      // 根据视频id获取播放凭证
-    //  return courseApi.getPlayAuth(this.vid).then(response => {
-    //     this.playauth = response.data.playAuth
-    //     console.log('vid>>>', this.vid)
-    //     console.log('playauth>>>', this.playauth)
-    //   });
+      console.log("vid:",this.vid);
     },
    // 根据课程id获取章节列表
     getChapterData:function(){
@@ -126,6 +115,7 @@ export default {
   /* background-color: #fff;
   color: #03a0d6; */
   line-height: 30px;
+  cursor:pointer;
 }
 .VideoSelectBox:hover{
    background-color: #fff;

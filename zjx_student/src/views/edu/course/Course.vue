@@ -32,7 +32,7 @@
                         <el-button type="primary" size="medium">开始学习</el-button>
                       </router-link>
 
-                      <el-button type="info" size="medium" @click="showDialog" class="fr">详情</el-button>
+                      <el-button type="info" size="medium" @click="showDialog(item.id)" class="fr">详情</el-button>
                     </div>
                   </section>
                   
@@ -56,7 +56,19 @@
       layout="sizes, prev, pager, next, jumper, ->, total"
       @current-change="changeCurrentPage"
       @size-change="changePageSize"/>
+      <el-dialog
+  title="提示"
+  :visible.sync="dialogVisible"
+  width="30%"
+  :before-close="handleClose">
+  <span>这是一段信息</span>
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+  </span>
+</el-dialog>
   </div>
+  
 </template>
 
 <script>
@@ -70,7 +82,8 @@ export default {
       total: 0, // 总记录数
       page: 1, // 页码
       limit: 6, // 每页记录数
-      dialogTableVisible: false
+      dialogTableVisible: true,
+      course:{}
     }
   },
   created() {
@@ -84,7 +97,9 @@ export default {
       courseApi.getById(id).then(response => {
         console.log("详情api返回结果：",response);
         this.course = response.data.item
+        console.log("课程信息:",this.course);
       })
+      // this.axios.get("http://8.141.61.26:8190/admin/edu/course/getUpdate?id="+id).then(res=>console.log(res));
     },
     // 调用api模块，加载  列表数据
     getData() {

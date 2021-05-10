@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
     <!-- 步骤导航 -->
+    <div v-if="chapterList.length">
     <h2 style="text-align: center;">课程名</h2>
     <!-- 章节列表 -->
     <div class="Box">
@@ -24,6 +25,10 @@
         </ul>
       </li>
     </ul>
+    </div>
+    </div>
+    <div class="NoChapter" v-else>
+      <p>无课程章节数据</p>
     </div>
   </div>
 </template>
@@ -117,5 +122,9 @@ export default {
   line-height: 30px;
   width: 100%;
   border: 1px dashed #DDD;
+}
+.NoChapter{
+  text-align: center;
+  font-size: 24px;
 }
 </style>
