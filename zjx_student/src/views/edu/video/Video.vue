@@ -1,12 +1,14 @@
 <template>
   <div>
+    <script type="application/javascript"  charset="utf-8" src="https://g.alicdn.com/de/prismplayer/2.8.2/aliplayer-min.js"/>
+    <script type="application/javascript"  charset="utf-8" src="https://player.alicdn.com/aliplayer/presentation/js/aliplayercomponents.min.js"/>
     <!-- 播放器 -->
     <div id="J_prismPlayer" class="prism-player" style="height:500px"/>
     <div class="chapterBox">
       <p class="videoSelectP">视频选集</p>
-      <div v-for="chapter in this.chapterList" :key="chapter.id">
+      <div v-for="chapter in this.chapterList" :key="chapter.id" >
         <p class="ChapterTitle">{{chapter.title}}</p>
-        <div v-for="video in chapter.children" :key="video.id" class="VideoSelectBox">
+        <div v-for="video in chapter.children" :key="video.id" class="VideoSelectBox" @click="ChangeVideo()">
            <span class="videoPspan">p{{video.index}}</span>
            <span class="videoTitle">{{video.title}}</span>
            <span class="videoDuration">{{video.duration}}</span>
