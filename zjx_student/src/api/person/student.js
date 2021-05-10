@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import { Form } from 'element-ui'
 
 /**
  * Student-
@@ -76,6 +77,13 @@ export default{
     return request({
       url: `/api/person/student/updateInfo`,
       method: 'put',
+      data: newInfo
+    })
+  },
+  UpdateInfoForm(newInfo){
+    return request({
+      url: `/api/person/student/UpdateInfoForm`,
+      method:'put',
       data: newInfo
     })
   }

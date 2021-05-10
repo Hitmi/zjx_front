@@ -7,6 +7,7 @@
           :src="changemessage.imgsrc"
           alt=""
           width="100%"
+          height="100%"
           style="border-radius: 14px"
         /><!--用户头像-->
       </div>
@@ -20,8 +21,9 @@
             <td class="user-value">{{ form.name }}</td>
             <td class="user-attribute">性别:</td>
             <td class="user-value">
-              <span v-if="form.sex == 0">男</span
-              ><span v-if="form.sex == 1">女</span>
+              <span v-if="form.sex == 1">女</span>
+              <span v-else>男</span
+              >
             </td>
           </tr>
           <!--姓名与性别-->
@@ -114,21 +116,21 @@
         >
 
         <el-dialog
-          title="个人资料"
+          title="修改资料"
           :visible.sync="centerDialogVisible2"
           width="50%"
           center
         >
           <div>
-            <el-form ref="form" :model="form" label-width="80px">
-              <el-form-item label="姓名 *">
+            <el-form ref="form" :model="copychangemessage" label-width="80px">
+              <!-- <el-form-item label="姓名 *">
                 <el-input
                   v-model="form.name"
                   readonly="readonly"
                   id="unable"
                 ></el-input>
-              </el-form-item>
-              <el-form-item label="性别 *">
+              </el-form-item> -->
+              <!-- <el-form-item label="性别 *">
                 <el-input
                   v-if="form.sex == 0"
                   v-model="this.male"
@@ -140,38 +142,38 @@
                   v-model="this.famale"
                   readonly="readonly"
                   id="unable"
-                ></el-input>
-              </el-form-item>
+                ></el-input> 
+              </el-form-item> -->
               <el-form-item label="手机号">
-                <el-input v-model="changemessage.mobile"></el-input>
+                <el-input v-model="copychangemessage.mobile"></el-input>
               </el-form-item>
-              <el-form-item label="所属班级 *">
+              <!-- <el-form-item label="所属班级 *">
                 <el-input
                   v-model="form.department"
                   readonly="readonly"
                   id="unable"
                 ></el-input>
-              </el-form-item>
+              </el-form-item> -->
               <el-form-item label="出生日期">
-                <el-input v-model="changemessage.birth"></el-input>
+                <el-input v-model="copychangemessage.birth"></el-input>
               </el-form-item>
-              <el-form-item label="毕业日期 *">
+              <!-- <el-form-item label="毕业日期 *">
                 <el-input
                   v-model="form.graduateDate"
                   readonly="readonly"
                   id="unable"
                 ></el-input>
-              </el-form-item>
+              </el-form-item> -->
               <el-form-item label="个人简介">
                 <el-input
                   type="textarea"
-                  v-model="changemessage.sign"
+                  v-model="copychangemessage.sign"
                 ></el-input>
               </el-form-item>
-              <span>上传新头像</span
+              <span style="font-weight: 700">上传新头像</span
               ><el-upload
                 class="avatar-uploader"
-                :action="BASE_API + '/admin/oss/file/upload?module=avatar'"
+                :action="BASE_API + '/api/oss/file/upload?module=avatar'"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"
@@ -243,6 +245,15 @@ export default {
         username: "", //用户名
       },
       changemessage: {
+        //后台的数据
+        imgsrc: "", //头像
+        birth: "", //生日
+        id: "", //id
+        mobile: "", //手机号
+        sign: "", //个人简介
+      },
+      copychangemessage: {
+        //拷贝后台数据，以防不必要的错误
         imgsrc: "", //头像
         birth: "", //生日
         id: "", //id
@@ -265,31 +276,41 @@ export default {
       },
       imageUrl: "",
       BASE_API: process.env.BASE_API,
-      flag:false,
+      flag: false,
     };
   },
   methods: {
+    staticdata(){                     //在修改资料失败时，确保原数据
+    this.copychangemessage.imgsrc=this.changemessage.imgsrc;
+    this.copychangemessage.birth=this.changemessage.birth;
+    this.copychangemessage.id=this.changemessage.id;
+    this.copychangemessage.mobile=this.changemessage.mobile;
+    this.copychangemessage.sign=this.changemessage.sign;
+    },
+    showimg(){                    //回显照片
+      this.imageUrl=this.changemessage.imgsrc;
+    },
     submitForm(formName) {
       this.centerDialogVisible1 = false;
       this.checkform.oldPassword = this.ruleForm.oldpass;
       this.checkform.newPassword = this.ruleForm.pass;
-      studentApi
-        .updatePassword(this.checkform.oldPassword,this.checkform.newPassword)
+      return studentApi
+        .updatePassword(this.checkform.oldPassword, this.checkform.newPassword) //修改密码
         .then((res) => {
-          this.flag=true;
+          this.flag = true;
           alert("修改成功");
           console.log(res);
         })
         .catch((err) => {
-          this.flag=false;
+          this.flag = false;
           alert("原密码错误");
           console.log(err);
         });
-        // if(this.flag){
-        //   alert("修改成功");
-        // }else{
-        //   alert("原密码错误");
-        // }
+      // if(this.flag){
+      //   alert("修改成功");
+      // }else{
+      //   alert("原密码错误");
+      // }
       // this.$refs[formName].validate((this.flag) => {
       //   if (this.flag) {
       //     alert("修改成功");
@@ -302,9 +323,11 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     }, //修改密码的
-    async getalldata() {
-      await this.getData(); //异步调用
+    async getalldata() {      //异步调用
+      await this.getData(); 
       await this.getdepartment();
+      await this.staticdata();
+      await this.showimg();
     },
     getData() {
       return studentApi
@@ -342,9 +365,25 @@ export default {
     },
     onSubmit2() {
       this.centerDialogVisible2 = false; //关闭修改资料的弹框
-      return studentApi.updateInfo(this.changemessage).then((res) => {
-        console.log(res);
-      });
+      return studentApi
+        .UpdateInfoForm(this.copychangemessage)   //注意这里传的是copy的数据
+        .then((res) => {
+          console.log(res);                 //要把数据给changemessage 提交以后要把拷贝的数据给changemessage
+
+
+
+
+
+
+
+
+
+
+
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     maleorfamale(sex) {
       if (sex == 0) {
@@ -356,8 +395,10 @@ export default {
     handleAvatarSuccess(res, file) {
       //头像
       this.imageUrl = URL.createObjectURL(file.raw);
+      this.copychangemessage.imgsrc = res.data.url;
     },
     beforeAvatarUpload(file) {
+      this.imageUrl = this.changemessage.imgsrc;
       const isJPG = file.type === "image/jpeg";
       const isLt2M = file.size / 1024 / 1024 < 2;
 
