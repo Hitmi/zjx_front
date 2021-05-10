@@ -57,15 +57,52 @@
         <el-dialog
           title="修改密码"
           :visible.sync="centerDialogVisible1"
-          width="50%"
+          width="30%"
           center
         >
           <!--修改密码-->
-          <div></div>
-          <span slot="footer" class="dialog-footer">
+          <div>
+            <el-form
+              :model="ruleForm"
+              status-icon
+              :rules="rules"
+              ref="ruleForm"
+              label-width="100px"
+              class="demo-ruleForm"
+            >
+              <el-form-item label="原密码" prop="oldpass">
+                <el-input
+                  type="password"
+                  v-model="ruleForm.oldpass"
+                  autocomplete="off"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="新密码" prop="pass">
+                <el-input
+                  type="password"
+                  v-model="ruleForm.pass"
+                  autocomplete="off"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="确认密码" prop="checkPass">
+                <el-input
+                  type="password"
+                  v-model="ruleForm.checkPass"
+                  autocomplete="off"
+                ></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="submitForm('ruleForm')"
+                  >提交</el-button
+                >
+                <el-button @click="resetForm('ruleForm')">重置</el-button>
+              </el-form-item>
+            </el-form>
+          </div>
+          <!-- <span slot="footer" class="dialog-footer">
             <el-button @click="centerDialogVisible1 = false">取 消</el-button>
-            <el-button type="primary" @click="onSubmit1">确 定</el-button>
-          </span>
+            <el-button type="primary" @click="onSubmit1">提 交</el-button>
+          </span> -->
         </el-dialog>
 
         <!--改密码-->
@@ -131,7 +168,8 @@
                   v-model="changemessage.sign"
                 ></el-input>
               </el-form-item>
-              <span>上传新头像</span><el-upload
+              <span>上传新头像</span
+              ><el-upload
                 class="avatar-uploader"
                 :action="BASE_API + '/admin/oss/file/upload?module=avatar'"
                 :show-file-list="false"
@@ -147,7 +185,7 @@
           </div>
           <span slot="footer" class="dialog-footer">
             <el-button @click="centerDialogVisible2 = false">取 消</el-button>
-            <el-button type="primary" @click="onSubmit2">修改</el-button>
+            <el-button type="primary" @click="onSubmit2">修 改</el-button>
           </span>
           <!--这里提交修改-->
         </el-dialog>
@@ -165,6 +203,31 @@ import InfoDetail from "@/views/person/info/InfoDetail";
 export default {
   name: "Setting",
   data() {
+    var validatePass0 = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入原密码"));
+      }
+      callback();
+    };
+    var validatePass = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入新密码"));
+      } else {
+        if (this.ruleForm.checkPass !== "") {
+          this.$refs.ruleForm.validateField("checkPass");
+        }
+        callback();
+      }
+    };
+    var validatePass2 = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (value !== this.ruleForm.pass) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
+      }
+    }; //修改密码的
     return {
       centerDialogVisible1: false,
       centerDialogVisible2: false,
@@ -186,15 +249,59 @@ export default {
         mobile: "", //手机号
         sign: "", //个人简介
       },
-      ruleform: {
-        oldPassword: "", //原密码
-        newPassword: "", //新密码
+      ruleForm: {
+        oldpass: "", //用户输入旧密码
+        pass: "", //编辑新密码
+        checkpass: "", //确认编辑新密码
       },
-      imageUrl: '',
+      checkform: {
+        oldPassword: "", //服务器传原密码
+        newPassword: "", //传给服务器新密码
+      },
+      rules: {
+        oldpass: [{ validator: validatePass0, trigger: "blur" }],
+        pass: [{ validator: validatePass, trigger: "blur" }],
+        checkPass: [{ validator: validatePass2, trigger: "blur" }],
+      },
+      imageUrl: "",
       BASE_API: process.env.BASE_API,
+      flag:false,
     };
   },
   methods: {
+    submitForm(formName) {
+      this.centerDialogVisible1 = false;
+      this.checkform.oldPassword = this.ruleForm.oldpass;
+      this.checkform.newPassword = this.ruleForm.pass;
+      studentApi
+        .updatePassword(this.checkform.oldPassword,this.checkform.newPassword)
+        .then((res) => {
+          this.flag=true;
+          alert("修改成功");
+          console.log(res);
+        })
+        .catch((err) => {
+          this.flag=false;
+          alert("原密码错误");
+          console.log(err);
+        });
+        // if(this.flag){
+        //   alert("修改成功");
+        // }else{
+        //   alert("原密码错误");
+        // }
+      // this.$refs[formName].validate((this.flag) => {
+      //   if (this.flag) {
+      //     alert("修改成功");
+      //   } else {
+      //     console.log("原密码错误");
+      //     return false;
+      //   }
+      // });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    }, //修改密码的
     async getalldata() {
       await this.getData(); //异步调用
       await this.getdepartment();
@@ -214,7 +321,7 @@ export default {
           this.changemessage.sign = res.data.item.sign;
           this.form.departmentId = res.data.item.departmentId;
           this.form.username = res.data.item.username;
-          this.ruleform.oldPassword = res.data.item.password;
+          this.checkform.oldPassword = res.data.item.password;
         })
         .catch((err) => {
           console.log(err);
@@ -235,7 +342,7 @@ export default {
     },
     onSubmit2() {
       this.centerDialogVisible2 = false; //关闭修改资料的弹框
-      return studentApi.updateInfo(this.changemessage).then((res)=>{
+      return studentApi.updateInfo(this.changemessage).then((res) => {
         console.log(res);
       });
     },
@@ -246,21 +353,22 @@ export default {
         return this.famle;
       }
     },
-     handleAvatarSuccess(res, file) {                   //头像
-        this.imageUrl = URL.createObjectURL(file.raw);
-      },
-      beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
+    handleAvatarSuccess(res, file) {
+      //头像
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 2;
 
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-        }
-        return isJPG && isLt2M;
-      },
+      if (!isJPG) {
+        this.$message.error("上传头像图片只能是 JPG 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return isJPG && isLt2M;
+    },
   },
   created() {
     this.getalldata();
