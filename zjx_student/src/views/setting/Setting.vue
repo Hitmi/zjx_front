@@ -4,7 +4,7 @@
       <!--用户主要内容-->
       <div class="user-img">
         <img
-          :src="changemessage.imgsrc"
+          :src="changemessage.avatar"
           alt=""
           width="100%"
           height="100%"
@@ -21,7 +21,7 @@
             <td class="user-value">{{ form.name }}</td>
             <td class="user-attribute">性别:</td>
             <td class="user-value">
-              <span v-if="form.sex == 1">女</span>
+              <span v-if="form.sex == 0">女</span>
               <span v-else>男</span
               >
             </td>
@@ -246,7 +246,7 @@ export default {
       },
       changemessage: {
         //后台的数据
-        imgsrc: "", //头像
+        avatar: "", //头像
         birth: "", //生日
         id: "", //id
         mobile: "", //手机号
@@ -254,7 +254,7 @@ export default {
       },
       copychangemessage: {
         //拷贝后台数据，以防不必要的错误
-        imgsrc: "", //头像
+        avatar: "", //头像
         birth: "", //生日
         id: "", //id
         mobile: "", //手机号
@@ -276,19 +276,20 @@ export default {
       },
       imageUrl: "",
       BASE_API: process.env.BASE_API,
-      flag: false,
+      flag: false,                         //修改密码的flag
+      flag2:false,                         //修改资料的flag
     };
   },
   methods: {
     staticdata(){                     //在修改资料失败时，确保原数据
-    this.copychangemessage.imgsrc=this.changemessage.imgsrc;
+    this.copychangemessage.avatar=this.changemessage.avatar;
     this.copychangemessage.birth=this.changemessage.birth;
     this.copychangemessage.id=this.changemessage.id;
     this.copychangemessage.mobile=this.changemessage.mobile;
     this.copychangemessage.sign=this.changemessage.sign;
     },
     showimg(){                    //回显照片
-      this.imageUrl=this.changemessage.imgsrc;
+      this.imageUrl=this.changemessage.avatar;
     },
     submitForm(formName) {
       this.centerDialogVisible1 = false;
@@ -334,7 +335,7 @@ export default {
         .getDetail()
         .then((res) => {
           console.log(res);
-          this.changemessage.imgsrc = res.data.item.avatar;
+          this.changemessage.avatar = res.data.item.avatar;
           this.form.graduateDate = res.data.item.graduateDate;
           this.changemessage.birth = res.data.item.birth;
           this.changemessage.mobile = res.data.item.mobile;
@@ -363,25 +364,19 @@ export default {
     onSubmit1() {
       this.centerDialogVisible1 = false; //关闭修改密码的弹框
     },
-    onSubmit2() {
+    onSubmit2() {                                       //修改个人资料
       this.centerDialogVisible2 = false; //关闭修改资料的弹框
       return studentApi
-        .UpdateInfoForm(this.copychangemessage)   //注意这里传的是copy的数据
+        .updateInfo(this.copychangemessage)   //注意这里传的是copy的数据
         .then((res) => {
-          console.log(res);                 //要把数据给changemessage 提交以后要把拷贝的数据给changemessage
-
-
-
-
-
-
-
-
-
-
-
+          alert("修改成功");
+          this.$router.go(0);                  //刷新一下页面
+          console.log(res);                 //要把数据给changemessage 提交以后要把拷贝的数据给changemessage(异步调用已经实现)
+          console.log(this.changemessage);
+          console.log(this.copychangemessage);
         })
         .catch((err) => {
+          alert("修改失败");
           console.log(err);
         });
     },
@@ -395,10 +390,10 @@ export default {
     handleAvatarSuccess(res, file) {
       //头像
       this.imageUrl = URL.createObjectURL(file.raw);
-      this.copychangemessage.imgsrc = res.data.url;
+      this.copychangemessage.avatar = res.data.url;
     },
     beforeAvatarUpload(file) {
-      this.imageUrl = this.changemessage.imgsrc;
+      this.imageUrl = this.changemessage.avatar;
       const isJPG = file.type === "image/jpeg";
       const isLt2M = file.size / 1024 / 1024 < 2;
 

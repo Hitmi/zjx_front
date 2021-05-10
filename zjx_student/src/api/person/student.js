@@ -80,12 +80,12 @@ export default{
       data: newInfo
     })
   },
-  UpdateInfoForm(newInfo){
-    return request({
-      url: `/api/person/student/UpdateInfoForm`,
-      method:'put',
-      data: newInfo
-    })
-  }
+  // UpdateInfoForm(newInfo){
+  //   return request({
+  //     url: `/api/person/student/UpdateInfoForm`,
+  //     method:'put',
+  //     data: newInfo
+  //   })
+  // }
 }
 
