@@ -101,7 +101,7 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style >
 @import url("https://g.alicdn.com/de/prismplayer/2.8.2/skins/default/aliplayer-min.css");
 .prism-player{
   position: absolute;

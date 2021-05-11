@@ -71,7 +71,7 @@ export default {
 }
 </script>
 
-<style >
+<style>
 .Box{
   border:  1px solid #DDD;
   width: 800px;
