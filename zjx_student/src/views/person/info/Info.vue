@@ -193,10 +193,12 @@ export default {
 <style scoped>
 table {
   width: 100%;
+  height: 300px;
 }
 .rows {
   width: 100%;
   border: 1px solid black;
+  padding: 5px;
 }
 .cows1 {
   width: 50%;
