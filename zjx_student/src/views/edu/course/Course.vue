@@ -56,15 +56,27 @@
       layout="sizes, prev, pager, next, jumper, ->, total"
       @current-change="changeCurrentPage"
       @size-change="changePageSize"/>
-      <el-dialog
-  title="提示"
-  :visible.sync="dialogVisible"
-  width="30%"
-  :before-close="handleClose">
-  <span>这是一段信息</span>
+ <el-dialog
+  title="课程详情"
+  :visible.sync="dialogTableVisible"
+  width="50%">
+     <div class="courseDetail">
+       <span>课程名称：{{course.title}}</span>
+     </div>
+     <div class="courseDetail">
+       <span>主讲老师：{{course.teacher}}</span>
+     </div>
+     <div class="courseDetail">
+       <span>课程学分：{{course.credit}}</span>
+     </div>
+     <div class="courseDetail">
+       <span>课时：{{course.lessonNum}}</span>
+     </div>
+     <div class="courseDetail">
+       <span>课程描述：{{course.description}}</span>
+     </div>
   <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+    <el-button type="primary" @click="dialogTableVisible = false">确 定</el-button>
   </span>
 </el-dialog>
   </div>
@@ -82,7 +94,7 @@ export default {
       total: 0, // 总记录数
       page: 1, // 页码
       limit: 6, // 每页记录数
-      dialogTableVisible: true,
+      dialogTableVisible: false,
       course:{}
     }
   },
@@ -99,21 +111,12 @@ export default {
         this.course = response.data.item
         console.log("课程信息:",this.course);
       })
-      // this.axios.get("http://8.141.61.26:8190/admin/edu/course/getUpdate?id="+id).then(res=>console.log(res));
     },
     // 调用api模块，加载  列表数据
     getData() {
       studentCourseApi.pageList(this.page, this.limit).then(response => {
         console.log("获取课程",response);
-        //  var obj={};  
-        //  obj=JSON.parse(JSON.stringify(response.data.list[0]));
         this.list=response.data.list;
-        //  for (let i=0;i<=5;i++)
-        //  {
-        //    obj.teacherName="王立新";
-        //    this.list[i]=obj;
-        //  }
-        //  console.log(this.list);
         this.total = response.data.total;
       })
     },
@@ -159,5 +162,9 @@ export default {
 }
 .teacherName{
   margin-left: 10px;
+}
+.courseDetail{
+  font-size: 17px;
+  margin:15px 0;
 }
 </style>
