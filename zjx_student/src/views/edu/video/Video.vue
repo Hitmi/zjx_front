@@ -2,7 +2,6 @@
   <div>
     <!-- <script type="application/javascript"  charset="utf-8" src="https://player.alicdn.com/aliplayer/presentation/js/aliplayercomponents.min.js"/> -->
     <!-- 播放器 -->
-    <script type="application/javascript"   charset="utf-8" src="https://g.alicdn.com/de/prismplayer/2.8.2/aliplayer-min.js"/>
     <div id="J_prismPlayer" class="prism-player" style="height:500px"/>
     <div class="chapterBox">
       <p class="videoSelectP">视频选集</p>

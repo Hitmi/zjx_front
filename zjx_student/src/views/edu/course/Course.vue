@@ -82,7 +82,6 @@
   </div>
   
 </template>
-<script type="application/javascript"   charset="utf-8" src="https://g.alicdn.com/de/prismplayer/2.8.2/aliplayer-min.js"/>
 <script>
 import studentCourseApi from '@/api/edu/studentcourse'
 import courseApi from '@/api/edu/course'
