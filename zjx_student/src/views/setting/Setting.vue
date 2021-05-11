@@ -301,10 +301,11 @@ export default {
           this.flag = true;
           alert("修改成功");
           console.log(res);
+          // this.$router.go(0);
+          this.resetForm(formName);
         })
         .catch((err) => {
           this.flag = false;
-          alert("原密码错误");
           console.log(err);
         });
       // if(this.flag){
@@ -320,6 +321,7 @@ export default {
       //     return false;
       //   }
       // });
+      
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
