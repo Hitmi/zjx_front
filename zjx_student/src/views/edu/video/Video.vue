@@ -1,14 +1,14 @@
 <template>
   <div>
-    <script type="application/javascript"  charset="utf-8" src="https://g.alicdn.com/de/prismplayer/2.8.2/aliplayer-min.js"/>
+    <script type="application/javascript"   charset="utf-8" src="https://g.alicdn.com/de/prismplayer/2.8.2/aliplayer-min.js"/>
     <script type="application/javascript"  charset="utf-8" src="https://player.alicdn.com/aliplayer/presentation/js/aliplayercomponents.min.js"/>
     <!-- 播放器 -->
     <div id="J_prismPlayer" class="prism-player" style="height:500px"/>
     <div class="chapterBox">
       <p class="videoSelectP">视频选集</p>
-      <div v-for="chapter in this.chapterList" :key="chapter.id" >
+      <div v-for="(chapter,Index1) in this.chapterList" :key="chapter.id" >
         <p class="ChapterTitle">{{chapter.title}}</p>
-        <div v-for="video in chapter.children" :key="video.id" class="VideoSelectBox" @click="ChangeVideo()">
+        <div ref="Activate" v-for="(video,Index2) in chapter.children" :key="video.id" class="VideoSelectBox" @click="ChangeVideo(video.videoSourceId,Index1,Index2)" :class="{'VideoIsPlaying':Index2==index2&&Index1==index1}">
            <span class="videoPspan">p{{video.index}}</span>
            <span class="videoTitle">{{video.title}}</span>
            <span class="videoDuration">{{video.duration}}</span>
@@ -28,38 +28,45 @@ export default {
       CourseId:'',
       chapterList:[],
       videoNum:0,
-      isPlayingVideoNum:0
+      isPlayingVideoNum:0,
+      index1:1,
+      index2:2
     }
-  },
-  created() {
-    this.getData();
   },
   // 页面渲染之后执行
   mounted() {
     /* eslint-disable no-undef */
-    new Aliplayer({
-      id: 'J_prismPlayer',
-      width: '60%',
-      height:'100%',
-      // 支持播放地址播放,此播放优先级最高
-      source: 'http://zaijiaxue.codeyi.cn/sv/13cffdc6-178f9f6a30e/13cffdc6-178f9f6a30e.mp4',
-      // vid: this.vid,
-      // playauth: this.playauth,
-      // 当播放私有加密流时需要设置
-      encryptType: 1
-    }, function(player) {
-      console.log('播放器创建好了。')
-    })
+    this.getData();
+    // this.ActivateDom();
+  },
+  created(){
   },
   methods: {
     getData(){
        this.getVideoData();
        this.getChapterData();
+       this.setValue();
+       this.ActivateDom();
+    },
+    setValue(){
+      this.index1=this.$route.params.index1;
+      this.index2=this.$route.params.index2;
     },
     getVideoData() {
-      // 得到视频id
-      this.vid = this.$route.params.videoId;
-      console.log("vid:",this.vid);
+      new Aliplayer({
+      id: 'J_prismPlayer',
+      width: '60%',
+      height:'100%',
+      // 支持播放地址播放,此播放优先级最高
+      source: this.$route.params.videoSourceId,
+      //source: 'http://zaijiaxue.codeyi.cn/sv/13cffdc6-178f9f6a30e/13cffdc6-178f9f6a30e.mp4',
+      // vid: this.vid,
+      // playauth: this.playauth,
+      // 当播放私有加密流时需要设置
+      encryptType: 1
+    }, function(player) {
+      console.log('播放器创建好了')
+    })
     },
    // 根据课程id获取章节列表
     getChapterData:function(){
@@ -79,11 +86,22 @@ export default {
          console.log("num：",this.videoNum);
           console.log('章节列表：', response.data.list);
       });
+     },
+     ActivateDom(){
+       console.log("1",this.$refs.Activate);
+     },
+     ChangeVideo(videoSourceId,index1,index2){
+       this.$router.push({name:'Blank',params:{
+        videoSourceId:videoSourceId,
+        index1:index1,
+        index2:index2,
+        chapterId:this.$route.params.chapterId
+      }});
      }
   }
 }
 </script>
-<style>
+<style scoped>
 @import url("https://g.alicdn.com/de/prismplayer/2.8.2/skins/default/aliplayer-min.css");
 .prism-player{
   position: absolute;
@@ -121,11 +139,15 @@ export default {
 }
 .VideoSelectBox:hover{
    background-color: #fff;
-  color: #03a0d6; 
+   color: #03a0d6; 
+}
+.VideoIsPlaying{
+  background-color: #fff;
+   color: #409EFF; 
 }
 .videoDuration{
   float: right;
-  color: #757575;
+  /* color: #757575; */
 }
 .videoTitle{
   margin-left: 0px;
