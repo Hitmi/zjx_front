@@ -82,6 +82,13 @@ export const constantRouterMap = [
         component: () => import('@/views/edu/video/Video'),
         meta: { title: '观看课程' },
         hidden: true
+      },
+      {
+        path:'/video/view/blank/:id',
+        name:'Blank',
+        component: ()=> import('@/views/blank'),
+        meta: {title: '空白页'},
+        hidden: true
       }
     ]
   },

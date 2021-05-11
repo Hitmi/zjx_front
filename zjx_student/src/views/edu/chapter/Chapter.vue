@@ -6,10 +6,10 @@
     <!-- 章节列表 -->
     <div class="Box">
     <ul class="chapterList clearfix">
-      <li v-for="chapter in chapterList" :key="chapter.id">
+      <li v-for="(chapter,index1) in chapterList" :key="chapter.id">
         <p>{{ chapter.title }}</p>
         <ul class="chapterList videoList clearfix">
-          <li v-for="video in chapter.children" :key="video.id">
+          <li v-for="(video,index2) in chapter.children" :key="video.id">
             <p>{{ video.title }}
               <el-tag v-if="!video.videoSourceId" size="mini" type="danger">
                 {{ '尚未上传视频' }}
@@ -18,7 +18,7 @@
                 <!-- <router-link :to="'/video/view/'+video.videoSourceId">
                   <el-button type="primary" size="mini">查看</el-button>
                 </router-link> -->
-                <el-button type="primary" size="mini" @click="ToVideo(video.videoSourceId)">查看</el-button>
+                <el-button type="primary" size="mini" @click="ToVideo(video.videoSourceId,index1,index2)">查看</el-button>
               </span>
             </p>
           </li>
@@ -58,15 +58,13 @@ export default {
         this.chapterList = response.data.list
       })
     },
-    ToVideo(videoSourceId){
+    ToVideo(videoSourceId,index1,index2){
       console.log(videoSourceId);
-      let idObj={
-        videoSourceId:videoSourceId,
-        chapterId:this.$route.params.id
-      };
       this.$router.push({name:'VideoView',params:{
-        videoId:videoSourceId,
-        chapterId:this.$route.params.id
+        videoSourceId:videoSourceId,
+        chapterId:this.$route.params.id,
+        index1:index1,
+        index2:index2
       }});
     }
   }
