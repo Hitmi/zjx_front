@@ -21,8 +21,8 @@
             <td class="user-value">{{ form.name }}</td>
             <td class="user-attribute">性别:</td>
             <td class="user-value">
-              <span v-if="form.sex == 0">女</span>
-              <span v-else>男</span
+              <span v-if="form.sex == 1">男</span>
+              <span v-else>女</span
               >
             </td>
           </tr>
@@ -173,7 +173,7 @@
               <span style="font-weight: 700">上传新头像</span
               ><el-upload
                 class="avatar-uploader"
-                :action="BASE_API + '/api/oss/file/upload?module=avatar'"
+                :action="ALIYUN_API + '/api/oss/file/upload?module=avatar'"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"
@@ -276,6 +276,7 @@ export default {
       },
       imageUrl: "",
       BASE_API: process.env.BASE_API,
+      ALIYUN_API: process.env.ALIYUN_API,
       flag: false,                         //修改密码的flag
       flag2:false,                         //修改资料的flag
     };
