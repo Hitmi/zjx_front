@@ -66,10 +66,32 @@
       @size-change="changePageSize"/>
 
     <!--弹出窗口，用于显示详细信息-->
-    <el-dialog :visible.sync="dialogTableVisible" title="详细信息" width="400px" center>
+    <!-- <el-dialog :visible.sync="dialogTableVisible" title="详细信息" width="400px" center>
       <course-detail :course="course"/>
-    </el-dialog>
-
+    </el-dialog> -->
+     <el-dialog
+  title="课程详情"
+  :visible.sync="dialogTableVisible"
+  width="50%">
+     <div class="courseDetail">
+       <span>课程名称：{{course.title}}</span>
+     </div>
+     <div class="courseDetail">
+       <span>主讲老师：{{course.teacher}}</span>
+     </div>
+     <div class="courseDetail">
+       <span>课程学分：{{course.credit}}</span>
+     </div>
+     <div class="courseDetail">
+       <span>课时：{{course.lessonNum}}</span>
+     </div>
+     <div class="courseDetail">
+       <span>课程描述：{{course.description}}</span>
+     </div>
+  <span slot="footer" class="dialog-footer">
+    <el-button type="primary" @click="dialogTableVisible = false">确 定</el-button>
+  </span>
+</el-dialog>
   </div>
 </template>
 
@@ -230,3 +252,9 @@ export default {
   }
 }
 </script>
+<style scoped>
+.courseDetail{
+  font-size: 17px;
+  margin:15px 0;
+}
+</style>
