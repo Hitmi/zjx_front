@@ -38,15 +38,15 @@ export default {
       type: Object,
       default: function() {
         return {
-          id: '',
-          courseId: '',
-          title: '',
-          lessonNum: '',
-          credit: '',
-          stock: '',
-          startData: '',
-          endData: '',
-          version: ''
+          id: '',              //课程ID
+          courseId: '',        //课程ID
+          title: '',           //课程名
+          lessonNum: '',       //课时
+          credit: '',          //学分
+          stock: '',           
+          startData: '',       //开始时间
+          endData: '',         //截至日期
+          version: ''          //可视化
         }
       }
     }
@@ -63,6 +63,7 @@ export default {
     getDataById(id) {
       courseApi.getById(id).then(response => {
         this.course = response.data.item
+        console.log(response);
       })
     }
   }

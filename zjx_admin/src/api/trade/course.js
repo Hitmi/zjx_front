@@ -105,6 +105,20 @@ export default{
       method: 'put',
       data: pickForm
     })
+  },
+  generateCourse(value){
+    return request({
+      url: `admin/trade/course/generateCourse`,
+      method: 'put',
+      data: value
+    })
+  },
+  generateCourseList(value){
+    return request({
+      url: `admin/trade/course/generateCourseList`,
+      method: 'put',
+      data: value
+    })
   }
 }
 
