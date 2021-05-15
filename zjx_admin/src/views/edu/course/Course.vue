@@ -32,7 +32,7 @@
       <el-table-column prop="status" label="课程状态" width="100" align="center">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.status === 0">启用</el-tag>
-          <el-tag v-if="scope.row.status === 1">禁用</el-tag>
+          <el-tag v-if="scope.row.status === 2">禁用</el-tag>
         </template>
       </el-table-column>
 

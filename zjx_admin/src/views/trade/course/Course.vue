@@ -17,7 +17,7 @@
           {{ (page - 1) * limit + scope.$index + 1 }}
         </template>
       </el-table-column>
-      <!-- <el-table-column prop="id" label="id" width="300" align="center" /> -->
+      <el-table-column prop="id" label="id" width="300" align="center" />
       <el-table-column prop="cover" label="封面" width="100" align="center">
         <template slot-scope="scope">
           <el-image :src="scope.row.cover" />
@@ -36,13 +36,13 @@
         width="300"
         align="center"
       />
-      <el-table-column
+      <!-- <el-table-column
         prop="lessonNum"
         label="课时"
         width="150"
         align="center"
       />
-      <el-table-column prop="credit" label="学分" width="150" align="center" />
+      <el-table-column prop="credit" label="学分" width="150" align="center" /> -->
       <el-table-column prop="stock" label="可选人数" width="150 " align="center" />
 
       <el-table-column label="操作" width="250" fixed="right" align="center">
@@ -114,7 +114,7 @@
     <el-dialog
       :visible.sync="dialogTableVisible"
       title="详细信息"
-      width="400px"
+      width="650px"
       center
     >
       <course-detail :course="course" />
@@ -123,8 +123,8 @@
 </template>
 
 <script>
-import courseApi from "@/api/trade/course";
-import courseApi2 from "@/api/edu/course";
+import courseApi from "@/api/trade/course";                //显示包括固定信息和动态的时间，库存信息
+import courseApi2 from "@/api/edu/course";                 //只显示固定信息
 import CourseDetail from "@/views/trade/course/CourseDetail";
 
 export default {
@@ -148,7 +148,7 @@ export default {
         stock: "",
       },
       GenerateCourseListForm: {
-        id: [],
+        idList: [],
         startData: "",
         endData: "",
         stock: "",
@@ -162,15 +162,11 @@ export default {
       BASE_API: process.env.BASE_API,
       // 讲师对象
       course: {
-        id: "",
-        courseId: "",
-        title: "",
-        lessonNum: "",
-        credit: "",
-        stock: "",
-        startData: "",
-        endData: "",
-        version: "",
+          title: '',           //课程名
+          teacher:'',
+          lessonNum: '',       //课时
+          credit: '',          //学分
+          description:''
       },
       pickForm: {
         id: "",
@@ -185,20 +181,6 @@ export default {
   },
 
   methods: {
-    // tableRowClassName({ row, rowIndex }) {
-    //   row.row_index = rowIndex;
-    // },
-    // onRowClick(row, event, column) {       //每一个每一个点击才有效
-    //   this.currentRowIndex = [];
-    //   for (var i = 0; i < row.length; i++) {
-    //     this.currentRowIndex.push(row[i].row_index);
-    //   }
-    // },
-    // selectAll(row){
-    //   for(var i =0;i<row.length;i++){
-    //     this.currentRowIndex.push(row[i].row_index);
-    //   }
-    // },
     selectlist() {
       this.btn01 = true;
       if (this.flag) {
@@ -207,9 +189,6 @@ export default {
           this.dialogVisible = false;
         }
         console.log(this.multipleSelection); //这个函数要写
-        // for(var i =0;i<this.multipleSelection.length;i++){                   //复制获取的id列表
-        //   this.GenerateCourseListForm.id[i]=this.multipleSelection[i].id;
-        // }
       } else {
       }
     },
@@ -219,7 +198,7 @@ export default {
     copyids() {
       for (var i = 0; i < this.multipleSelection.length; i++) {
         //复制获取的id列表
-        this.GenerateCourseListForm.id[i] = this.multipleSelection[i].id;
+        this.GenerateCourseListForm.idList[i] = this.multipleSelection[i].id;
       }
     },
     copytime(scope) {
@@ -267,31 +246,34 @@ export default {
         //点击确定输入的时间就拿到了
         this.copytime(scope);
         this.copystock();
-        console.log(this.GenerateCourseForm); //每一个对应的id都正确
-        
-
+        // console.log(this.GenerateCourseForm);
+        // let list = JSON.parse(JSON.stringify(this.GenerateCourseForm));
+        // console.log(list); //每一个对应的id都正确
         courseApi
           .generateCourse(this.GenerateCourseForm)
           .then((res) => {
             console.log(res);
+            console.log(this.GenerateCourseForm);
           })
           .catch((err) => {
             console.log(err);
           });
       }
     },
+    updatecourse(GenerateCourseForm){
+      
+    },
     // 显示详细信息弹窗
-    showDialog(id) {
+    showDialog(id) {   
+      courseApi2.getById(id).then((res=>{
+        this.course= res.data.item;
+        console.log(res);
+      })).catch((err=>{
+        console.log(err);
+      }));
+      this.$route.params.course=this.course;     //在这里就把course的数据搞好，给子组件，因为子组件不能修改course
+      // console.log(this.$route.params);   //路由跳转把id传给另一个
       this.dialogTableVisible = true;
-      courseApi
-        .getById(id)
-        .then((response) => {
-          this.course = response.data.item;
-        })
-        .catch((err) => {
-          console.log(err);
-          console.log(id);
-        });
     },
     // 调用api模块，加载  列表数据
     getData() {

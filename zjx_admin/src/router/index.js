@@ -176,7 +176,7 @@ export const constantRouterMap = [
         path: '/takeCourse/index',
         name: 'TakeCourse',
         component: () => import('@/views/trade/course/Course'),
-        meta: { title: '选课中心' }
+        meta: { title: '可选课程' }
       },
       {
         path: '/order/index',

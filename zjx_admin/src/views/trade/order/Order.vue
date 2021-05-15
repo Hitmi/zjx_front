@@ -41,7 +41,7 @@
     <el-table :data="list" border stripe @selection-change="handleSelectionChange">
       <el-table-column type="selection"/>
       <el-table-column
-        label="#"
+        label="序号"
         width="50">
         <template slot-scope="scope">
           {{ (page - 1) * limit + scope.$index + 1 }}
@@ -49,11 +49,11 @@
       </el-table-column>
 
       <el-table-column prop="orderNo" label="订单号" width="100" align="center"/>
-      <el-table-column prop="courseId" label="" width="100" align="center"/>
-      <el-table-column prop="courseTitle" label="" width="100" align="center"/>
-      <el-table-column prop="teacherName" label="" width="100" align="center"/>
-      <el-table-column prop="studentId" label="" width="100" align="center"/>
-      <el-table-column prop="studentName" label="" width="100" align="center"/>
+      <el-table-column prop="courseId" label="课程id" width="100" align="center"/>
+      <el-table-column prop="courseTitle" label="课程名" width="100" align="center"/>
+      <el-table-column prop="teacherName" label="主讲老师" width="100" align="center"/>
+      <el-table-column prop="studentId" label="学生id" width="100" align="center"/>
+      <el-table-column prop="studentName" label="学生名" width="100" align="center"/>
       <el-table-column prop="status" label="选课状态 1:已选 2:" width="100" align="center"/>
       <el-table-column prop="isDeleted" label="逻辑删除 1（true）已删除， 0（false）未删除" width="100" align="center"/>
 

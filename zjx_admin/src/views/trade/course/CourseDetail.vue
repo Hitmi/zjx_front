@@ -1,35 +1,27 @@
 <template>
   <!--弹出窗口，用于显示详细信息-->
-  <div style="text-align: center;font-size: 16px">
-    <el-row>
-      课程id：{{ course.courseId }}
+  <div style="text-align: left;font-size: 16px ;">
+
+    <el-row style="width:100%;">
+      <td class="attribute">课程名：</td> <td class="value">{{ course.title }}</td> 
     </el-row>
-    <el-row>
-      课程名：{{ course.title }}
+        <el-row style="width:100%;">
+       <td class="attribute">主讲老师：</td> <td class="value" >{{ course.teacher}}</td>
     </el-row>
-    <el-row>
-      课时：{{ course.lessonNum }}
+    <el-row style="width:100%;">
+      <td class="attribute">课时：</td><td class="value">{{ course.lessonNum }}</td>
     </el-row>
-    <el-row>
-      学分：{{ course.credit }}
+    <el-row style="width:100%;">
+      <td class="attribute">学分：</td><td class="value">{{ course.credit }}</td>
     </el-row>
-    <el-row>
-      库存：{{ course.stock }}
-    </el-row>
-    <el-row>
-      开始时间：{{ course.startData }}
-    </el-row>
-    <el-row>
-      结束时间：{{ course.endData }}
-    </el-row>
-    <el-row>
-      乐观锁：{{ course.version }}
+        <el-row style="width:100%;">
+      <td class="attribute">课程描述：</td><td class="value">{{ course.description }}</td>
     </el-row>
   </div>
 </template>
 
 <script>
-import courseApi from '@/api/trade/course'
+import courseApi from '@/api/edu/course'
 
 export default {
   name: 'CourseDetail',
@@ -38,15 +30,11 @@ export default {
       type: Object,
       default: function() {
         return {
-          id: '',              //课程ID
-          courseId: '',        //课程ID
           title: '',           //课程名
+          teacher:'',
           lessonNum: '',       //课时
           credit: '',          //学分
-          stock: '',           
-          startData: '',       //开始时间
-          endData: '',         //截至日期
-          version: ''          //可视化
+          description:''       //描述
         }
       }
     }
@@ -56,16 +44,22 @@ export default {
     }
   },
   mounted() {
-    this.getDataById(this.$route.params.id)
+    // console.log(this.$route.params.course);
+    // this.getDataById(this.$route.params.id)
   },
   methods: {
-    // 根据id查询数据
-    getDataById(id) {
-      courseApi.getById(id).then(response => {
-        this.course = response.data.item
-        console.log(response);
-      })
-    }
   }
 }
 </script>
+<style scoped>
+.attribute{
+  width: 100px;
+  text-align: right;
+  padding: 10px;
+}
+.value{
+  width: 400px;
+  text-align: left;
+  padding: 10px;
+}
+</style>
