@@ -1,7 +1,33 @@
 <template>
   <!--弹出窗口，用于显示详细信息-->
-  <div style="text-align: center;font-size: 16px">
-    <el-row>
+  <div style="font-size: 17px">
+    <div class="TextRow">
+      <span>学生姓名：</span><span class="TextDetail">{{student.name}}</span>
+    </div>
+    <div class="TextRow">
+      <span>性别：</span>
+      <span v-if="student.sex" class="TextDetail">男</span>
+      <span v-else class="TextDetail">女</span>
+    </div>
+    <div class="TextRow">
+      <span>出生年月日：</span><span class="TextDetail">{{student.birth}}</span>
+    </div>
+    <div class="TextRow">
+      <span>毕业日期：</span><span class="TextDetail">{{student.graduateDate}}</span>
+    </div>
+    <!-- <div class="TextRow">
+      <span>班级：</span><span class="TextDetail">{{student.clazz}}</span>
+    </div> -->
+    <div class="TextRow">
+      <span>部门id：</span><span class="TextDetail">{{student.departmentId}}</span>
+    </div>
+    <div class="TextRow">
+      <span>手机号：</span><span class="TextDetail">{{student.mobile}}</span>
+    </div>
+    <div class="TextRow">
+      <span>个性签名：</span> <span class="TextDetail">{{student.sign}}</span>
+    </div>
+    <!-- <el-row>
       学生姓名：{{ student.name }}
     </el-row>
     <el-row>
@@ -30,7 +56,7 @@
     </el-row>
     <el-row>
       个性签名：{{ student.sign }}
-    </el-row>
+    </el-row> -->
   </div>
 </template>
 
@@ -80,3 +106,12 @@ export default {
   }
 }
 </script>
+<style >
+.TextRow{
+  margin:  15px 0;
+}
+.TextDetail{
+  margin-left: 20px;
+  line-height: 20px;
+}
+</style>

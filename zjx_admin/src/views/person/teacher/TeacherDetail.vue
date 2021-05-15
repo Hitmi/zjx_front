@@ -1,7 +1,7 @@
 <template>
   <!--弹出窗口，用于显示详细信息-->
-  <div style="text-align: center;font-size: 16px">
-    <el-row :span="4">
+  <div style="font-size: 16px">
+    <!-- <el-row :span="4">
       <el-image
         :src="teacher.avatar"
         style="width: 100px; height: 100px"/>
@@ -19,8 +19,19 @@
     </el-row>
     <el-row>
       <label>{{ teacher }}</label>
-    </el-row>
+    </el-row> -->
+    <div class="TextRow">
+      <span>姓名：</span><span class="TextDetail">{{teacher.name}}</span>
+    </div>
+    <div class="TextRow">
+      <span>性别：</span><span class="TextDetail" v-if="teacher.sex === 1">男</span><span class="TextDetail" v-else>女</span>
+    </div>
+    <div class="TextRow">
+      <span>出生年月日：</span><span class="TextDetail">{{teacher.birth}}</span>
+    </div>
+    <div>
 
+    </div>
   </div>
 </template>
 

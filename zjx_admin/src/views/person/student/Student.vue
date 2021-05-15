@@ -90,7 +90,7 @@
       @size-change="changePageSize"/>
 
     <!--弹出窗口，用于显示详细信息-->
-    <el-dialog :visible.sync="dialogTableVisible" title="详细信息" width="400px" center>
+    <el-dialog :visible.sync="dialogTableVisible" title="详细信息" width="650px" center>
       <student-detail :student="student"/>
     </el-dialog>
 

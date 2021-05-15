@@ -11,15 +11,17 @@
       <!-- 上传视频 -->
       <el-form-item label="上传视频">
         <el-upload
+          :on-change="statusChange"
+          :show-file-list="true"
           ref="upload"
           :auto-upload="false"
           :on-success="handleUploadSuccess"
           :on-error="handleUploadError"
           :on-exceed="handleUploadExceed"
-          :file-list="fileList"
+          :file-list="this.fileList"
           :limit="1"
-          :action="BASE_API+'/admin/vod/media/upload'">
-          <el-button slot="trigger" size="small" type="primary">选择视频</el-button>
+          :action="ALIYUN_API+'/admin/aliyun/vod/upload'">
+          <el-button slot="trigger" size="small" type="primary" >选择视频</el-button>
           <el-button
             :disabled="uploadBtnDisabled"
             style="margin-left: 10px;"
@@ -49,7 +51,8 @@ export default {
         title: '',
         sort: 0
       },
-      BASE_API: process.env.BASE_API
+      BASE_API: process.env.BASE_API,
+      ALIYUN_API: process.env.ALIYUN_API
     }
   },
 
@@ -104,7 +107,7 @@ export default {
         this.$parent.fetchNodeList()
       })
     },
-
+    //视频上传后传入video对象 后台进行对应章节中videoSourceId的更新
     update() {
       videoApi.updateById(this.video).then(response => {
         this.$message.success(response.message)
@@ -117,17 +120,27 @@ export default {
 
     // 上传
     submitUpload() {
-      this.uploadBtnDisabled = true
+      this.uploadBtnDisabled = true;
       // 提交上传请求
-      this.$refs.upload.submit()
+      console.log("开始上传");
+      this.$refs.upload.submit();
     },
-
+    // httpRequest(param){
+    //   console.log(param);
+    // },
     // 视频上传成功的回调
     handleUploadSuccess(response, file, fileList) {
-      this.uploadBtnDisabled = false
+      this.uploadBtnDisabled = true;
+      console.log("请求返回结果：",response);
+      console.log("file对象：",file);
       if (response.success) {
-        this.video.videoSourceId = response.data.videoId
-        this.video.videoOriginalName = file.name
+        this.$message({
+          message:'视频真正上传成功',
+          type:'success'
+        })
+        this.video.videoSourceId = response.data.url;
+        this.video.videoOriginalName = file.name;
+        console.log("video对象更新为",this.video);
       } else {
         this.$message.error('上传失败1')
       }
@@ -141,7 +154,10 @@ export default {
 
     handleUploadExceed() {
       this.$message.info('只能选择一个视频上传')
+    },
+    statusChange(file, fileList){
+        console.log("文件进度为：",file.percentage);
     }
-  }
+  },
 }
 </script>
