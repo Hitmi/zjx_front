@@ -108,21 +108,21 @@ export const constantRouterMap = [
     ]
   },
   // 个人资料设置
-  {
-    path: '/setting',
-    component: Layout,
-    name: 'Setting',
-    redirect: '/setting/index',
-    meta: { title: '设置' },
-    children: [
-      {
-        path: '/setting/index',
-        name: 'Setting',
-        component: () => import('@/views/setting/Setting'),
-        meta: { title: '个人设置' }
-      }
-    ]
-  },
+  // {
+  //   path: '/setting',
+  //   component: Layout,
+  //   name: 'Setting',
+  //   redirect: '/setting/index',
+  //   meta: { title: '设置' },
+  //   children: [
+  //     {
+  //       path: '/setting/index',
+  //       name: 'Setting',
+  //       component: () => import('@/views/setting/Setting'),
+  //       meta: { title: '个人设置' }
+  //     }
+  //   ]
+  // },
   { path: '*', redirect: '/404', hidden: true }
 ]
 
