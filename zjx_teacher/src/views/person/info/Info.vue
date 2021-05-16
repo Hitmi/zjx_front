@@ -2,9 +2,9 @@
   <div class="app-container">
     <!--工具按钮-->
     <div style="margin-bottom: 10px">
-      <a :href="BASE_API + '/admin/person/setting/export'">
+      <!-- <a :href="BASE_API + '/admin/person/setting/export'">
         <el-button size="mini" type="primary" icon="el-icon-download">下载数据</el-button>
-      </a>
+      </a> -->
     </div>
 
     <!-- 表格 -->
@@ -40,8 +40,8 @@
       @size-change="changePageSize"/>
 
     <!--弹出窗口，用于显示详细信息-->
-    <el-dialog :visible.sync="dialogTableVisible" title="详细信息" width="400px" center>
-      <info-detail :student="student"/>
+    <el-dialog :visible.sync="dialogTableVisible" title="详细信息" width="650px" center>
+      <info-detail :teacher="teacher"/>
     </el-dialog>
 
   </div>
@@ -50,7 +50,7 @@
 <script>
 import departmentApi from '@/api/person/department'
 import InfoDetail from '@/views/person/info/InfoDetail'
-
+import teacherApi from '@/api/person/teacher'
 export default {
 
   components: { InfoDetail },
@@ -62,7 +62,7 @@ export default {
       page: 1, // 页码
       limit: 10, // 每页记录数
       dialogTableVisible: false,
-      student:'',
+      teacher:{},
       BASE_API: process.env.BASE_API
     }
   },
@@ -73,14 +73,17 @@ export default {
   methods: {
     // 显示详细信息弹窗
     showDialog(id) {
+      console.log(id);
       this.dialogTableVisible = true
-      departmentApi.getById(id).then(response => {
-        this.student = response.data.item
+      teacherApi.getById(id).then(response => {
+        console.log(response);
+        this.teacher = response.data.item
       })
     },
     // 调用api模块，加载  列表数据
     getData() {
       departmentApi.getDatumList(this.page, this.limit).then(response => {
+         console.log(response);
         this.list = response.data.list
         this.total = response.data.total
       })

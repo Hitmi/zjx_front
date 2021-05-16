@@ -37,7 +37,7 @@
           :on-success="handleCoverSuccess"
           :before-upload="beforeCoverUpload"
           :on-error="handleCoverError"
-          :action="BASE_API + '/admin/oss/file/upload?module=cover'"
+          :action="ALIYUN_API + '/admin/aliyun/oss/upload?module=cover'"
           class="cover-uploader">
           <img v-if="courseInfo.cover" :src="courseInfo.cover">
           <i v-else class="el-icon-plus avatar-uploader-icon"/>
@@ -66,6 +66,7 @@ export default {
   data() {
     return {
       BASE_API: process.env.BASE_API,
+      ALIYUN_API: process.env.ALIYUN_API,
       saveBtnDisabled: false, // 按钮是否禁用
       teacherName: '',
       departmentName: '',
