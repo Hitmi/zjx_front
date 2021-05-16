@@ -85,7 +85,7 @@ export default {
       departmentName: ''
     }
   },
-  created() {
+  mounted() {
      this.getDepartmentById(this.teacher.departmentId);
      
      //this.getDataById(this.teacher.id);  //教师的信息已经拿到 不需要了
@@ -108,9 +108,10 @@ export default {
     // 根据部门id查询部门信息
     getDepartmentById(id) {
       departmentApi.getById(id).then(response => {
+        console.log("部门对象：",response);
         this.departmentName = response.data.item.name
-        console.log(this.departmentName);
-        console.log(this.teacher);
+        console.log("部门名:",this.departmentName);
+        console.log("教师对象",this.teacher);
       })
     }
   }
