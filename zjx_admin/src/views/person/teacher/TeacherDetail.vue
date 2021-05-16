@@ -38,6 +38,9 @@
       <span class="TextDetail" v-if="teacher.level === 5">高级工程师</span>
     </div>
     <div class="TextRow">
+      <span>所属部门id：</span><span class="TextDetail">{{teacher.departmentId}}</span>
+    </div>
+        <div class="TextRow">
       <span>所属部门：</span><span class="TextDetail">{{departmentName}}</span>
     </div>
     <div class="TextRow">
@@ -84,6 +87,7 @@ export default {
   },
   created() {
      this.getDepartmentById(this.teacher.departmentId);
+     
      //this.getDataById(this.teacher.id);  //教师的信息已经拿到 不需要了
   },
   methods: {

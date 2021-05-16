@@ -31,7 +31,7 @@
       :visible.sync="searchVisible"
       direction="rtl"
       size="30%">
-      <template v-slot="title">
+      <template v-slot="">
         <h2 style="color: #409EFF"><i class="el-icon-search" style="margin-bottom: 30px"/>数据过滤</h2>
       </template>
       <student-search @click-get-data="filterData"/>
