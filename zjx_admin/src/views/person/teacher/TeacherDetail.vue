@@ -84,7 +84,7 @@ export default {
   },
   created() {
      this.getDepartmentById(this.teacher.departmentId);
-     //this.getDataById(this.teacher.id);  教师的信息已经拿到 不需要了
+     //this.getDataById(this.teacher.id);  //教师的信息已经拿到 不需要了
   },
   methods: {
     // 获取部门信息
@@ -98,14 +98,15 @@ export default {
     getDataById(id) {
       teacherApi.getById(id).then(response => {
         // this.teacher = response.data.item
-       // console.log(response);
+        console.log(response);
       })
     },
     // 根据部门id查询部门信息
     getDepartmentById(id) {
       departmentApi.getById(id).then(response => {
         this.departmentName = response.data.item.name
-        // console.log(this.departmentName);
+        console.log(this.departmentName);
+        console.log(this.teacher);
       })
     }
   }

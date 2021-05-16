@@ -148,6 +148,7 @@ export default {
       teacherApi.getById(id).then(response => {
         //console.log(response.data.item);
         this.teacher = response.data.item;
+        // console.log(this.teacher);
          this.dialogTableVisible = true
       })
     },

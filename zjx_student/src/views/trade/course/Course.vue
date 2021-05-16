@@ -11,7 +11,6 @@
         </template>
       </el-table-column>
 
-<<<<<<< HEAD
       <el-table-column prop="title" label="课程名" width="150" align="center"/>
       <el-table-column prop="teacherName" label="任课教师" width="150" align="center"/>
       <el-table-column prop="credit" label="课程学分" width="200" align="center" />
@@ -19,13 +18,6 @@
       <el-table-column prop="startData" label="开始时间" width="200" align="center" />
       <el-table-column prop="endData" label="结束时间" width="200" align="center" />
       <el-table-column prop="stock" label="剩余可选" width="200" align="center" />
-=======
-      <el-table-column align="center" label="课程名" prop="title" width="150"/>
-      <el-table-column align="center" label="任课教师" prop="teacherName" width="150"/>
-      <el-table-column align="center" label="课程学分" prop="credit" width="200"/>
-      <el-table-column align="center" label="课程课时" prop="lessonNum" width="200"/>
-      <el-table-column align="center" label="剩余可选" prop="stock" width="200"/>
->>>>>>> e4986a1aa0c9ef0a1d7c05f2c6bc4ea5b426dc8b
 
       <el-table-column align="center" fixed="right" label="操作" width="250">
         <template slot-scope="scope">

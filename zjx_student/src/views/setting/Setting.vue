@@ -8,7 +8,7 @@
           alt=""
           width="100%"
           height="100%"
-          style="border-radius: 14px"
+          style="border-radius: 14px;"
         /><!--用户头像-->
       </div>
       <div class="user-username">学号: {{ form.username }}</div>

@@ -19,7 +19,7 @@
       <span>班级：</span><span class="TextDetail">{{student.clazz}}</span>
     </div> -->
     <div class="TextRow">
-      <span>部门id：</span><span class="TextDetail">{{student.departmentId}}</span>
+      <span>所属班级：</span><span class="TextDetail">{{department}}</span>
     </div>
     <div class="TextRow">
       <span>手机号：</span><span class="TextDetail">{{student.mobile}}</span>
@@ -61,7 +61,7 @@
 </template>
 
 <script>
-
+import departmentApi from '@/api/person/department'
 export default {
   name: 'StudentDetail',
   props: {// 讲师对象
@@ -82,6 +82,22 @@ export default {
           sign: ''
         }
       }
+    }
+  },
+  data(){
+    return {
+      department:"",
+    }
+  },
+  created(){
+    this.getDepartmentById(this.student.departmentId);
+  },
+  methods: {
+    getDepartmentById(id){
+        departmentApi.getById(id).then(response => {
+        this.department = response.data.item.name
+        console.log(response);
+      })
     }
   }
 }
