@@ -89,7 +89,7 @@ export default {
       department:"",
     }
   },
-  created(){
+  mounted(){
     this.getDepartmentById(this.student.departmentId);
   },
   methods: {

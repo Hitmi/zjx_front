@@ -89,10 +89,11 @@
       @size-change="changePageSize"/>
 
     <!--弹出窗口，用于显示详细信息-->
+    <div v-if="dialogTableVisible">
     <el-dialog :visible.sync="dialogTableVisible" title="详细信息" width="700px" center>
       <teacher-detail :teacher="teacher"></teacher-detail>
     </el-dialog>
-
+    </div>
   </div>
 </template>
 
