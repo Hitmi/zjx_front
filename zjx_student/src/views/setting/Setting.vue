@@ -326,20 +326,12 @@ export default {
       //     return false;
       //   }
       // });
-<<<<<<< HEAD
-=======
-
->>>>>>> e4986a1aa0c9ef0a1d7c05f2c6bc4ea5b426dc8b
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     }, //修改密码的
-<<<<<<< HEAD
     async getalldata() {
       //异步调用
-=======
-    async getalldata() {      //异步调用
->>>>>>> e4986a1aa0c9ef0a1d7c05f2c6bc4ea5b426dc8b
       await this.getData();
       await this.getdepartment();
       await this.staticdata();

@@ -49,7 +49,7 @@
       </el-table-column>
 
       <el-table-column prop="courseId" label="课程id" width="200" align="center"/>
-      <el-table-column prop="title" label="课程名" width="100" align="center"/>
+      <el-table-column prop="title" label="课程名" width="200" align="center"/>
       <el-table-column prop="teacherName" label="主讲老师" width="100" align="center"/>
       <el-table-column prop="lessonNum" label="学时" width="100" align="center"/>
       <el-table-column prop="credit" label="学分" width="100" align="center"/>
@@ -164,12 +164,9 @@ export default {
     },
     // 调用api模块，加载  列表数据
     getData() {
-      // orderApi.pageList(this.page, this.limit, this.searchObj).then(response => {
-      //   this.list = response.data.list
-      //   this.total = response.data.total
-      // })
       courseApi.pageList(this.page, this.limit, this.searchObj).then((res=>{
         this.list = res.data.list;
+        this.total = res.data.total
         console.log(res);
         console.log(this.list);
       }))
