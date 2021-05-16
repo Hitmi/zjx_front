@@ -36,7 +36,7 @@
                       <el-button type="info" size="medium" @click="showDialog(item.id)" class="fr">详情</el-button>
                     </div>
                   </section>
-                  
+
                 </div>
                 </router-link>
               </li>
@@ -82,7 +82,7 @@
   </span>
 </el-dialog>
   </div>
-  
+
 </template>
 <script>
 import studentCourseApi from '@/api/edu/studentcourse'

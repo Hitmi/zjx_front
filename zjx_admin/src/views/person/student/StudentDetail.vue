@@ -61,7 +61,6 @@
 </template>
 
 <script>
-import studentApi from '@/api/person/student'
 
 export default {
   name: 'StudentDetail',
@@ -83,25 +82,6 @@ export default {
           sign: ''
         }
       }
-    }
-  },
-  data() {
-    return {
-    }
-  },
-  mounted() {
-    this.getDataById(this.$route.params.id)
-  },
-  methods: {
-    // 根据id查询数据
-    getDataById(id) {
-      studentApi.getById(id).then(response => {
-        this.student = response.data.item
-      }).catch(
-        error => {
-          console.log(error)
-        }
-      )
     }
   }
 }

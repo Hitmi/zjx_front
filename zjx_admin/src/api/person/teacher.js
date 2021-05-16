@@ -50,7 +50,15 @@ export default{
       data: teacher
     })
   },
-
+  /**
+   * 重置指定id的教师账号密码
+   */
+  resetPassword(id) {
+    return request({
+      url: `/admin/person/teacher/resetPassword/${id}`,
+      method: 'put'
+    })
+  },
   /**
    * 根据id获取单个数据
    * @param id 数据id

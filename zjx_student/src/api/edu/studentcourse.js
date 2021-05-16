@@ -3,7 +3,7 @@ import request from '@/utils/request'
 /**
  * StudentCourse-
  */
-export default{
+export default {
 
   /**
    * 查询分页列表
@@ -16,6 +16,6 @@ export default{
       url: `/api/edu/studentCourse/listPage/${page}/${limit}`,
       method: 'get'
     })
-  },
+  }
 }
 

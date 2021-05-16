@@ -4,7 +4,7 @@ import { Form } from 'element-ui'
 /**
  * Student-
  */
-export default{
+export default {
 
   /**
    * 查询数据列表

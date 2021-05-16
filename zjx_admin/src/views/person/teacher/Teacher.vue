@@ -67,9 +67,7 @@
       <el-table-column label="操作" width="250" fixed="right" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="info" @click="showDialog(scope.row.id)">查看</el-button>
-          <router-link :to="'/teacher/edit/'+scope.row.id">
-            <el-button type="primary" size="mini" icon="el-icon-edit">修改</el-button>
-          </router-link>
+          <el-button size="mini" type="danger" @click="resetPassword(scope.row.id)">重置密码</el-button>
           <el-button
             size="mini"
             type="danger"
@@ -92,7 +90,7 @@
 
     <!--弹出窗口，用于显示详细信息-->
     <el-dialog :visible.sync="dialogTableVisible" title="详细信息" width="700px" center>
-      <teacher-detail :teacher="this.teacher"></teacher-detail>
+      <teacher-detail :teacher="teacher"></teacher-detail>
     </el-dialog>
 
   </div>
@@ -257,6 +255,15 @@ export default {
     handleSelectionChange(selection) {
       console.log(selection)
       this.multipleSelection = selection
+    },
+    // 重置学生密码
+    resetPassword(id) {
+      teacherApi.resetPassword(id).then(response => {
+        this.$message({
+          message: response.message,
+          type: 'success'
+        })
+      })
     }
   }
 }

@@ -4,8 +4,8 @@
       ref="loginForm"
       :model="loginForm"
       :rules="loginRules"
-      class="login-form"
       auto-complete="on"
+      class="login-form"
       label-position="left">
       <h3 class="title">在家学平台——学生端</h3>
       <el-form-item prop="username">
@@ -14,20 +14,20 @@
         </span>
         <el-input
           v-model="loginForm.username"
-          name="username"
-          type="text"
           auto-complete="on"
-          placeholder="username"/>
+          name="username"
+          placeholder="username"
+          type="text"/>
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password"/>
         </span>
         <el-input
-          :type="pwdType"
           v-model="loginForm.password"
-          name="password"
+          :type="pwdType"
           auto-complete="on"
+          name="password"
           placeholder="password"
           @keyup.enter.native="handleLogin"/>
         <span class="show-pwd" @click="showPwd">
@@ -37,8 +37,8 @@
       <el-form-item>
         <el-button
           :loading="loading"
-          type="primary"
           style="width:100%;"
+          type="primary"
           @click.native.prevent="handleLogin">
           登录
         </el-button>
@@ -128,7 +128,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss">
+<style lang="scss" rel="stylesheet/scss">
 $bg: #2d3a4b;
 $light_gray: #eee;
 
@@ -165,7 +165,7 @@ $light_gray: #eee;
 
 </style>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" rel="stylesheet/scss" scoped>
 $bg: #2d3a4b;
 $dark_gray: #889aa4;
 $light_gray: #eee;

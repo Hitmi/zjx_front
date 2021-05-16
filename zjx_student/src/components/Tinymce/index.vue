@@ -2,7 +2,7 @@
   <div :class="{fullscreen:fullscreen}" class="tinymce-container editor-container">
     <textarea :id="tinymceId" class="tinymce-textarea"/>
     <div class="editor-custom-btn-container">
-      <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK"/>
+      <editorImage class="editor-upload-btn" color="#1890ff" @successCBK="imageSuccessCBK"/>
     </div>
   </div>
 </template>
@@ -181,23 +181,28 @@ export default {
 .tinymce-container {
   position: relative;
 }
-.tinymce-container>>>.mce-fullscreen {
+
+.tinymce-container >>> .mce-fullscreen {
   z-index: 10000;
 }
+
 .tinymce-textarea {
   visibility: hidden;
   z-index: -1;
 }
+
 .editor-custom-btn-container {
   position: absolute;
   right: 4px;
   top: 4px;
   /*z-index: 2005;*/
 }
+
 .fullscreen .editor-custom-btn-container {
   z-index: 10000;
   position: fixed;
 }
+
 .editor-upload-btn {
   display: inline-block;
 }

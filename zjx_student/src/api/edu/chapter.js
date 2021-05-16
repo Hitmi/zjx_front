@@ -3,7 +3,7 @@ import request from '@/utils/request'
 /**
  * chapter-
  */
-export default{
+export default {
   /**
    * 根据id获取单个数据
    * @param id 数据id

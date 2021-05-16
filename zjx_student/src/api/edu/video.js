@@ -3,7 +3,7 @@ import request from '@/utils/request'
 /**
  * video-课程视频
  */
-export default{
+export default {
 
   /**
    * 查询分页列表

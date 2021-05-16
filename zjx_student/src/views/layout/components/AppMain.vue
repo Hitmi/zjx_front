@@ -1,6 +1,6 @@
 <template>
   <section class="app-main">
-    <transition name="fade-transform" mode="out-in">
+    <transition mode="out-in" name="fade-transform">
       <!-- or name="fade" -->
       <!-- 如果为路由出口定义一个唯一key值，那么组件会被强制重新渲染 -->
       <router-view :key="key"/>

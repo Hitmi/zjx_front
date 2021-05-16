@@ -168,7 +168,6 @@ export default {
           type: 'success'
         })
       })
-      this.getData()
     },
     // 显示详细信息弹窗
     showDialog(id) {

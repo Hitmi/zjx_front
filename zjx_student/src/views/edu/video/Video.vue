@@ -138,11 +138,11 @@ export default {
 }
 .VideoSelectBox:hover{
    background-color: #fff;
-   color: #03a0d6; 
+   color: #03a0d6;
 }
 .VideoIsPlaying{
   background-color: #fff;
-   color: #409EFF; 
+   color: #409EFF;
 }
 .videoDuration{
   float: right;
