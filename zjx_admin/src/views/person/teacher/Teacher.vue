@@ -31,7 +31,7 @@
       :visible.sync="showSearch"
       direction="rtl"
       size="30%">
-      <template v-slot="title">
+      <template >
         <h2 style="color: #409EFF"><i class="el-icon-search" style="margin-bottom: 30px"/>数据过滤</h2>
       </template>
       <teacher-search @click-get-data="getData"/>
@@ -92,7 +92,7 @@
 
     <!--弹出窗口，用于显示详细信息-->
     <el-dialog :visible.sync="dialogTableVisible" title="详细信息" width="700px" center>
-      <teacher-detail/>
+      <teacher-detail :teacher="this.teacher"></teacher-detail>
     </el-dialog>
 
   </div>
@@ -126,14 +126,14 @@ export default {
       BASE_API: process.env.BASE_API,
       // 讲师对象
       teacher: {
-        id: '',
-        name: '',
+        id: '12',
+        name: '21',
         sex: 1,
-        birth: '',
-        departmentId: '',
-        avatar: '',
-        intro: '',
-        level: ''
+        birth: '12',
+        departmentId: '21',
+        avatar: '21',
+        intro: '21',
+        level: '21'
       },
       showSearch: false
     }
@@ -147,9 +147,10 @@ export default {
   methods: {
     // 显示详细信息弹窗
     showDialog(id) {
-      this.dialogTableVisible = true
       teacherApi.getById(id).then(response => {
-        this.teacher = response.data.item
+        //console.log(response.data.item);
+        this.teacher = response.data.item;
+         this.dialogTableVisible = true
       })
     },
     // 导入excel失败后调用
@@ -164,6 +165,7 @@ export default {
     // 调用api模块，加载讲师列表
     getData(data) {
       teacherApi.pageList(this.page, this.limit, data).then(response => {
+        // console.log(response);
         this.list = response.data.list
         this.total = response.data.total
       })
