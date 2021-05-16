@@ -3,7 +3,7 @@ import request from '@/utils/request'
 /**
  * CourseDescription-
  */
-export default{
+export default {
 
   /**
    * 根据id获取单个数据

@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export default{
+export default {
 
   /**
    * 查询数据列表

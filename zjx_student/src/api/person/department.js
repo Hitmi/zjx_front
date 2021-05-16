@@ -3,7 +3,7 @@ import request from '@/utils/request'
 /**
  * Department-
  */
-export default{
+export default {
   /**
    * 获取信息公开数据
    * @param page

@@ -3,7 +3,7 @@ import request from '@/utils/request'
 /**
  * chapter-
  */
-export default{
+export default {
 
   /**
    * 查询分页列表

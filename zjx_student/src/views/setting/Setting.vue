@@ -141,7 +141,7 @@
                   v-model="this.famale"
                   readonly="readonly"
                   id="unable"
-                ></el-input> 
+                ></el-input>
               </el-form-item> -->
               <el-form-item label="手机号">
                 <el-input v-model="copychangemessage.mobile"></el-input>
@@ -172,7 +172,7 @@
               <span style="font-weight: 700">上传新头像</span
               ><el-upload
                 class="avatar-uploader"
-                :action="ALIYUN_API + '/admin/aliyun/oss/upload?module=avatar'"
+                :action="ALIYUN_API + '/api/oss/file/upload?module=avatar'"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"
@@ -326,12 +326,20 @@ export default {
       //     return false;
       //   }
       // });
+<<<<<<< HEAD
+=======
+
+>>>>>>> e4986a1aa0c9ef0a1d7c05f2c6bc4ea5b426dc8b
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     }, //修改密码的
+<<<<<<< HEAD
     async getalldata() {
       //异步调用
+=======
+    async getalldata() {      //异步调用
+>>>>>>> e4986a1aa0c9ef0a1d7c05f2c6bc4ea5b426dc8b
       await this.getData();
       await this.getdepartment();
       await this.staticdata();

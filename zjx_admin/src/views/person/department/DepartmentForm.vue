@@ -18,9 +18,9 @@
       </el-form-item>
       <!--是否为某学科专业 0：不是学科专业 1：是学科专业-->
       <el-form-item label="是否为某学科专业">
-        <el-select v-model="department.departmentId" placeholder="是否为某学科专业">
-          <el-option :value="0" label="否"/>
-          <el-option :value="1" label="是"/>
+        <el-select v-model="department.major" placeholder="是否为某学科专业">
+          <el-option :value="false" label="否"/>
+          <el-option :value="true" label="是"/>
         </el-select>
       </el-form-item>
       <el-form-item>

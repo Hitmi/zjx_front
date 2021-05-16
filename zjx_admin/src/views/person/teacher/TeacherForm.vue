@@ -9,7 +9,7 @@
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
           :on-error="handleAvatarError"
-          :action="BASE_API + '/admin/oss/file/upload?module=avatar'"
+          :action="ALIYUN_API + '/admin/aliyun/oss/upload?module=avatar'"
           class="avatar-uploader">
           <img v-if="teacher.avatar" :src="teacher.avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon"/>
@@ -89,6 +89,7 @@ export default {
       },
       saveBtnDisabled: false, // 默认按钮可用
       BASE_API: process.env.BASE_API,
+      ALIYUN_API : process.env.ALIYUN_API,
       departmentList: [] // 部门列表
     }
   },
@@ -148,11 +149,12 @@ export default {
     updateData() {
       teacherApi.updateById(this.teacher).then(response => {
         // 弹出成功提示
+        // console.log(response);
         this.$message({
           message: response.message,
           type: 'success'
         })
-        this.$router.push({ path: '/teacher/list' })
+        this.$router.push({ path: '/teacher/index' })
       })
     },
 

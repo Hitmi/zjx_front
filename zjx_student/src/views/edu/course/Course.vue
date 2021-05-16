@@ -20,6 +20,7 @@
           <article v-if="list.length>0" class="comm-course-list coursesBox">
             <ul id="bna" class="of">
               <li v-for="item in list" :key="item.id" class="coursesli">
+                <router-link :to="'/chapter/view/'+item.id">
                 <div class="cc-l-wrap">
                   <section class="course-img">
                     <img :src="item.cover" :alt="item.title" class="img-responsive">
@@ -35,8 +36,9 @@
                       <el-button type="info" size="medium" @click="showDialog(item.id)" class="fr">详情</el-button>
                     </div>
                   </section>
-                  
+
                 </div>
+                </router-link>
               </li>
             </ul>
             <div class="clear"/>
@@ -80,7 +82,7 @@
   </span>
 </el-dialog>
   </div>
-  
+
 </template>
 <script>
 import studentCourseApi from '@/api/edu/studentcourse'
@@ -147,7 +149,12 @@ export default {
   background-color: #fff;
   width: 300px;
   display: inline-block;
-  margin: 50px;
+  margin: 50px 65px;
+}
+.coursesli:hover{
+  box-shadow:  0px 15px 30px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+ 	transition: all 0.2s linear;
 }
 .coursesBox{
   border-top: 1px solid #f5f5f5;
@@ -165,5 +172,9 @@ export default {
 .courseDetail{
   font-size: 17px;
   margin:15px 0;
+}
+.course-img img{
+ width: 300px;
+ height: 168.75px;
 }
 </style>

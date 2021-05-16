@@ -2,22 +2,22 @@
   <!-- 工具按钮 -->
   <div style="margin-bottom: 10px">
 
-    <el-button type="danger" size="mini" @click="this.$emit('batchClick')">批量删除</el-button>
+    <el-button size="mini" type="danger" @click="this.$emit('batchClick')">批量删除</el-button>
     <router-link :to="route_to">
-      <el-button type="primary" size="mini" icon="el-icon-circle-plus-outline">添加</el-button>
+      <el-button icon="el-icon-circle-plus-outline" size="mini" type="primary">添加</el-button>
     </router-link>
     <a :href="export_url">
-      <el-button size="mini" type="primary" icon="el-icon-download">下载数据</el-button>
+      <el-button icon="el-icon-download" size="mini" type="primary">下载数据</el-button>
     </a>
     <a :href="download_url">
-      <el-button size="mini" type="primary" icon="el-icon-download">下载模板</el-button>
+      <el-button icon="el-icon-download" size="mini" type="primary">下载模板</el-button>
     </a>
     <el-upload
-      :limit="1"
+      :action="upload_url"
       :file-list="file_list"
+      :limit="1"
       :on-error="uploadError"
       :on-success="uploadSuccess"
-      :action="upload_url"
       class="upload-demo"
       style="display:inline;">
       <el-button size="mini" type="primary">导入数据</el-button>

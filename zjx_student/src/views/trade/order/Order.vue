@@ -11,12 +11,12 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="title" label="课程名" width="150" align="center"/>
-      <el-table-column prop="teacherName" label="任课教师" width="150" align="center"/>
-      <el-table-column prop="credit" label="课程学分" width="200" align="center" />
-      <el-table-column prop="lessonNum" label="课程 课时" width="200" align="center" />
+      <el-table-column align="center" label="课程名" prop="title" width="150"/>
+      <el-table-column align="center" label="任课教师" prop="teacherName" width="150"/>
+      <el-table-column align="center" label="课程学分" prop="credit" width="200"/>
+      <el-table-column align="center" label="课程 课时" prop="lessonNum" width="200"/>
 
-      <el-table-column label="操作" width="250" fixed="right" align="center">
+      <el-table-column align="center" fixed="right" label="操作" width="250">
         <template slot-scope="scope">
           <el-button size="mini" type="info" @click="get(scope.row)">查看</el-button>
           <el-button size="mini" type="info" @click="quit(scope.row)">退选</el-button>
@@ -28,11 +28,11 @@
     <!-- 分页组件 -->
     <el-pagination
       :current-page="page"
-      :total="total"
       :page-size="limit"
       :page-sizes="[10, 20, 50]"
-      style="padding: 30px 0; text-align: center"
+      :total="total"
       layout="sizes, prev, pager, next, jumper, ->, total"
+      style="padding: 30px 0; text-align: center"
       @current-change="changeCurrentPage"
       @size-change="changePageSize"/>
 
