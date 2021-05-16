@@ -4,7 +4,7 @@
     <!-- 表格 -->
     <el-table :data="list" border stripe>
       <el-table-column
-        label="#"
+        label="序号"
         width="50">
         <template slot-scope="scope">
           {{ (page - 1) * limit + scope.$index + 1 }}
@@ -15,6 +15,8 @@
       <el-table-column prop="teacherName" label="任课教师" width="150" align="center"/>
       <el-table-column prop="credit" label="课程学分" width="200" align="center" />
       <el-table-column prop="lessonNum" label="课程课时" width="200" align="center" />
+      <el-table-column prop="startData" label="开始时间" width="200" align="center" />
+      <el-table-column prop="endData" label="结束时间" width="200" align="center" />
       <el-table-column prop="stock" label="剩余可选" width="200" align="center" />
 
       <el-table-column label="操作" width="250" fixed="right" align="center">
@@ -70,6 +72,7 @@ export default {
       courseApi.pageList(this.page, this.limit).then(response => {
         this.list = response.data.list
         this.total = response.data.total
+        console.log(response);
       })
     },
     // 发送选课请求

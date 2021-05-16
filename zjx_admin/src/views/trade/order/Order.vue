@@ -4,7 +4,7 @@
     <div style="margin-bottom: 10px">
 
       <el-button type="danger" size="mini" @click="batchRemove">批量删除</el-button>
-      <router-link :to="'/order/create'">
+      <!-- <router-link :to="'/order/create'">
         <el-button type="primary" size="mini" icon="el-icon-circle-plus-outline">添加</el-button>
       </router-link>
       <el-button type="primary" size="mini" icon="el-icon-search" @click="searchVisible = true">数据过滤</el-button>
@@ -23,7 +23,7 @@
         class="upload-demo"
         style="display:inline;">
         <el-button size="mini" type="primary" icon="el-icon-upload2">导入数据</el-button>
-      </el-upload>
+      </el-upload> -->
     </div>
 
     <!--查询表单-->
@@ -31,7 +31,7 @@
       :visible.sync="searchVisible"
       direction="rtl"
       size="30%">
-      <template v-slot="title">
+      <template v-slot="">
         <h2 style="color: #409EFF"><i class="el-icon-search" style="margin-bottom: 30px"/>数据过滤</h2>
       </template>
       <order-search @click-get-data="filterData"/>
@@ -48,26 +48,30 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="orderNo" label="订单号" width="100" align="center"/>
-      <el-table-column prop="courseId" label="课程id" width="100" align="center"/>
-      <el-table-column prop="courseTitle" label="课程名" width="100" align="center"/>
+      <el-table-column prop="courseId" label="课程id" width="200" align="center"/>
+      <el-table-column prop="title" label="课程名" width="100" align="center"/>
       <el-table-column prop="teacherName" label="主讲老师" width="100" align="center"/>
-      <el-table-column prop="studentId" label="学生id" width="100" align="center"/>
-      <el-table-column prop="studentName" label="学生名" width="100" align="center"/>
-      <el-table-column prop="status" label="选课状态 1:已选 2:" width="100" align="center"/>
-      <el-table-column prop="isDeleted" label="逻辑删除 1（true）已删除， 0（false）未删除" width="100" align="center"/>
+      <el-table-column prop="lessonNum" label="学时" width="100" align="center"/>
+      <el-table-column prop="credit" label="学分" width="100" align="center"/>
+      <!-- <el-table-column prop="studentId" label="学生id" width="100" align="center"/>
+      <el-table-column prop="studentName" label="学生名" width="100" align="center"/> -->
+      <el-table-column prop="startData" label="开始时间" width="200" align="center"/>
+      <el-table-column prop="endData" label="截至时间" width="200" align="center"/>
+      <el-table-column prop="stock" label="可选人数" width="100" align="center"/>
+      <!-- <el-table-column prop="status" label="选课状态 1:已选 2:" width="100" align="center"/>
+      <el-table-column prop="isDeleted" label="逻辑删除 1（true）已删除， 0（false）未删除" width="100" align="center"/> -->
 
-      <el-table-column label="操作" width="250" fixed="right" align="center">
+      <el-table-column label="操作" width="200" fixed="right" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="info" @click="showDialog(scope.row.id)">查看</el-button>
+          <!-- <el-button size="mini" type="info" @click="showDialog(scope.row.id)">查看</el-button>
           <router-link :to="'/order/edit/'+scope.row.id">
             <el-button type="primary" size="mini" icon="el-icon-edit">修改</el-button>
-          </router-link>
+          </router-link> -->
           <el-button
             size="mini"
             type="danger"
-            @click="removeById(scope.row.id)">删除
-          </el-button>
+            @click="removeById(scope.row.id)">删除                        
+          </el-button>                                       <!--根据每次生成的新id删除-->
         </template>
       </el-table-column>
     </el-table>
@@ -95,6 +99,7 @@
 import orderApi from '@/api/trade/order'
 import OrderSearch from '@/views/trade/order/OrderSearch'
 import OrderDetail from '@/views/trade/order/OrderDetail'
+import courseApi from "@/api/trade/course";
 
 export default {
 
@@ -159,10 +164,15 @@ export default {
     },
     // 调用api模块，加载  列表数据
     getData() {
-      orderApi.pageList(this.page, this.limit, this.searchObj).then(response => {
-        this.list = response.data.list
-        this.total = response.data.total
-      })
+      // orderApi.pageList(this.page, this.limit, this.searchObj).then(response => {
+      //   this.list = response.data.list
+      //   this.total = response.data.total
+      // })
+      courseApi.pageList(this.page, this.limit, this.searchObj).then((res=>{
+        this.list = res.data.list;
+        console.log(res);
+        console.log(this.list);
+      }))
     },
     filterData(data) {
       orderApi.pageList(this.page, this.limit, data).then(response => {
@@ -192,12 +202,13 @@ export default {
     // 删除记录
     removeById(id) {
       // 询问是否删除
+      console.log(id);
       this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        return orderApi.removeById(id)
+        return courseApi.removeById(id)
       }).then(response => {
         // 刷新页面
         this.getData()
@@ -233,10 +244,11 @@ export default {
         // 遍历selection，将id取出放入id列表
         var idList = []
         this.multipleSelection.forEach(item => {
+          console.log(item.id);
           idList.push(item.id)
         })
         // 调用api
-        return orderApi.batchRemove(idList)
+        return courseApi.batchRemove(idList)
       }).then((response) => {
         this.getData()
         this.$message.success(response.message)

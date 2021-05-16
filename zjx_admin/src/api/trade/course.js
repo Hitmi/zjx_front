@@ -25,7 +25,7 @@ export default{
    */
   pageList(page, limit, searchObj) {
     return request({
-      url: `/api/trade/course/listPage/${page}/${limit}`,
+      url: `/admin/trade/course/listPage/${page}/${limit}`,
       method: 'get',
       params: searchObj
     })
@@ -37,7 +37,7 @@ export default{
    */
   removeById(id) {
     return request({
-      url: `/api/trade/course/remove/${id}`,
+      url: `/admin/trade/course/remove/${id}`,
       method: 'delete'
     })
   },
@@ -83,7 +83,7 @@ export default{
    */
   batchRemove(idList) {
     return request({
-      url: `/api/trade/course/batchRemove`,
+      url: `/admin/trade/course/batchRemove`,
       method: 'delete',
       data: idList
     })

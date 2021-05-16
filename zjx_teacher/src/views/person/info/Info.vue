@@ -18,7 +18,7 @@
       <el-table-column prop="sex" label="性别" width="100" align="center">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.sex === 1">男</el-tag>
-          <el-tag v-if="scope.row.sex === 0">女</el-tag>
+          <el-tag v-else>女</el-tag>
         </template>
       </el-table-column>
       <el-table-column prop="intro" label="个人介绍" width="750" align="center"/>

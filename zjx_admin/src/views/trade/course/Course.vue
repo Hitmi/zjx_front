@@ -1,24 +1,25 @@
 <template>
   <div class="app-container">
     <!-- 表格 -->
-    <el-button type="success" @click="selectlist" class="btn01"
+    <el-button type="success"  @click="selectlist" class="btn01" size="mini"
       >批量选择可选课程</el-button
     >
     <el-table
       ref="multipleTable"
       :data="list"
+      border stripe
       tooltip-effect="dark"
       style="width: 100%"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column type="selection" width="55"> </el-table-column>
-      <el-table-column prop="sequence" label="序号" width="50">
+      <el-table-column type="selection" width="100"> </el-table-column>
+      <el-table-column prop="sequence" label="序号" width="60">
         <template slot-scope="scope">
           {{ (page - 1) * limit + scope.$index + 1 }}
         </template>
       </el-table-column>
-      <el-table-column prop="id" label="id" width="300" align="center" />
-      <el-table-column prop="cover" label="封面" width="100" align="center">
+      <el-table-column prop="id" label="课程id" width="200" align="center" />
+      <el-table-column prop="cover" label="封面" width="150" align="center">
         <template slot-scope="scope">
           <el-image :src="scope.row.cover" />
         </template>
@@ -43,7 +44,12 @@
         align="center"
       />
       <el-table-column prop="credit" label="学分" width="150" align="center" /> -->
-      <el-table-column prop="stock" label="可选人数" width="150 " align="center" />
+      <!-- <el-table-column
+        prop="stock"
+        label="可选人数"
+        width="150 "
+        align="center"
+      /> -->
 
       <el-table-column label="操作" width="250" fixed="right" align="center">
         <template slot-scope="scope">
@@ -52,10 +58,10 @@
             size="mini"
             type="info"
             @click="showDialog(scope.row.id)"
-            style="width: 80px; background-color: rgb(144, 147, 153)"
+            style="width: 70px; background-color: rgb(144, 147, 153)"
             >查看</el-button
           >
-          <el-button type="text" @click="onsubmit(scope)"
+          <el-button type="text" @click="onsubmit(scope)" size="mini"
             >做为可选课程</el-button
           >
 
@@ -68,22 +74,33 @@
           >
             <el-form>
               <el-form-item label="可选人数" :label-width="formLabelWidth">
-                <el-input v-model="stock" autocomplete="off" class="stockinput"></el-input>
+                <el-input
+                  v-model="stock"
+                  autocomplete="off"
+                  class="stockinput"
+                ></el-input>
               </el-form-item>
             </el-form>
             <div class="block">
-              <span style="color: rgb(102, 104, 107); font-weight: 700;padding:5px;"
-                > 选课时间段</span
+              <span
+                style="
+                  color: rgb(102, 104, 107);
+                  font-weight: 700;
+                  padding: 5px;
+                "
+              >
+                选课时间段</span
               >
               <el-date-picker
                 v-model="value1"
                 type="datetimerange"
-                value-format="yyyy-MM-dd hh:mm:ss"
+                value-format="yyyy-MM-dd HH:mm:ss"
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
                 class="date"
-              >                    <!--注意value1是不变的-->
+              >
+                <!--注意value1是不变的-->
               </el-date-picker>
             </div>
 
@@ -123,8 +140,8 @@
 </template>
 
 <script>
-import courseApi from "@/api/trade/course";                //显示包括固定信息和动态的时间，库存信息
-import courseApi2 from "@/api/edu/course";                 //只显示固定信息
+import courseApi from "@/api/trade/course"; //显示包括固定信息和动态的时间，库存信息
+import courseApi2 from "@/api/edu/course"; //只显示固定信息
 import CourseDetail from "@/views/trade/course/CourseDetail";
 
 export default {
@@ -162,11 +179,11 @@ export default {
       BASE_API: process.env.BASE_API,
       // 讲师对象
       course: {
-          title: '',           //课程名
-          teacher:'',
-          lessonNum: '',       //课时
-          credit: '',          //学分
-          description:''
+        title: "", //课程名
+        teacher: "",
+        lessonNum: "", //课时
+        credit: "", //学分
+        description: "",
       },
       pickForm: {
         id: "",
@@ -209,10 +226,10 @@ export default {
       this.GenerateCourseListForm.startData = this.value1[0];
       this.GenerateCourseListForm.endData = this.value1[1];
     },
-    copystock(){
+    copystock() {
       this.GenerateCourseForm.stock = this.stock;
     },
-    copystocks(){
+    copystocks() {
       this.GenerateCourseListForm.stock = this.stock;
     },
     //打卡选择时间
@@ -238,6 +255,10 @@ export default {
           .generateCourseList(this.GenerateCourseListForm)
           .then((res) => {
             console.log(res);
+            this.$message({
+              message: "操作成功",
+              type: "success",
+            });
           })
           .catch((err) => {
             console.log(err);
@@ -254,24 +275,29 @@ export default {
           .then((res) => {
             console.log(res);
             console.log(this.GenerateCourseForm);
+            this.$message({
+              message: "操作成功",
+              type: "success",
+            });
           })
           .catch((err) => {
             console.log(err);
           });
       }
     },
-    updatecourse(GenerateCourseForm){
-      
-    },
+    updatecourse(GenerateCourseForm) {},
     // 显示详细信息弹窗
-    showDialog(id) {   
-      courseApi2.getById(id).then((res=>{
-        this.course= res.data.item;
-        console.log(res);
-      })).catch((err=>{
-        console.log(err);
-      }));
-      this.$route.params.course=this.course;     //在这里就把course的数据搞好，给子组件，因为子组件不能修改course
+    showDialog(id) {
+      courseApi2
+        .getById(id)
+        .then((res) => {
+          this.course = res.data.item;
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      this.$route.params.course = this.course; //在这里就把course的数据搞好，给子组件，因为子组件不能修改course
       // console.log(this.$route.params);   //路由跳转把id传给另一个
       this.dialogTableVisible = true;
     },
@@ -318,11 +344,11 @@ export default {
 };
 </script>
 <style scoped>
-.stockinput{
+.stockinput {
   width: 90%;
   margin-left: 0px;
 }
-.date{
+.date {
   margin-left: 25px;
   width: 70%;
 }
@@ -330,8 +356,8 @@ button {
   color: white;
   background-color: rgba(64, 158, 255);
   width: 100px;
-  height: 45px;
-  border-radius: 10px;
+  height: 35px;
+  border-radius: 4px;
   border: 0.1px solid #f5f5f579;
   outline: none;
 }

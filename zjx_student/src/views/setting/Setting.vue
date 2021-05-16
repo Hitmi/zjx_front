@@ -22,8 +22,7 @@
             <td class="user-attribute">性别:</td>
             <td class="user-value">
               <span v-if="form.sex == 1">男</span>
-              <span v-else>女</span
-              >
+              <span v-else>女</span>
             </td>
           </tr>
           <!--姓名与性别-->
@@ -277,20 +276,22 @@ export default {
       imageUrl: "",
       BASE_API: process.env.BASE_API,
       ALIYUN_API: process.env.ALIYUN_API,
-      flag: false,                         //修改密码的flag
-      flag2:false,                         //修改资料的flag
+      flag: false, //修改密码的flag
+      flag2: false, //修改资料的flag
     };
   },
   methods: {
-    staticdata(){                     //在修改资料失败时，确保原数据
-    this.copychangemessage.avatar=this.changemessage.avatar;
-    this.copychangemessage.birth=this.changemessage.birth;
-    this.copychangemessage.id=this.changemessage.id;
-    this.copychangemessage.mobile=this.changemessage.mobile;
-    this.copychangemessage.sign=this.changemessage.sign;
+    staticdata() {
+      //在修改资料失败时，确保原数据
+      this.copychangemessage.avatar = this.changemessage.avatar;
+      this.copychangemessage.birth = this.changemessage.birth;
+      this.copychangemessage.id = this.changemessage.id;
+      this.copychangemessage.mobile = this.changemessage.mobile;
+      this.copychangemessage.sign = this.changemessage.sign;
     },
-    showimg(){                    //回显照片
-      this.imageUrl=this.changemessage.avatar;
+    showimg() {
+      //回显照片
+      this.imageUrl = this.changemessage.avatar;
     },
     submitForm(formName) {
       this.centerDialogVisible1 = false;
@@ -300,7 +301,10 @@ export default {
         .updatePassword(this.checkform.oldPassword, this.checkform.newPassword) //修改密码
         .then((res) => {
           this.flag = true;
-          alert("修改成功");
+          this.$message({
+            message: "修改成功",
+            type: "success",
+          });
           console.log(res);
           // this.$router.go(0);
           this.resetForm(formName);
@@ -322,13 +326,13 @@ export default {
       //     return false;
       //   }
       // });
-      
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     }, //修改密码的
-    async getalldata() {      //异步调用
-      await this.getData(); 
+    async getalldata() {
+      //异步调用
+      await this.getData();
       await this.getdepartment();
       await this.staticdata();
       await this.showimg();
@@ -367,19 +371,26 @@ export default {
     onSubmit1() {
       this.centerDialogVisible1 = false; //关闭修改密码的弹框
     },
-    onSubmit2() {                                       //修改个人资料
+    onSubmit2() {
+      //修改个人资料
       this.centerDialogVisible2 = false; //关闭修改资料的弹框
       return studentApi
-        .updateInfo(this.copychangemessage)   //注意这里传的是copy的数据
+        .updateInfo(this.copychangemessage) //注意这里传的是copy的数据
         .then((res) => {
-          alert("修改成功");
-          this.$router.go(0);                  //刷新一下页面
-          console.log(res);                 //要把数据给changemessage 提交以后要把拷贝的数据给changemessage(异步调用已经实现)
+          this.$message({
+            message: "修改成功",
+            type: "success",
+          });
+          this.$router.go(0); //刷新一下页面
+          console.log(res); //要把数据给changemessage 提交以后要把拷贝的数据给changemessage(异步调用已经实现)
           console.log(this.changemessage);
           console.log(this.copychangemessage);
         })
         .catch((err) => {
-          alert("修改失败");
+          this.$message({
+            message: "修改失败",
+            type: "error",
+          });
           console.log(err);
         });
     },
