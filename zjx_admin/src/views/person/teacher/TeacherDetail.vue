@@ -37,9 +37,6 @@
       <span class="TextDetail" v-if="teacher.level === 4">工程师</span>
       <span class="TextDetail" v-if="teacher.level === 5">高级工程师</span>
     </div>
-    <div class="TextRow">
-      <span>所属部门id：</span><span class="TextDetail">{{teacher.departmentId}}</span>
-    </div>
         <div class="TextRow">
       <span>所属部门：</span><span class="TextDetail">{{departmentName}}</span>
     </div>

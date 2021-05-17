@@ -7,7 +7,7 @@
       <router-link :to="'/course/create'">
         <el-button type="primary" size="mini" icon="el-icon-circle-plus-outline">添加</el-button>
       </router-link>
-      <el-button type="primary" size="mini" icon="el-icon-search" @click="searchVisible = true">数据过滤</el-button>
+      <el-button type="primary" size="mini" icon="el-icon-search" @click="showsearch">数据过滤</el-button>
     </div>
 
     <!-- 表格 -->
@@ -117,7 +117,7 @@ export default {
       multipleSelection: [], // 批量删除选中的记录列表
       fileList: [],
       dialogTableVisible: false,
-      searchVisible: false,
+      searchVisible: true,
       BASE_API: process.env.BASE_API,
       // 讲师对象
       course: {
@@ -138,6 +138,9 @@ export default {
   },
 
   methods: {
+    showsearch(){
+      this.searchVisible=true;
+    },
     // 显示详细信息弹窗
     showDialog(id) {
       this.dialogTableVisible = true
