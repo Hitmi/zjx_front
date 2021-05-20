@@ -214,9 +214,9 @@ export default {
     },
     // 显示详细信息弹窗
     showDialog(id) {
-      this.dialogTableVisible = true;
       studentApi.getById(id).then((response) => {
         this.student = response.data.item;
+        this.dialogTableVisible = true;
       });
     },
     // 导入excel失败后调用

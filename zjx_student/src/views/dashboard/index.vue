@@ -172,7 +172,7 @@
               <span style="font-weight: 700">上传新头像</span
               ><el-upload
                 class="avatar-uploader"
-                :action="ALIYUN_API + '/api/oss/file/upload?module=avatar'"
+                :action="ALIYUN_API + '/api/aliyun/oss/upload?module=avatar'"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"

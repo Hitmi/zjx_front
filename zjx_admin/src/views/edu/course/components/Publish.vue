@@ -57,6 +57,7 @@ export default {
         this.coursePublish.credit = response.data.item.credit
         this.coursePublish.teacherName = response.data.item.teacher
         this.coursePublish.departmentTitle = response.data.item.department
+        console.log(response);
       })
     },
     // 上一步

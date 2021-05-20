@@ -49,6 +49,7 @@
 <script>
 import chapterApi from '@/api/edu/chapter'
 import videoApi from '@/api/edu/video'
+import courseApi from '@/api/edu/course'
 
 // 1、引入组件
 import ChapterForm from '@/views/edu/course/components/Chapter/Form.vue'
@@ -64,10 +65,19 @@ export default {
 
   created() {
     this.fetchNodeList()
+    this.fetchCoursePublishById(this.$parent.courseId)
   },
 
   methods: {
+        fetchCoursePublishById(id) {
+         courseApi.getById(id).then(response => {
+        console.log(response);
+      })
+    },
 
+
+
+    
     // 获取后端章节列表数据
     fetchNodeList() {
       chapterApi.getByCourseId(this.$parent.courseId).then(response => {

@@ -142,6 +142,7 @@ export default {
     fetchCourseInfoById(id) {
       courseApi.getUpdate(id).then(response => {
         this.courseInfo = response.data.item
+        console.log(this.courseInfo);
         this.getNameById()
       })
     },
@@ -167,6 +168,7 @@ export default {
         this.$message.error('任课教师和所属部门应该从建议列表中选择')
         this.saveBtnDisabled = false
       } else {
+        console.log(this.courseInfo.teacherId);
         if (!this.$parent.courseId) {
           this.saveData()
         } else {
@@ -179,6 +181,7 @@ export default {
     saveData() {
       courseApi.save(this.courseInfo).then(response => {
         this.$message.success(response.message)
+        console.log(response);
         this.$parent.courseId = response.data.courseId // 获取courseId
         this.$parent.active = 1 // 下一步 访问父组件的成员 $parent
       }).catch(() => {

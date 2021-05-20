@@ -119,7 +119,8 @@ export default {
     showDialog(id) {
       this.dialogTableVisible = true
       courseApi.getById(id).then(response => {
-        this.course = response.data.item
+        this.course = response.data.item;
+        console.log(response);
       })
     },
     // 导入excel失败后调用
@@ -135,8 +136,10 @@ export default {
     // 调用api模块，加载  列表数据
     getData() {
       courseApi.pageListByTeacher(this.page, this.limit).then(response => {
-        this.list = response.data.list
-        this.total = response.data.total
+        
+        this.list = response.data.list;
+        this.total = response.data.total;
+        console.log(response);
       })
     },
     filterData(data) {

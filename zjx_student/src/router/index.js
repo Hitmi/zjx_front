@@ -54,6 +54,23 @@ export const constantRouterMap = [
     ]
   },
 
+  
+  // 选课中心
+  {
+    path: '/trade',
+    component: Layout,
+    redirect: '/trade/index',
+    name: 'Trade',
+    meta: { title: '选课' },
+    children: [
+      {
+        path: '/trade/index',
+        name: 'TradeIndex',
+        component: () => import('@/views/trade/course/Course'),
+        meta: { title: '选课中心' }
+      }
+    ]
+  },
   // 课程学习
   {
     path: '/edu',
@@ -88,22 +105,6 @@ export const constantRouterMap = [
         component: ()=> import('@/views/blank'),
         meta: {title: '空白页'},
         hidden: true
-      }
-    ]
-  },
-  // 选课中心
-  {
-    path: '/trade',
-    component: Layout,
-    redirect: '/trade/index',
-    name: 'Trade',
-    meta: { title: '选课' },
-    children: [
-      {
-        path: '/trade/index',
-        name: 'TradeIndex',
-        component: () => import('@/views/trade/course/Course'),
-        meta: { title: '选课中心' }
       }
     ]
   },

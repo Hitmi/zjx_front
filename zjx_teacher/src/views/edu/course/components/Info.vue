@@ -149,8 +149,9 @@ export default {
 
     // 保存并下一步
     saveAndNext() {
-      this.saveBtnDisabled = true
+      this.saveBtnDisabled = true;
       if (isEmpty(this.courseInfo.teacherId) || isEmpty(this.courseInfo.departmentId)) {
+
         this.$message.error('任课教师和所属部门应该从建议列表中选择')
         this.saveBtnDisabled = false
       } else {

@@ -50,6 +50,7 @@ export default {
     // 获取课程发布信息
     fetchCoursePublishById(id) {
       courseApi.getById(id).then(response => {
+        console.log(response);
         this.course = response.data.item
         this.coursePublish.cover = response.data.item.cover
         this.coursePublish.title = response.data.item.title
